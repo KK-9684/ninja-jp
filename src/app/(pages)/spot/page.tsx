@@ -7,6 +7,7 @@ import SearchForm from "@/app/components/Common/SearchForm";
 import { getSpotList } from "./fetcher";
 import { getTagList } from "../tag/fetcher";
 import { shuffle } from "@/lib/util/shuffle";
+import { getCategoryList } from "@/lib/contentful/sharedModel";
 
 const PER_PAGE = 12;
 
@@ -16,6 +17,7 @@ export default async function SpotPage({
   searchParams: {
     page: string;
     area: string | string[];
+    categories: string | string[];
     tag: string | null;
   };
 }) {
@@ -23,6 +25,7 @@ export default async function SpotPage({
   const currentPage = Number(params.page) || 1;
   const list = await getSpotList({
     area: params.area ? toArrayOfStrings(params.area) : [],
+    categories: params.categories ? toArrayOfStrings(params.categories) : [],
     tag: params.tag || "",
     page: currentPage,
     perPage: PER_PAGE,
@@ -31,16 +34,22 @@ export default async function SpotPage({
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
   const area = await getAreaList();
   const tag = await getTagList();
+  const categories = await getCategoryList("spotCategory");
 
   return (
     <>
-      <SearchForm area={area.items} tag={shuffle(tag.items).slice(0, 10)} />
+      <SearchForm
+        area={area.items}
+        tag={shuffle(tag.items).slice(0, 10)}
+        categories={categories.items}
+      />
       <h2>施設・史跡一覧</h2>
       <table>
         <thead>
           <tr>
             <th>タイトル</th>
             <th>エリア</th>
+            <th>カテゴリ</th>
             <th>画像</th>
           </tr>
         </thead>
@@ -54,6 +63,11 @@ export default async function SpotPage({
               </td>
 
               <td>{spot.area}</td>
+              <td>
+                {spot.category && (
+                  <span key={spot.category.slug}>{spot.category.title}</span>
+                )}
+              </td>
               <td>
                 {spot.image?.map((img) => (
                   <Image

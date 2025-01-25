@@ -2,8 +2,16 @@ import { getEntries, getEntry } from "@/lib/contentful/client";
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ActivitySkeleton } from "../activity/fetcher";
-import { WriterEntrySkeleton } from "@/lib/contentful/sharedModel";
+import {
+  CategoryEntrySkeleton,
+  categoryPerItems,
+  WriterEntrySkeleton,
+} from "@/lib/contentful/sharedModel";
 import { TagEntrySkeleton } from "../tag/fetcher";
+
+type SpotCategoryEntrySkeleton = CategoryEntrySkeleton & {
+  contentTypeId: "spotCategory";
+};
 
 type Spot = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
@@ -12,6 +20,7 @@ type Spot = EntrySkeletonType & {
   area?: EntryFieldTypes.AssetLink;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
+  category?: EntryFieldTypes.EntryLink<SpotCategoryEntrySkeleton>;
   relationActivity?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivitySkeleton>
   >;
@@ -23,6 +32,7 @@ type SpotSkeleton = EntrySkeletonType<Spot> & {
 };
 
 export type Query = {
+  categories?: string[];
   area?: string[];
   tag?: string;
   page: number;
@@ -54,7 +64,7 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<SpotSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ) => {
-  const { title, image, area } = entry.fields;
+  const { title, image, area, category } = entry.fields;
 
   const images = image
     ?.filter((img) => img !== null && img !== undefined)
@@ -67,6 +77,10 @@ const transformPartialContent = (
     title,
     image: images,
     area: parsedArea,
+    category: {
+      slug: category?.sys.id,
+      title: category?.fields.title || "",
+    },
   };
 };
 
@@ -92,14 +106,22 @@ export const getSpotList = async (query: Query) => {
   const tagParams = query.tag
     ? { "fields.relationKeyword.sys.id": query.tag }
     : {};
+
+  console.log("query", query);
+  const categoryParams =
+    query.categories && query.categories.length > 0
+      ? { "fields.category.sys.id[in]": query.categories.join(",") }
+      : {};
+
   const result = await getEntries<SpotSkeleton>({
     content_type: "spot",
-    select: ["fields.title", "fields.image", "fields.area"],
+    select: ["fields.title", "fields.image", "fields.area", "fields.category"],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,
     ...areaParams,
     ...tagParams,
+    ...categoryParams,
   });
 
   return {
@@ -122,4 +144,17 @@ export const getRelationSpot = async (ids: string[], limit?: number) => {
     total: result.total,
     items: result.items.map((item) => transformPartialContent(item)),
   };
+};
+
+export const spotCategoryPerItems = async (limit: number) => {
+  const result = await categoryPerItems<SpotSkeleton>("spotCategory", limit);
+
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return {
+        ...item,
+        items: item.items.map((item) => transformPartialContent(item)),
+      };
+    });
 };
