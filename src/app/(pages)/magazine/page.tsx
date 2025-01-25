@@ -2,15 +2,13 @@ import Image from "next/image";
 import { toArrayOfStrings } from "@/lib/util/toArrayOfStrings";
 import Pagination from "@/app/components/Common/Pagination";
 import Link from "next/link";
-import SearchForm from "@/app/components/Common/SearchForm";
-import { getResearchList } from "./fetcher";
-import { getCategoryList } from "@/lib/contentful/sharedModel";
+import { getMagazineList } from "./fetcher";
 import { getTagList } from "../tag/fetcher";
 import { shuffle } from "@/lib/util/shuffle";
 
 const PER_PAGE = 12;
 
-export default async function ResearchPage({
+export default async function MagazinePage({
   searchParams,
 }: {
   searchParams: {
@@ -21,7 +19,7 @@ export default async function ResearchPage({
 }) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
-  const list = await getResearchList({
+  const list = await getMagazineList({
     categories: params.categories ? toArrayOfStrings(params.categories) : [],
     tag: params.tag || "",
     page: currentPage,
@@ -29,37 +27,47 @@ export default async function ResearchPage({
   });
 
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
-  const categories = await getCategoryList("researchCategory");
+
   const tag = await getTagList();
+  const tagItems = shuffle(tag.items).slice(0, 20);
 
   return (
     <>
-      <SearchForm
-        categories={categories.items}
-        tag={shuffle(tag.items).slice(0, 10)}
-      />
-      <h2>商品・忍具一覧</h2>
+      <ul>
+        {tagItems.map((item) => (
+          <li key={item.slug}>
+            <Link href={`/magazine?tag=${item.slug}`} key={item.slug}>
+              {item.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <h2>マガジン一覧</h2>
       <table>
         <thead>
           <tr>
+            <th>NEW</th>
             <th>タイトル</th>
             <th>カテゴリ</th>
             <th>画像</th>
+            <th>サマリー</th>
+            <th>公開日</th>
           </tr>
         </thead>
         <tbody>
           {list.items.map((item) => (
             <tr key={item.slug}>
+              <td>{item.isNew ? "NEW" : ""}</td>
               <td>
-                <Link href={`/research/${item.slug}`} key={item.slug}>
+                <Link href={`/magazine/${item.slug}`} key={item.slug}>
                   {item.title}
                 </Link>
               </td>
 
               <td>
-                {item.category && (
-                  <p key={item.category.slug}>{item.category.title}</p>
-                )}
+                {item.category?.map((ct) => (
+                  <p key={ct.slug}>{ct.title}</p>
+                ))}
               </td>
               <td>
                 {item.image?.map((img) => (
@@ -72,6 +80,8 @@ export default async function ResearchPage({
                   />
                 ))}
               </td>
+              <td>{item.summary}</td>
+              <td>{item.createdAt}</td>
             </tr>
           ))}
         </tbody>

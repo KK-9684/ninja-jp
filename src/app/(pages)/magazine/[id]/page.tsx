@@ -1,19 +1,19 @@
 import Image from "next/image";
 import RichContent from "@/app/components/Common/RichContent";
-import { getItem } from "../fetcher";
+import { getMagazine } from "../fetcher";
 import RecommendActivity from "@/app/components/Common/RecommendActivity";
 import RecommendItem from "@/app/components/Common/RecommendItem";
 import TagList from "@/app/components/Common/TagList";
 
-export default async function ItemDetailPage({
+export default async function MagazineDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
   const { id } = await params;
-  const item = await getItem(id);
+  const magazine = await getMagazine(id);
 
-  if (item === null) {
+  if (magazine === null) {
     return <h1>Not Found</h1>;
   }
 
@@ -24,21 +24,23 @@ export default async function ItemDetailPage({
           <tr>
             <th>タイトル</th>
             <th>カテゴリ</th>
+            <th>タグ</th>
             <th>画像</th>
             <th>コンテンツ</th>
             <th>編集者</th>
           </tr>
         </thead>
         <tbody>
-          <tr key={item.slug}>
-            <td>{item.title}</td>
+          <tr key={magazine.slug}>
+            <td>{magazine.title}</td>
             <td>
-              {item.category?.map((ct) => (
+              {magazine.category?.map((ct) => (
                 <p key={ct.slug}>{ct.title}</p>
               ))}
             </td>
+            <td>{magazine.tag}</td>
             <td>
-              {item.image?.map((img) => (
+              {magazine.image?.map((img) => (
                 <Image
                   key={img.alt}
                   src={img.url}
@@ -48,12 +50,12 @@ export default async function ItemDetailPage({
                 />
               ))}
             </td>
-            <td>{RichContent(item.content)}</td>
+            <td>{RichContent(magazine.content)}</td>
             <td>
-              {item.writer && (
+              {magazine.writer && (
                 <>
-                  <p>{item.writer.name}</p>
-                  {RichContent(item.writer.content)}
+                  <p>{magazine.writer.name}</p>
+                  {RichContent(magazine.writer.content)}
                 </>
               )}
             </td>
