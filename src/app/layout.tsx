@@ -3,7 +3,7 @@ import "./globals.css";
 import clsx from "clsx"; // 今回の実装に必須というわけではないが便利
 import { notoSansFont } from "./components/Common/font";
 
-export const revalidate = 3600; // invalidate every hour
+export const revalidate = 600; // invalidate every hour
 
 export const metadata: Metadata = {
   title: "Ninjack",
