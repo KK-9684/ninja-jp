@@ -1,11 +1,8 @@
 import type { Config } from "tailwindcss";
+import tailwindScrollbar from "tailwind-scrollbar";
 
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     listStyleType: {
       square: "square",
@@ -14,6 +11,7 @@ const config: Config = {
     },
     colors: {
       transparent: "transparent",
+      "ninjack-white": "#FFFFFF",
       "ninjack-black": "#000000",
       "ninjack-bg-gray": "#171717",
       "ninjack-line-gray": "#2e2e2e",
@@ -25,7 +23,18 @@ const config: Config = {
       Geist: ["var(--font-Geist)"],
       Barlow: ["var(--font-Barlow)"],
     },
+    extend: {
+      container: {
+        screens: {
+          sm: "640px",
+          md: "640px",
+          lg: "640px",
+          xl: "1280px",
+          "2xl": "1280px",
+        },
+      },
+    },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [tailwindScrollbar],
 };
 export default config;

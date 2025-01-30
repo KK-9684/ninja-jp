@@ -17,3 +17,323 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.custom-checkbox {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  opacity: 0; /* Hide the checkbox but keep it in the document flow */
+  position: absolute;
+  z-index: -1; /* Keep the input behind the label */
+}
+
+.custom-checkbox .checkmark {
+  height: 16px;
+  width: 16px;
+  background-color: #000; /* Black background for unchecked state */
+  border-radius: 4px; /* Rounded corners */
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  border:1px solid white;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: #fff; /* Black background for checked state */
+  color:#000;
+}
+
+.custom-checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark:after {
+  display: block;
+  left: 4px;
+  top: 0px;
+  width: 6px;
+  height: 11px;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  color:#000;
+}
+
+
+.custom-select {
+  appearance: none; /* Remove default select styling */
+  background-image: url('/icon-arrow-down.svg'); /* Path to your custom arrow image */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Adjust this value to position your arrow */
+  background-size: 16px; /* Adjust size of the arrow */
+  padding-right: 30px; /* Make space for the arrow */
+  -moz-appearance: none; /* For Firefox */
+  -webkit-appearance: none; /* For Chrome, Safari, and Opera */
+  cursor: pointer; /* Optional: changes the cursor to a pointer when hovering over the select */
+}
+
+/* Optional: style for when the select box is focused */
+.custom-select:focus {
+  outline: none;
+  border-color: #665; /* Example: change border color on focus */
+}
+
+.swiper img {
+  border-radius: 20% 6px 6px 6px;
+}
+.swiper-pagination-bullet {
+  background: #171717;
+  width: 12px !important;
+  height: 12px !important;
+}
+.swiper-pagination-bullet-active {
+  background: white !important;
+}
+.trapezoid {
+	border-bottom: 40px solid black;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	height: 0;
+	width: 440px;
+  @media (max-width: 680px) {
+    width: 340px;
+  }
+}
+.trapezoid2 {
+	border-bottom: 40px solid #171717;
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	height: 0;
+	width: 440px;
+  @media (max-width: 680px) {
+    width: 340px;
+  }
+}
+
+
+/* this is part for image view part */
+.image-thumbnail-carousel {
+  padding: 1rem;
+  width: clamp(360px, 90vw, 820px);
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.image-display {
+  border-radius: var(--border-xl);
+  overflow: hidden;
+  min-height: 30vmin;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 0.375em 0.67em #0003, 0 0.5em 1.3em #0002;
+}
+
+.screen {
+  block-size: 100%;
+  display: flex;
+  background-image: linear-gradient(12deg, #aaa, #eee);
+  position: relative;
+  user-select: none;
+}
+
+.thumbnail-carousel {
+  display: flex;
+  gap: var(--gap);
+  block-size: 100%;
+}
+
+.carousel__btn {
+  flex: 1 0 max(2.75rem, 5.834%);
+  background: #0000;
+  border: 1px solid #0000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-icon {
+  margin-inline: auto;
+  outline: none;
+  border: 0;
+  scale: 1;
+  display: inline grid;
+  width: max(80%, 1.5rem);
+  height: max(80%, 1.5rem);
+  fill: var(--fill-primary);
+}
+
+.carousel__btn:hover .arrow-icon {
+  fill: var(--fill-active);
+}
+
+.carousel__btn:disabled {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.carousel__slider {
+  user-select: none;
+  flex-grow: 999;
+  list-style: none;
+  display: flex;
+  gap: var(--gap);
+  padding: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel__slider::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel__slide {
+  cursor: pointer;
+  border-radius: var(--border-m);
+  overflow: hidden;
+  scroll-snap-align: center;
+  flex: 1 0 calc((100% / var(--items)) - 10px);
+}
+
+.active.carousel__slide {
+  outline: 0.125em solid var(--accent-color);
+  outline-offset: -0.37em;
+}
+
+@media (max-width: 680px) {
+  .image-thumbnail-carousel {
+      width: 90vw;
+  }
+
+  .active.carousel__slide {
+      background-color: var(--fill-active);
+      outline-offset: 3px;
+  }
+
+  .carousel__btn {
+      flex-grow: 0;
+  }
+
+  .thumbnail-carousel {
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .carousel__slider {
+      max-width: fit-content;
+      align-items: center;
+      gap: 1em;
+  }
+
+  .carousel__slide {
+      flex: none;
+      aspect-ratio: 1;
+      block-size: 0.625rem;
+      border-radius: 50%;
+      background-color: var(--fill-primary);
+  }
+
+  .thumbnail {
+      opacity: 0;
+      display: none;
+      aspect-ratio: 16 / 9;
+      block-size: 8vw;
+      position: absolute;
+      border-radius: var(--border-s);
+      overflow: hidden;
+      z-index: 99;
+      will-change: transform, opacity;
+      transition: opacity 150ms ease-out;
+      transform-origin: bottom;
+      translate: -50%;
+      bottom: 20%;
+  }
+
+  .carousel__slide:not(.active):hover .thumbnail {
+      opacity: 1;
+      display: block;
+      animation: show 250ms ease-out forwards;
+      box-shadow: 0 0.375em 0.67em #0003, 0 0.5em 1.3em #0002;
+  }
+
+  @keyframes show {
+      from {
+          opacity: 0;
+          transform: scale(0);
+      }
+      to {
+          display: block;
+          transform: scale(1);
+          opacity: 1;
+      }
+  }
+}
+
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #7a7a7a;
+}
+
+.pageNumber, .arrow {
+  background: none;
+  border: none;
+  color: #7a7a7a;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pageNumber {
+  width: 56px;
+  height: 56px;
+  line-height: 32px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: none;
+}
+
+.pageNumber.active {
+  background-color: #171717;
+  color: #fff;
+}
+
+.arrow:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 24px;
+  
+  margin-left: 32px;
+  margin-right: 32px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  @media (max-width: 680px) {
+    margin:0px;
+  }
+
+}
+
+.arrow-left{
+  border:2px solid #2e2e2e;
+  color:#2e2e2e;
+}
+.arrow-right{
+  background-color: #fff;
+
+}
