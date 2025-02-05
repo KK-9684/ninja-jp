@@ -15,24 +15,37 @@ import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import DetailItemList from "@/app/components/Common/detailItemList";
 
-interface Tag {
+interface Activity {
   title: string;
-  slug?: string; // もしslugが必要な場合
+  price?: string;
+  time?: string;
+  content: Document;
+  area?: string;
+  category?: Array<{
+    slug: string;
+    title: string;
+  }>;
+  tag?: Tag[] | string;
+  writer?: {
+    name: string;
+    content?: Document;
+  };
+  relationSpotIds?: string[];
+  relationActivityIds?: string[];
 }
 
-export default async function ActivityDetailPage({
-  params,
-}: {
+// Next.jsの型定義を使用
+type PageProps = {
   params: { id: string };
-}) {
-  const { id } = await params;
-  const activity = await getActivity(id);
+};
 
-  if (activity === null) {
-    return <h1>Not Found</h1>;
+export default async function ActivityDetailPage({ params }: PageProps) {
+  const { id } = params; // awaitを削除
+  const activity: Activity | null = await getActivity(id);
+
+  if (!activity) {
+    return <div>Not Found</div>;
   }
-
-  console.log(activity.relationActivityIds);
 
   return (
     <>
