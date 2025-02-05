@@ -14,29 +14,43 @@ export default function Checkbox({ name, option, handleSearch }: Props) {
   const searchParams = useSearchParams();
 
   return (
-    <>
-      <label htmlFor={`${name}-all`}>すべて</label>
-      <input
-        id={`${name}-all`}
-        type="checkbox"
-        name={name}
-        value="all"
-        onChange={handleSearch}
-        checked={searchParams.getAll(name).length === 0}
-      />
-      {option.map((opt) => (
-        <div key={opt.slug}>
-          <label htmlFor={opt.slug}>{opt.title}</label>
+    <div className="md:flex md:flex-col  md:space-y-2 grid grid-cols-2">
+      <div className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px]">
+        <div className="custom-checkbox">
           <input
-            id={opt.slug}
+            id={`${name}-all`}
             type="checkbox"
             name={name}
-            value={opt.slug}
+            value="all"
             onChange={handleSearch}
-            checked={searchParams.getAll(name).includes(opt.slug)}
+            checked={searchParams.getAll(name).length === 0}
           />
+          <span className="checkmark"></span> {/* This span will be styled */}
+        </div>
+        <label htmlFor={`${name}-all`} className="text-ninjack-white text-sm">
+          すべて
+        </label>
+      </div>
+      {option.map((opt) => (
+        <div
+          key={opt.slug}
+          className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px]"
+        >
+          <div className="custom-checkbox">
+            <input
+              type="checkbox"
+              name={name}
+              value={opt.slug}
+              onChange={handleSearch}
+              checked={searchParams.getAll(name).includes(opt.slug)}
+              className="hidden" // Hide the default checkbox
+              id={opt.slug}
+            />
+            <span className="checkmark"></span> {/* This span will be styled */}
+          </div>
+          <p className="text-ninjack-white text-sm">{opt.title}</p>
         </div>
       ))}
-    </>
+    </div>
   );
 }

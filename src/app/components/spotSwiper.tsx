@@ -1,13 +1,38 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
 import SpotItem from "./Common/spotItem";
-import imageSpot from "@/assets/image-spot.jpg";
+import { spotCategoryPerItems } from "@/app/(pages)/spot/fetcher";
+
+// 型定義
+interface SpotImage {
+  url: string;
+  alt?: string;
+}
+
+interface SpotItem {
+  slug: string;
+  title: string;
+  image: SpotImage[];
+  area?: string;
+  tilte: string; // typo? titleの間違いかもしれません
+}
+
+interface SpotCategory {
+  title: string;
+  slug: string;
+  items: SpotItem[];
+}
 
 const SpotSwiper = () => {
+  const [categories, setCategories] = useState<SpotCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const getSlidesPerView = () => {
-    if(window.innerWidth < 750)
-      return 1.4;
+    if (typeof window === "undefined") return 3;
+    if (window.innerWidth < 750) return 1.4;
     return 3;
   };
 
@@ -20,10 +45,24 @@ const SpotSwiper = () => {
 
     window.addEventListener("resize", handleResize);
 
+    const fetchSpots = async () => {
+      try {
+        const result = await spotCategoryPerItems(6);
+        setCategories(result);
+      } catch (error) {
+        console.error("Failed to fetch spots:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSpots();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <Swiper
@@ -35,33 +74,20 @@ const SpotSwiper = () => {
       modules={[FreeMode, Pagination]}
       className="w-full"
     >
-      <SwiperSlide>
-        <SpotItem
-          image={imageSpot}
-          categroy="ものづくり"
-          areaName="エリア名"
-          title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-          price="XXXX"
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <SpotItem
-          image={imageSpot}
-          categroy="ものづくり"
-          areaName="エリア名"
-          title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-          price="XXXX"
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <SpotItem
-          image={imageSpot}
-          categroy="ものづくり"
-          areaName="エリア名"
-          title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-          price="XXXX"
-        />
-      </SwiperSlide>
+      {categories.map((category) =>
+        category.items.map((item) => (
+          <SwiperSlide key={item.slug}>
+            <SpotItem
+              href={`/spot/${item.slug}`}
+              image={item.image[0]?.url || "/noimage.png"}
+              categroy="ものづくり"
+              areaName={item.area}
+              title={item.title || item.tilte} // titleプロパティを優先
+              price="XXXX"
+            />
+          </SwiperSlide>
+        ))
+      )}
     </Swiper>
   );
 };

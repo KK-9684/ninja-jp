@@ -7,3 +7,8 @@ export default function SpotPageLayout({
 }) {
   return <>{children}</>;
 }
+
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};

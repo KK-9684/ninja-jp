@@ -41,13 +41,24 @@ const transformContent = (
   const writer = entry.fields.writer
     ? {
         name: entry.fields.writer.fields.name,
-        content: entry.fields.writer.fields.content,
+        summary: entry.fields.writer.fields.content,
       }
     : null;
+
+  const relationKeyword =
+    entry.fields.relationKeyword
+      ?.filter(
+        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
+      )
+      .map((keyword) => ({
+        slug: keyword.sys.id,
+        title: keyword.fields.title || "",
+      })) || null;
+
   return {
     content: entry.fields.content,
-    tag: entry.fields.relationKeyword?.fields.title || "",
     writer,
+    relationKeyword,
     ...transformPartialContent(entry),
   };
 };
@@ -97,6 +108,7 @@ export const getItemList = async (query: Query) => {
   const tagParams = query.tag
     ? { "fields.relationKeyword.sys.id": query.tag }
     : {};
+
   const result = await getEntries<ItemSkeleton>({
     content_type: "item",
     select: ["fields.title", "fields.image", "fields.item", "fields.price"],
@@ -117,7 +129,7 @@ export const getRelationItem = async (ids: string[], limit?: number) => {
   const fallbackPerPage = 3;
   const result = await getEntries<ItemSkeleton>({
     content_type: "item",
-    select: ["fields.title", "fields.image"],
+    select: ["fields.title", "fields.image", "fields.item", "fields.price"],
     order: ["-fields.createdAt"],
     "sys.id[in]": ids,
     limit: limit || fallbackPerPage,

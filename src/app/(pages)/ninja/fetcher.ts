@@ -10,6 +10,8 @@ type MemberCategoryEntrySkeleton = CategoryEntrySkeleton & {
 
 type Member = EntrySkeletonType & {
   name: EntryFieldTypes.Symbol;
+  summary: EntryFieldTypes.Symbol;
+  position: EntryFieldTypes.Text;
   createdAt: EntryFieldTypes.Date;
   content: Document;
   category?: EntryFieldTypes.Array<
@@ -45,7 +47,6 @@ const transformContent = (
   );
 
   return {
-    content: entry.fields.content,
     relationActivityIds,
     relationMemberIds,
     ...transformPartialContent(entry),
@@ -55,7 +56,7 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<MemberSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ) => {
-  const { name, image, category } = entry.fields;
+  const { name, image, category, position, summary } = entry.fields;
 
   const images = image
     ?.filter((img) => img !== null && img !== undefined)
@@ -69,8 +70,11 @@ const transformPartialContent = (
   return {
     slug: entry.sys.id,
     name,
+    position,
+    summary,
     image: images,
     category: ct,
+    content: entry.fields.content,
   };
 };
 
@@ -94,7 +98,14 @@ export const getMemberList = async (query: Query) => {
       : {};
   const result = await getEntries<MemberSkeleton>({
     content_type: "member",
-    select: ["fields.name", "fields.image", "fields.category"],
+    select: [
+      "fields.name",
+      "fields.summary",
+      "fields.image",
+      "fields.category",
+      "fields.content",
+      "fields.position",
+    ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,
@@ -111,7 +122,14 @@ export const getRelationMember = async (ids: string[], limit?: number) => {
   const fallbackPerPage = 3;
   const result = await getEntries<MemberSkeleton>({
     content_type: "member",
-    select: ["fields.name", "fields.image", "fields.category"],
+    select: [
+      "fields.name",
+      "fields.position",
+      "fields.summary",
+      "fields.image",
+      "fields.category",
+      "fields.content",
+    ],
     order: ["-fields.createdAt"],
     "sys.id[in]": ids,
     limit: limit || fallbackPerPage,

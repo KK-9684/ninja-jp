@@ -6,26 +6,28 @@ import clsx from "clsx";
 
 interface detailButtonProps {
   size: number;
+  href: string;
 }
 
-const DetailButton = ({ size }: detailButtonProps) => {
+const DetailButton = ({ href, size }: detailButtonProps) => {
   return (
-    <div>
+    <a href={href}>
       <div
         onClick={() => {
           return;
         }}
-        className="md:hidden w-full"
+        className="md:hidden w-full group"
       >
-
         <div
           className={clsx(
             size === 400 ? "justify-center" : "justify-between",
-            "p-4 flex md:hidden items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray w-full"
+            "p-4 flex md:hidden items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray w-full",
+            "group-hover:text-ninjack-purple"
           )}
-
         >
-          <span className="text-sm text-ninjack-white leading-none me-5">もっと見る</span>
+          <span className="text-sm text-ninjack-white leading-none me-5">
+            もっと見る
+          </span>
           <Image src={iconRightArrow} alt="icon-right-arrow" />
         </div>
       </div>
@@ -33,20 +35,25 @@ const DetailButton = ({ size }: detailButtonProps) => {
         onClick={() => {
           return;
         }}
-        className="hidden md:block"
+        className="hidden md:block group"
       >
         <div
           className={clsx(
             size === 400 ? "justify-center" : "justify-between",
-            "p-4 md:flex hidden items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray"
+            "p-4 md:flex hidden items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray",
+            "group-hover:border-ninjack-purple"
           )}
           style={{ width: `${size}px` }}
         >
-          <span className="text-sm text-ninjack-white leading-none me-5">もっと見る</span>
+          <span
+            className={clsx("text-sm text-ninjack-white leading-none me-5")}
+          >
+            もっと見る
+          </span>
           <Image src={iconRightArrow} alt="icon-right-arrow" />
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

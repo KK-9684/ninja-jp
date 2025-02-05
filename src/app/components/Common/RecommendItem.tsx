@@ -1,7 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import { shuffle } from "@/lib/util/shuffle";
 import { getItemList } from "@/app/(pages)/item/fetcher";
+import ItemItem from "./itemItem";
 
 // おすすめの忍者アイテム
 export default async function RecommendItem({ limit }: { limit: number }) {
@@ -13,36 +12,17 @@ export default async function RecommendItem({ limit }: { limit: number }) {
   const items = shuffle(list.items).slice(0, limit);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>タイトル</th>
-          <th>価格</th>
-          <th>画像</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item) => (
-          <tr key={item.slug}>
-            <td>
-              <Link href={`/item/${item.slug}`} key={item.slug}>
-                {item.title}
-              </Link>
-            </td>
-            <td>{item.price}</td>
-            <td>
-              {item.image && (
-                <Image
-                  src={item.image[0].url}
-                  alt={item.image[0].alt}
-                  width={324}
-                  height={160}
-                />
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {items.map((item) => (
+        <ItemItem
+          image={item.image?.[0]?.url || "/noimage.png"}
+          title={item.title || ""}
+          price={item.price}
+          category={item.category?.[0]?.title || ""}
+          href={`/item/${item.slug}`}
+          key={item.slug}
+        />
+      ))}
+    </>
   );
 }

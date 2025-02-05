@@ -7,3 +7,8 @@ export default function ItemDetailLayout({
 }) {
   return <>{children}</>;
 }
+
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};

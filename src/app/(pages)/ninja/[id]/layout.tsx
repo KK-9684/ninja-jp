@@ -7,3 +7,7 @@ export default function NinjaDetailLayout({
 }) {
   return <>{children}</>;
 }
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "Magazine page description",
+};

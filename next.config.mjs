@@ -14,6 +14,7 @@ const nextConfig = {
         pathname: `/${process.env.CF_SPACE_ID}/**`,
       },
     ],
+    domains: ["localhost"],
   },
 };
 

@@ -1,6 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
 import { getRelationItem } from "@/app/(pages)/item/fetcher";
+import ItemItem from "./itemItem";
 
 type Props = {
   ids: string[];
@@ -8,36 +7,19 @@ type Props = {
 
 export default async function RelationItem({ ids }: Props) {
   const list = await getRelationItem(ids);
-
+  console.log(list);
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>タイトル</th>
-          <th>画像</th>
-        </tr>
-      </thead>
-      <tbody>
-        {list.items.map((item) => (
-          <tr key={item.slug}>
-            <td>
-              <Link href={`/item/${item.slug}`} key={item.slug}>
-                {item.title}
-              </Link>
-            </td>
-            <td>
-              {item.image && (
-                <Image
-                  src={item.image[0].url}
-                  alt={item.image[0].alt}
-                  width={324}
-                  height={160}
-                />
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {list.items.map((item) => (
+        <ItemItem
+          key={item.slug}
+          image={item.image[0].url}
+          category={item.category?.[0].title}
+          title={item.title}
+          price={item.price}
+          href={`/item/${item.slug}`}
+        />
+      ))}
+    </>
   );
 }

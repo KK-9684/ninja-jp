@@ -28,6 +28,14 @@ type ActivityRelationSpotEntrySkeleton = {
   };
 };
 
+type ActivityTagsEntrySkeleton = {
+  contentTypeId: "tag";
+  fields: {
+    title: EntryFieldTypes.Symbol;
+    slug: EntryFieldTypes.Symbol;
+  };
+};
+
 type Activity = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
@@ -41,6 +49,9 @@ type Activity = EntrySkeletonType & {
   relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
   relationSpot?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivityRelationSpotEntrySkeleton>
+  >;
+  tag: EntryFieldTypes.Array<
+    EntryFieldTypes.EntryLink<ActivityTagsEntrySkeleton>
   >;
   relationActivity?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivitySkeleton>
@@ -60,9 +71,12 @@ const transformContent = (
   const relationSpotIds = entry.fields.relationSpot?.map(
     (spot) => spot?.sys.id || ""
   );
-  const relationActivityIds = entry.fields.relationActivity?.map(
-    (activity) => activity?.sys.id || ""
-  );
+  const relationActivityIds =
+    entry.fields.relationActivity
+      ?.filter(
+        (activity): activity is NonNullable<typeof activity> => activity != null
+      )
+      .map((activity) => activity.sys.id) || [];
 
   const writer = entry.fields.writer
     ? {
@@ -72,7 +86,6 @@ const transformContent = (
     : null;
   return {
     content: entry.fields.content,
-    tag: entry.fields.relationKeyword?.fields.title || "",
     relationSpotIds,
     relationActivityIds,
     writer,
@@ -90,6 +103,11 @@ const transformPartialContent = (
     title: ct?.fields.title || "",
   }));
 
+  const tag = entry.fields.tag?.map((tg) => ({
+    slug: tg?.sys.id,
+    title: tg?.fields.title || "",
+  }));
+
   const images = image
     ?.filter((img) => img !== null && img !== undefined)
     .map(transformAsset);
@@ -104,6 +122,7 @@ const transformPartialContent = (
     category: categories,
     image: images,
     area,
+    tag,
   };
 };
 
@@ -167,6 +186,7 @@ export const getActivityList = async (query: ActivityListQuery) => {
       "fields.category",
       "fields.relationArea",
       "fields.image",
+      "fields.tag",
     ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
@@ -193,7 +213,9 @@ export const getRelationActivity = async (ids: string[], limit?: number) => {
       "fields.price",
       "fields.category",
       "fields.relationArea",
+      "fields.relationArea",
       "fields.image",
+      "fields.tag",
     ],
     order: ["-fields.createdAt"],
     limit: limit || fallbackPerPage,

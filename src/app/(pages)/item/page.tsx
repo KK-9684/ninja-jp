@@ -1,22 +1,15 @@
-"use client";
-
 import Image from "next/image";
 import iconActivity from "@/assets/icon-item.svg";
 import illus3 from "@/assets/illus-3.png";
-import CheckboxGroup from "@/app/components/checkboxGroup";
-import KeywordsGroup from "@/app/components/keywordsGroup";
-import { itemList } from "@/app/constant/itemList";
-import { useRouter } from "next/navigation";
-import ItemItem, { ItemItemProps } from "@/app/components/Common/itemItem";
-import Pagination from "@/app/components/pagination";
+import ItemItem from "@/app/components/Common/itemItem";
 import FilterItem from "@/app/components/filterItem";
 import { toArrayOfStrings } from "@/lib/util/toArrayOfStrings";
-import Link from "next/link";
 import SearchForm from "@/app/components/Common/SearchForm";
 import { getItemList } from "./fetcher";
 import { getCategoryList } from "@/lib/contentful/sharedModel";
 import { getTagList } from "../tag/fetcher";
 import { shuffle } from "@/lib/util/shuffle";
+import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
@@ -42,65 +35,15 @@ export default async function ItemPage({
   const categories = await getCategoryList("itemCategory");
   const tag = await getTagList();
 
-  const router = useRouter();
-  const showDetail = (index: number) => {
-    router.push(`/item/${index}`);
-  };
-  const handlePageChange = () => {};
-
   return (
     <>
-      <SearchForm
-        categories={categories.items}
-        tag={shuffle(tag.items).slice(0, 10)}
-      />
-      <h2>商品・忍具一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>タイトル</th>
-            <th>カテゴリ</th>
-            <th>値段</th>
-            <th>画像</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.items.map((item) => (
-            <tr key={item.slug}>
-              <td>
-                <Link href={`/item/${item.slug}`} key={item.slug}>
-                  {item.title}
-                </Link>
-              </td>
-
-              <td>
-                {item.category?.map((ct) => (
-                  <p key={ct.slug}>{ct.title}</p>
-                ))}
-              </td>
-              <td>{item.price}</td>
-              <td>
-                {item.image?.map((img) => (
-                  <Image
-                    key={img.alt}
-                    src={img.url}
-                    alt={img.alt}
-                    width={324}
-                    height={160}
-                  />
-                ))}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination totalPages={totalPages} />
-
       <div>
         <section className="container pt-[80px] pb-[52px] mx-auto px-5">
           <div className="md:flex hidden space-x-4 items-center">
             <Image src={iconActivity} alt="体験・修行" width={40} height={40} />
-            <h2 className="text-[36px] text-ninjack-white">商品・忍具</h2>
+            <h2 className="text-[36px] text-ninjack-white font-bold">
+              商品・忍具
+            </h2>
           </div>
 
           <div className="flex flex-row md:hidden items-center justify-between">
@@ -126,61 +69,30 @@ export default async function ItemPage({
             </p>
           </div>
         </section>
-        <section className="container md:pb-[160px] mx-auto px-5 flex md:space-x-[60px]">
-          <div className="md:block hidden max-w-[300px]">
-            <CheckboxGroup
-              label="カテゴリで絞り込む"
-              options={[
-                { label: "すべて", value: "すべて" },
-                { label: "忍具", value: "忍具" },
-                { label: "衣装", value: "衣装" },
-                { label: "書籍", value: "書籍" },
-                { label: "アクセサリー", value: "アクセサリー" },
-              ]}
-              onChange={(selectedValues) => {
-                console.log(selectedValues);
-              }}
-              customClass="w-[240px] py-8"
-              defaultCheckedValues={["すべて"]}
-            />
-
-            <KeywordsGroup
-              label="キーワードから探す"
-              keywords={[
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-              ]}
+        <section className="container md:pb-[160px] pb-[40px] mx-auto px-5 flex gap-[60px]">
+          <div className="hidden md:block min-w-[240px] max-w-[300px]">
+            <SearchForm
+              categories={categories.items}
+              tag={shuffle(tag.items).slice(0, 10)}
             />
           </div>
           <div>
             <div className="mb-20 grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-6">
-              {itemList.map((item: any, index: any) => {
-                return (
-                  <button key={index} onClick={() => showDetail(index)}>
-                    <ItemItem
-                      image={item.image}
-                      category="ものづくり"
-                      title={item.title}
-                      price={item.price}
-                    />
-                  </button>
-                );
-              })}
+              {list.items.map((item, index) => (
+                <div key={`spot-${item.slug}-${index}`}>
+                  <ItemItem
+                    image={item.image?.[0]?.url || "/noimage.png"}
+                    category={item.category?.[0].title || ""}
+                    title={item.title}
+                    price={item.price}
+                    href={`/item/${item.slug}`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>
-        <Pagination
-          currentPage={1}
-          totalPages={3}
-          onPageChange={handlePageChange}
-        />
+        <Pagination totalPages={totalPages} />
       </div>
     </>
   );

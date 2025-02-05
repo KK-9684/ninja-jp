@@ -56,10 +56,21 @@ const transformContent = (
         content: entry.fields.writer.fields.content,
       }
     : null;
+  const relationKeyword =
+    entry.fields.relationKeyword
+      ?.filter(
+        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
+      )
+      .map((keyword) => ({
+        slug: keyword.sys.id,
+        title: keyword.fields.title || "",
+      })) || null;
 
   return {
     content: entry.fields.content,
     writer,
+    relationKeyword,
+
     ...transformPartialContent(entry),
   };
 };
@@ -86,7 +97,6 @@ const transformPartialContent = (
     summary,
     image: images,
     isNew,
-    tag: entry.fields.relationKeyword?.fields.title || "",
     createdAt: formatCreatedAt(createdAt),
     category: ct,
   };

@@ -1,26 +1,17 @@
-"use client";
-
 import Image from "next/image";
 import iconSpot from "@/assets/icon-spot.svg";
 import illus2 from "@/assets/illus-2.png";
-import CheckboxGroup from "@/app/components/checkboxGroup";
-import KeywordsGroup from "@/app/components/keywordsGroup";
-import SpotListItem, {
-  SpotListItemProps,
-} from "@/app/components/Common/spotListItem";
-import { spots } from "@/app/constant/spotList";
-import { useRouter } from "next/navigation";
-import Pagination from "@/app/components/pagination";
+import SpotListItem from "@/app/components/Common/spotListItem";
 import FilterItem from "@/app/components/filterItem";
 
 import { toArrayOfStrings } from "@/lib/util/toArrayOfStrings";
-import Link from "next/link";
 import { getAreaList } from "../activity/fetcher";
 import SearchForm from "@/app/components/Common/SearchForm";
 import { getSpotList } from "./fetcher";
 import { getTagList } from "../tag/fetcher";
 import { shuffle } from "@/lib/util/shuffle";
 import { getCategoryList } from "@/lib/contentful/sharedModel";
+import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
@@ -49,61 +40,8 @@ export default async function SpotPage({
   const tag = await getTagList();
   const categories = await getCategoryList("spotCategory");
 
-  const router = useRouter();
-  const showDetail = (index: number) => {
-    router.push(`/spot/${index}`);
-  };
-  const handlePageChange = () => {};
-
   return (
     <>
-      <SearchForm
-        area={area.items}
-        tag={shuffle(tag.items).slice(0, 10)}
-        categories={categories.items}
-      />
-      <h2>施設・史跡一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>タイトル</th>
-            <th>エリア</th>
-            <th>カテゴリ</th>
-            <th>画像</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.items.map((spot) => (
-            <tr key={spot.slug}>
-              <td>
-                <Link href={`/spot/${spot.slug}`} key={spot.slug}>
-                  {spot.title}
-                </Link>
-              </td>
-
-              <td>{spot.area}</td>
-              <td>
-                {spot.category && (
-                  <span key={spot.category.slug}>{spot.category.title}</span>
-                )}
-              </td>
-              <td>
-                {spot.image?.map((img) => (
-                  <Image
-                    key={img.alt}
-                    src={img.url}
-                    alt={img.alt}
-                    width={324}
-                    height={160}
-                  />
-                ))}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination totalPages={totalPages} />
-
       <div>
         <section className="container pt-[80px] pb-[52px] mx-auto px-5">
           <div className="md:flex hidden space-x-4 items-center">
@@ -133,81 +71,33 @@ export default async function SpotPage({
             </p>
           </div>
         </section>
-        <section className="container md:pb-[160px] mx-auto px-5 flex md:space-x-[60px]">
-          <div className="md:block hidden max-w-[300px]">
-            <CheckboxGroup
-              label="カテゴリで絞り込む"
-              options={[
-                { label: "すべて", value: "すべて" },
-                { label: "史跡", value: "史跡" },
-                { label: "テーマパーク", value: "テーマパーク" },
-                { label: "道場", value: "道場" },
-                { label: "販売店", value: "販売店" },
-                { label: "飲食店", value: "飲食店" },
-                { label: "その他", value: "その他" },
-              ]}
-              onChange={(selectedValues) => {
-                console.log(selectedValues);
-              }}
-              customClass="w-[240px] py-8"
-              defaultCheckedValues={["すべて"]}
-            />
-            <CheckboxGroup
-              label="エリア名で絞り込む"
-              options={[
-                { label: "すべて", value: "すべて" },
-                { label: "北海道", value: "北海道" },
-                { label: "東北", value: "東北" },
-                { label: "関東", value: "関東" },
-                { label: "中部", value: "中部" },
-                { label: "近畿", value: "近畿" },
-                { label: "中国", value: "中国" },
-                { label: "四国", value: "四国" },
-                { label: "九州", value: "九州" },
-              ]}
-              onChange={(selectedValues) => {
-                console.log(selectedValues);
-              }}
-              customClass="w-[240px] py-8"
-              defaultCheckedValues={["すべて"]}
-            />
-            <KeywordsGroup
-              label="キーワードから探す"
-              keywords={[
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-              ]}
+        {/* メインコンテンツ */}
+        <section className="container md:pb-[160px] pb-[40px] mx-auto px-5 flex gap-[60px]">
+          <div className="hidden md:block min-w-[240px] max-w-[300px]">
+            <SearchForm
+              area={area.items}
+              tag={shuffle(tag.items).slice(0, 10)}
+              categories={categories.items}
             />
           </div>
-          <div>
-            <div className="mb-20 grid md:grid-cols-3 grid-cols-2 md:gap-[40px] gap-6">
-              {spots.map((spots: SpotListItemProps, index) => {
-                return (
-                  <button key={index} onClick={() => showDetail(index)}>
-                    <SpotListItem
-                      image={spots.image}
-                      categroy={spots.categroy}
-                      areaName={spots.areaName}
-                      title={spots.title}
-                    />
-                  </button>
-                );
-              })}
-            </div>
+          <div className="mb-20 grid md:grid-cols-3 grid-cols-2 md:gap-[40px] gap-6">
+            {list.items.map((item, index) => {
+              if (!item?.slug) return null; // 必要なデータの存在チェック
+              return (
+                <div key={`spot-${item.slug}-${index}`}>
+                  <SpotListItem
+                    image={item.image?.[0]?.url || "/noimage.png"}
+                    categroy={item.category.title || ""}
+                    areaName={item.area || ""}
+                    title={item.title || ""}
+                    href={`/spot/${item.slug}`}
+                  />
+                </div>
+              );
+            })}
           </div>
         </section>
-        <Pagination
-          currentPage={1}
-          totalPages={3}
-          onPageChange={handlePageChange}
-        />
+        <Pagination totalPages={totalPages} />
       </div>
     </>
   );

@@ -7,7 +7,7 @@ type CategoryContentTypes =
   | "spotCategory"
   | "itemCategory"
   | "researchCategory"
-  | "cultureCategory"
+  | "fictionCategory"
   | "memberCategory"
   | "magazineCategory";
 
@@ -101,8 +101,8 @@ export const resolveModel = (contentType: string) => {
       return { id: "item", name: "商品・忍具" };
     case "research":
       return { id: "research", name: "研究情報" };
-    case "culture":
-      return { id: "culture", name: "創作作品" };
+    case "fiction":
+      return { id: "fiction", name: "創作作品" };
     case "member":
       return { id: "ninja", name: "現代忍者" };
     case "magazine":

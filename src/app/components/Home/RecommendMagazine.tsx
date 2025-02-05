@@ -1,64 +1,201 @@
-import Link from "next/link";
+"use client";
+
 import Image from "next/image";
 import { magazineCategoryPerItems } from "@/app/(pages)/magazine/fetcher";
+import MagazineItem from "../Common/magazineItem";
+import clsx from "clsx";
+import { useState, useEffect } from "react";
 
-// 記事があるカテゴリのみ
-// カテゴリごとに最新の5件表示
-export default async function RecommendMagazine() {
-  const result = await magazineCategoryPerItems(5);
+export default function RecommendMagazine() {
+  const [result, setResult] = useState([]);
+  const [active, setActive] = useState<number>(-1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [latestItem, setLatestItem] = useState(null);
+  const [displayItems, setDisplayItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await magazineCategoryPerItems(5);
+        const sortedItems = data
+          .flatMap((category) =>
+            category.items.map((item) => ({
+              ...item,
+              categoryTitle: category.title,
+              uniqueId: `${category.slug}-${item.slug}`,
+            }))
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+
+        setLatestItem(sortedItems[0] || null);
+        setDisplayItems(sortedItems.slice(1, 7));
+        setResult(data);
+      } catch (error) {
+        console.error("Error fetching magazine data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (active === -1) {
+      const items = result
+        .flatMap((category) =>
+          category.items.map((item) => ({
+            ...item,
+            categoryTitle: category.title,
+          }))
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+      setDisplayItems(items.slice(1, 7));
+    } else if (result[active]) {
+      setDisplayItems(
+        result[active].items
+          .map((item) => ({
+            ...item,
+            categoryTitle: result[active].title,
+          }))
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .slice(0, 6)
+      );
+    }
+  }, [active, result]);
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
-    <>
-      <ul>
-        {result.map((category) => (
-          <li key={category.slug}>{category.title}</li>
+    <div>
+      <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
+        <div
+          key="all"
+          onClick={() => setActive(-1)}
+          role="button"
+          tabIndex={0}
+          className="cursor-pointer"
+        >
+          <div
+            className={clsx(
+              "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
+              active === -1
+                ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
+                : "text-ninjack-text-gray md:text-[16px] text-[12px]",
+              "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
+            )}
+          >
+            すべて
+          </div>
+        </div>
+
+        {result.map((category, index) => (
+          <div
+            key={category.slug}
+            onClick={() => setActive(index)}
+            role="button"
+            tabIndex={0}
+            className="cursor-pointer"
+          >
+            <div
+              className={clsx(
+                "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
+                active === index
+                  ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
+                  : "text-ninjack-text-gray md:text-[16px] text-[12px]",
+                "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
+              )}
+            >
+              {category.title}
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>NEW</th>
-            <th>タイトル</th>
-            <th>カテゴリ</th>
-            <th>画像</th>
-            <th>サマリー</th>
-            <th>公開日</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result.map((category) =>
-            category.items.map((item) => (
-              <tr key={item.slug}>
-                <td>{item.isNew ? "NEW" : ""}</td>
-                <td>
-                  <Link href={`/magazine/${item.slug}`} key={item.slug}>
-                    {item.title}
-                  </Link>
-                </td>
+      <div className="">
+        <div className="flex items-baseline space-x-3 mb-10">
+          <span className="text-ninjack-white text-[28px] leading-none">
+            What&apos;s new.
+          </span>
+          <span className="text-ninjack-text-gray text-sm leading-none">
+            / 新着記事
+          </span>
+        </div>
 
-                <td>
-                  {item.category?.map((ct) => (
-                    <p key={ct.slug}>{ct.title}</p>
-                  ))}
-                </td>
-                <td>
-                  {item.image?.map((img) => (
-                    <Image
-                      key={img.alt}
-                      src={img.url}
-                      alt={img.alt}
-                      width={324}
-                      height={160}
-                    />
-                  ))}
-                </td>
-                <td>{item.summary}</td>
-                <td>{item.createdAt}</td>
-              </tr>
-            ))
+        <div className="flex md:flex-row flex-col justify-between gap-x-20">
+          {latestItem && (
+            <div className="flex flex-col space-y-10">
+              <Image
+                src={latestItem.image?.[0]?.url || "/noimage.png"}
+                alt={latestItem.title || ""}
+                width={500}
+                height={300}
+                className=""
+              />
+              <div>
+                <div className="flex justify-between mb-9">
+                  <div className="flex space-x-4 items-center">
+                    {latestItem.isNew && (
+                      <div className="text-xs leading-none bg-ninjack-white px-[7px] py-[5px]">
+                        NEW
+                      </div>
+                    )}
+                    <div className="flex space-x-1 items-center">
+                      <span className="text-2xl" style={{ color: "#63B8A7" }}>
+                        ・
+                      </span>
+                      <span className="text-ninjack-text-gray text-xs">
+                        {latestItem.categoryTitle}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-ninjack-text-gray">
+                    {new Date(latestItem.createdAt).toLocaleDateString("ja-JP")}
+                  </div>
+                </div>
+                <p className="text-ninjack-white text-xl font-bold mb-4">
+                  {latestItem.title}
+                </p>
+                <p className="text-ninjack-text-gray text-xs">
+                  {latestItem.summary}
+                </p>
+              </div>
+            </div>
           )}
-        </tbody>
-      </table>
-    </>
+
+          <div className="grid md:grid-cols-2 grid-cols-1 md:gap-12 gap-6 mb-8">
+            {displayItems.map((item) => {
+              if (!item?.slug) return null;
+
+              return (
+                <div key={`magazine-${item.slug}`} className="flex flex-col">
+                  <MagazineItem
+                    image={item?.image?.[0]?.url || "/noimage.png"}
+                    imageWidth={240} // 追加
+                    imageHeight={160} // 追加
+                    isNew={!!item?.isNew}
+                    category={item?.categoryTitle || ""}
+                    date={item?.createdAt}
+                    title={item?.title || ""}
+                    content={item?.summary || ""}
+                    href={`/magazine/${item.slug}`}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

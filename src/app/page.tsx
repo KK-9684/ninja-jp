@@ -1,14 +1,11 @@
-"use client";
 import LatestMagazineList from "./components/Home/LatestMagazineList";
 import RecommendActivity from "./components/Common/RecommendActivity";
 import RecommendItem from "./components/Common/RecommendItem";
 import RecommendMember from "./components/Home/RecommendMember";
 import RecommendResearch from "./components/Home/RecommendResearch";
 import TagList from "./components/Common/TagList";
-import RecommendCulture from "./components/Home/RecommendCulutre";
-import RecommendSpot from "./components/Home/RecommendSpot";
+import RecommendFiction from "./components/Home/RecommendFiction";
 import RecommendMagazine from "./components/Home/RecommendMagazine";
-import RecommendContents from "./components/Home/RecommendContents";
 import EachContentsCount from "./components/Home/EachContentsCount";
 
 import Image from "next/image";
@@ -16,61 +13,30 @@ import iconNoroshi from "@/assets/icon_noroshi.svg";
 import iconActivity from "@/assets/icon-activity.svg";
 import iconItem from "@/assets/icon-item.svg";
 import iconSearch from "@/assets/icon-search.svg";
-import imageNinjas from "@/assets/image-ninjas.jpg";
 import iconSpot from "@/assets/icon-spot.svg";
 import iconResearch from "@/assets/icon-research.svg";
 import iconFiction from "@/assets/icon-fiction.svg";
 import iconNinja from "@/assets/icon-ninja.svg";
-import imageItemThumb from "@/assets/image-item-thumb.jpg";
-import imageFictionThumb from "@/assets/image-fiction-thumb.png";
-import imageNinjaThumb from "@/assets/image-ninja-thumb.jpg";
-import imageMagazineThumb from "@/assets/image-magazine-thumb.jpg";
-import imageMagazineNew from "@/assets/image-magazine-new.png";
 import imageNinjackConcept from "@/assets/image-ninjack-concept.png";
 import DetailButton from "./components/Common/detailButton";
-import NewsItem from "./components/Common/newsItem";
-import ActivityItem from "./components/Common/activityItem";
 import SectionTitlePart from "./components/Common/sectionTitlePart";
 import ActivitySwiper from "./components/activitySwiper";
 import SpotSwiper from "./components/spotSwiper";
-import SearchKeysGroup from "./components/searchKeysGroup";
-import ItemItem from "./components/Common/itemItem";
-import ResearchItem from "./components/Common/researchItem";
-import FictionItem from "./components/Common/FictionItem";
-import NinjaItem from "./components/Common/ninjaItem";
-import SectionLinkGroup from "./components/Common/sectionLinkGroup";
-import {
-  sectionFictionLinks,
-  sectionNinjackMagazineLinks,
-} from "./constant/sectionLinks";
-import MagazineItem from "./components/Common/magazineItem";
-import ContentCountItem from "./components/Common/contentCountItem";
 import SpotSelector from "./components/spotSelector";
+import clsx from "clsx";
+import { GeistFont } from "./components/Common/font";
+import SpotSelectorPC from "./components/spotSelectorPc";
+import SwitchContentNavigation from "./components/Common/SwitchContentNavigation";
+import { Metadata } from "next";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};
+
+export default async function Home() {
   return (
     <div>
-      <h2>新着記事</h2>
-      <LatestMagazineList />
-      <h2>注目の忍者体験アクティビティ</h2>
-      <RecommendActivity limit={6} />
-      <h2>忍者の足跡をたどる</h2>
-      <RecommendSpot />
-      <h2>気になるキーワードから探す</h2>
-      <TagList limit={20} />
-      <h2>おすすめの忍者アイテム</h2>
-      <RecommendItem limit={5} />
-      <h2>忍者研究の最前線</h2>
-      <RecommendResearch />
-      <h2>フィクション世界の忍者たち</h2>
-      <RecommendCulture />
-      <h2>今を生きる忍者たち</h2>
-      <RecommendMember />
-      <h2>新着記事</h2>
-      <RecommendMagazine />
-
-      <EachContentsCount />
-
       <section className="pt-9 pb-14 flex">
         <div className=" hidden w-3/12 h-[740px] text-center text-2xl text-ninjack-white ms-8 md:flex flex-col justify-center bg-ninjack-bg-gray">
           <div>動画を入れる</div>
@@ -94,33 +60,24 @@ export default function Home() {
 
       <section className="container flex mx-auto px-5">
         <div className="md:flex hidden items-center px-[60px] py-10 bg-ninjack-bg-gray border rounded-[10px] border-ninjack-line-gray w-full">
-          <div className="flex flex-col me-[130px]">
+          <div className="flex flex-col me-[230px]">
             <div className="flex items-center mb-8 ">
-              <p className="text-ninjack-white md:text-2xl  leading-none me-3 ">
+              <p
+                className={clsx(
+                  "text-ninjack-white md:text-[24px] leading-none me-3 ",
+                  GeistFont.className
+                )}
+              >
                 WHAT’S NEW
               </p>
-              <p className="text-ninjack-text-gray md:text-md  leading-none">
+              <p className="text-ninjack-text-gray md:text-[12px]  leading-none ">
                 / 新着記事
               </p>
             </div>
-            <DetailButton size={230} />
+            <DetailButton href="/news" size={230} />
           </div>
-          <div className="flex flex-col py-4">
-            <NewsItem
-              date="2024.01.01"
-              type="ニュース"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
-            <NewsItem
-              date="2024.01.01"
-              type="レビュー"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
-            <NewsItem
-              date="2024.01.01"
-              type="インタビュー"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
+          <div className="flex flex-col py-4 w-[100%]">
+            <LatestMagazineList />
           </div>
         </div>
 
@@ -136,23 +93,9 @@ export default function Home() {
             </div>
           </div>
           <div className="flex flex-col py-4">
-            <NewsItem
-              date="2024.01.01"
-              type="ニュース"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
-            <NewsItem
-              date="2024.01.01"
-              type="レビュー"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
-            <NewsItem
-              date="2024.01.01"
-              type="インタビュー"
-              title="記事タイトル記事タイトル記事タイトル記事タイトル"
-            />
+            <LatestMagazineList />
           </div>
-          <DetailButton size={300} />
+          <DetailButton href="/news" size={300} />
         </div>
       </section>
 
@@ -163,7 +106,7 @@ export default function Home() {
             title="体験・修行"
             subTitle="注目の忍者体験アクティビティ"
           />
-          <DetailButton size={160} />
+          <DetailButton href="/activity" size={160} />
         </div>
         <div className="md:hidden">
           <SectionTitlePart
@@ -173,83 +116,13 @@ export default function Home() {
           />
         </div>
         <div className="hidden md:grid md:grid-cols-2 grid-cols-1 gap-x-[72px] justify-between mt-10">
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
+          <RecommendActivity limit={6} />
         </div>
         <div className="md:hidden grid grid-cols-1 gap-6 justify-between my-10">
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
-          <ActivityItem
-            image={imageNinjas}
-            category="ものづくり"
-            areaName="エリア名"
-            title="タイトルタイトルタイトルタイトルタイトル"
-            price="XXXX"
-            time="1時間30分"
-          />
+          <RecommendActivity limit={6} />
         </div>
         <div className="md:hidden mx-auto">
-          <DetailButton size={350} />
+          <DetailButton href="/activity" size={350} />
         </div>
       </section>
 
@@ -261,33 +134,15 @@ export default function Home() {
               title="施設・史跡"
               subTitle="忍者の足跡を巡る"
             />
-            <div className="text-ninjack-text-gray md:flex hidden flex-col text-center text-sm">
-              <div className="text-ninjack-white border-b border-t border-ninjack-line-gray p-4">
-                すべて
-              </div>
-              <div className="border-b border-ninjack-line-gray p-4">史跡</div>
-              <div className="border-b border-ninjack-line-gray p-4">
-                テーマパーク
-              </div>
-              <div className="border-b border-ninjack-line-gray p-4">道場</div>
-              <div className="border-b border-ninjack-line-gray p-4">
-                販売店
-              </div>
-              <div className="border-b border-ninjack-line-gray p-4">
-                飲食店
-              </div>
-              <div className="border-b border-ninjack-line-gray p-4">
-                その他
-              </div>
-            </div>
+            <SpotSelectorPC />
             <SpotSelector />
             <div className="hidden md:block">
-              <DetailButton size={280} />
+              <DetailButton href="/spot" size={280} />
             </div>
           </div>
           <SpotSwiper />
           <div className=" md:hidden">
-            <DetailButton size={280} />
+            <DetailButton href="/spot" size={280} />
           </div>
         </div>
         <div className="flex flex-col items-center">
@@ -303,7 +158,7 @@ export default function Home() {
 
       <section className="container mx-auto md:py-[100px] py-10 px-5 ">
         <div className="flex flex-col items-center">
-          <SearchKeysGroup />
+          <TagList limit={20} />
         </div>
       </section>
       <section className="bg-ninjack-bg-gray">
@@ -314,7 +169,7 @@ export default function Home() {
               title="商品・忍具"
               subTitle="おすすめの忍者アイテム"
             />
-            <DetailButton size={160} />
+            <DetailButton href="/fiction" size={160} />
           </div>
           <div className="md:hidden">
             <SectionTitlePart
@@ -324,47 +179,10 @@ export default function Home() {
             />
           </div>
           <div className="grid md:grid-cols-5 grid-cols-3 md:gap-10 gap-4 justify-between mt-10">
-            <ItemItem
-              image={imageItemThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-              price="XXXX"
-              category=""
-            />
-            <ItemItem
-              image={imageItemThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-              price="XXXX"
-              category=""
-            />
-            <ItemItem
-              image={imageItemThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-              price="XXXX"
-              category=""
-            />
-            <ItemItem
-              image={imageItemThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-              price="XXXX"
-              category=""
-            />
-            <ItemItem
-              image={imageItemThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-              price="XXXX"
-              category=""
-            />
-            <div className="md:hidden">
-              <ItemItem
-                image={imageItemThumb}
-                title="タイトルタイトルタイトルタイトルタイトルタイトルタイ"
-                price="XXXX"
-                category=""
-              />
-            </div>
+            <RecommendItem limit={5} />
           </div>
           <div className="md:hidden mt-6">
-            <DetailButton size={160} />
+            <DetailButton href="/item" size={160} />
           </div>
         </div>
       </section>
@@ -373,10 +191,10 @@ export default function Home() {
         <div className="md:flex hidden justify-between">
           <SectionTitlePart
             icon={iconResearch}
-            title="施設・史跡"
-            subTitle="忍者の足跡を巡る"
+            title="研究情報"
+            subTitle="忍者研究の最前線"
           />
-          <DetailButton size={160} />
+          <DetailButton href="/research" size={160} />
         </div>
         <div className="md:hidden">
           <SectionTitlePart
@@ -386,135 +204,17 @@ export default function Home() {
           />
         </div>
         <div className="hidden md:grid md:grid-cols-2 grid-cols-1 gap-x-[72px] justify-between mt-10">
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-          />
+          <RecommendResearch />
         </div>
         <div className="flex flex-col md:hidden mt-6">
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれ..."
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれ..."
-          />
-          <ResearchItem
-            image={imageNinjas}
-            categroy="ものづくり"
-            title="タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-            content="これはじゅうもじですこれはじゅうもじですこれ..."
-          />
+          <RecommendResearch />
         </div>
         <div className="md:hidden mt-6">
-          <DetailButton size={160} />
+          <DetailButton href="/research" size={160} />
         </div>
       </section>
 
-      <section className="bg-ninjack-bg-gray">
-        <div className="container mx-auto py-[60px] px-5 flex md:flex-row flex-col justify-between items-center">
-          <div>
-            <div className="hidden md:block text-[40px] text-ninjack-white leading-none mb-3">
-              View more{" "}
-            </div>
-            <div className="md:hidden mb-6">
-              <div className="text-[24px] text-ninjack-white leading-none mb-3 flex flex-row gap-2">
-                View more <div className="text-ninjack-purple">CONTENTS.</div>
-              </div>
-            </div>
-            <div className="text-[40px] leading-none mb-1 md:block hidden">
-              <span className="text-ninjack-white">about </span>
-              <span className="text-ninjack-purple">FICTION.</span>
-            </div>
-
-            <div className="text-ninjack-purple text-sm text-end leading-none hidden md:block">
-              創作作品
-            </div>
-          </div>
-          <div className="flex gap-6">
-            <Image
-              src={iconActivity}
-              alt="体験・修行"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-            <Image
-              src={iconSpot}
-              alt="施設・史跡"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-            <Image
-              src={iconItem}
-              alt="商品・忍具"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-            <Image
-              src={iconResearch}
-              alt="研究情報"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-            <Image
-              src={iconFiction}
-              alt="創作作品"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-            <Image
-              src={iconNinja}
-              alt="現代忍者"
-              width={72}
-              height={72}
-              className="md:m-8"
-            />
-          </div>
-        </div>
-      </section>
-
+      <SwitchContentNavigation />
       <section>
         <div className="container mx-auto md:py-[100px] py-12 px-5">
           <div className="md:flex hidden justify-between mb-10">
@@ -523,7 +223,7 @@ export default function Home() {
               title="創作作品"
               subTitle="フィクション世界のNINJAたち"
             />
-            <DetailButton size={160} />
+            <DetailButton href="/fiction" size={160} />
           </div>
           <div className="md:hidden mb-8">
             <SectionTitlePart
@@ -532,46 +232,10 @@ export default function Home() {
               subTitle="フィクション世界のNINJAたち"
             />
           </div>
-          <div className="">
-            <SectionLinkGroup links={sectionFictionLinks} />
-          </div>
-          <div className="grid md:grid-cols-5 grid-cols-2 gap-10 justify-between mt-10">
-            <FictionItem
-              image={imageFictionThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-              category="ものづくり"
-              price="XXXX"
-            />
-            <FictionItem
-              image={imageFictionThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-              category="ものづくり"
-              price="XXXX"
-            />
-            <FictionItem
-              image={imageFictionThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-              category="ものづくり"
-              price="XXXX"
-            />
-            <FictionItem
-              image={imageFictionThumb}
-              title="タイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-              category="ものづくり"
-              price="XXXX"
-            />
-            <div className="hidden md:block">
-              <FictionItem
-                image={imageFictionThumb}
-                title="タイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-                category="ものづくり"
-                price="XXXX"
-              />
-            </div>
-          </div>
+          <RecommendFiction />
 
           <div className="md:hidden mt-8">
-            <DetailButton size={160} />
+            <DetailButton href="/fiction" size={160} />
           </div>
         </div>
       </section>
@@ -584,7 +248,7 @@ export default function Home() {
               title="現代忍者"
               subTitle="今を生きる忍者たち"
             />
-            <DetailButton size={160} />
+            <DetailButton href="/ninja" size={160} />
           </div>
           <div className="md:hidden">
             <SectionTitlePart
@@ -594,142 +258,21 @@ export default function Home() {
             />
           </div>
           <div className="hidden md:grid grid-cols-4 gap-10 justify-between mt-10">
-            <NinjaItem
-              image={imageNinjaThumb}
-              category=""
-              title="名前名前名前名前"
-              subTitle="ここに肩書き入れる"
-              content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-            />
-            <NinjaItem
-              image={imageNinjaThumb}
-              category=""
-              title="名前名前名前名前"
-              subTitle="ここに肩書き入れる"
-              content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-            />
-            <NinjaItem
-              image={imageNinjaThumb}
-              category=""
-              title="名前名前名前名前"
-              subTitle="ここに肩書き入れる"
-              content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-            />
-            <NinjaItem
-              image={imageNinjaThumb}
-              category=""
-              title="名前名前名前名前"
-              subTitle="ここに肩書き入れる"
-              content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-            />
-          </div>
-          <div className="md:hidden mt-6 px-10">
-            <NinjaItem
-              image={imageNinjaThumb}
-              category=""
-              title="名前名前名前名前"
-              subTitle="ここに肩書き入れる"
-              content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
-            />
+            <RecommendMember />
           </div>
           <div className="md:hidden mt-6">
-            <DetailButton size={160} />
+            <DetailButton href="/member" size={160} />
           </div>
         </div>
       </section>
 
-      <section className="">
+      <section className="" id="aboutNinjack">
         <div className="container mx-auto md:py-[100px] py-12 px-5">
           <div className="flex md:flex-row flex-col gap-4 justify-center space-x-5 md:text-[66px] text-[40px] leading-none mb-12">
             <span className="text-ninjack-purple text-center">Ninjack</span>
             <span className="text-ninjack-white text-center">MAGAZINE</span>
           </div>
-          <div className="flex justify-center mb-20">
-            <SectionLinkGroup links={sectionNinjackMagazineLinks} />
-          </div>
-          <div className="">
-            <div className="flex items-baseline space-x-3 mb-10">
-              <span className="text-ninjack-white text-[28px] leading-none">
-                What’ new.
-              </span>
-              <span className="text-ninjack-text-gray text-sm leading-none">
-                / 新着記事
-              </span>
-            </div>
-            <div className="flex md:flex-row flex-col justify-between gap-x-20">
-              <div className="flex flex-col space-y-10">
-                <Image
-                  src={imageMagazineNew}
-                  alt="記事タイトル記事タイトル記事タイトル記事タイトル記事タイトル"
-                  className=""
-                />
-                <div>
-                  <div className="flex justify-between mb-9">
-                    <div className="flex space-x-4 items-cente r">
-                      <div className="text-xs leading-none bg-ninjack-white px-[7px] py-[5px]">
-                        NEW
-                      </div>
-                      <div className="flex space-x-1 items-center">
-                        <span className="text-2xl" style={{ color: "#63B8A7" }}>
-                          ・
-                        </span>
-                        <span className="text-ninjack-text-gray text-xs">
-                          ニュース
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-sm text-ninjack-text-gray">
-                      2024.01.01
-                    </div>
-                  </div>
-                  <p className="text-ninjack-white text-xl font-bold mb-4">
-                    記事タイトル記事タイトル記事タイトル記事タイトル記事タイトル
-                  </p>
-                  <p className="text-ninjack-text-gray text-xs">
-                    これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-between items-center my-8">
-                <div className="grid md:grid-cols-2 grid-cols-1 md:gap-12 gap-6 mb-8">
-                  <MagazineItem
-                    image={imageMagazineThumb}
-                    isNew={true}
-                    category="レポート"
-                    date="2024.01.01"
-                    title="記事タイトル記事タイトル記事タイトル記事タイトル記事"
-                    content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじでうもじですこれはじゅうもじですこれはじゅ"
-                  />
-                  <MagazineItem
-                    image={imageMagazineThumb}
-                    isNew={true}
-                    category="レポート"
-                    date="2024.01.01"
-                    title="記事タイトル記事タイトル記事タイトル記事タイトル記事"
-                    content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじでうもじですこれはじゅうもじですこれはじゅ"
-                  />
-                  <MagazineItem
-                    image={imageMagazineThumb}
-                    isNew={true}
-                    category="レポート"
-                    date="2024.01.01"
-                    title="記事タイトル記事タイトル記事タイトル記事タイトル記事"
-                    content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじでうもじですこれはじゅうもじですこれはじゅ"
-                  />
-                  <MagazineItem
-                    image={imageMagazineThumb}
-                    isNew={true}
-                    category="レポート"
-                    date="2024.01.01"
-                    title="記事タイトル記事タイトル記事タイトル記事タイトル記事"
-                    content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじでうもじですこれはじゅうもじですこれはじゅ"
-                  />
-                </div>
-
-                <DetailButton size={400} />
-              </div>
-            </div>
-          </div>
+          <RecommendMagazine />
         </div>
         <div className="flex flex-col items-center">
           <div className="trapezoid2"></div>
@@ -768,38 +311,7 @@ export default function Home() {
                 コンテンツ数
               </p>
             </div>
-            <div className="grid md:grid-cols-3 grid-cols-2 gap-[44px] justify-between md:w-[734px] mt-4">
-              <ContentCountItem
-                icon={iconActivity}
-                label="体験・修行"
-                counts={30}
-              />
-              <ContentCountItem
-                icon={iconSpot}
-                label="体験・修行"
-                counts={30}
-              />
-              <ContentCountItem
-                icon={iconItem}
-                label="体験・修行"
-                counts={10}
-              />
-              <ContentCountItem
-                icon={iconResearch}
-                label="体験・修行"
-                counts={20}
-              />
-              <ContentCountItem
-                icon={iconFiction}
-                label="体験・修行"
-                counts={20}
-              />
-              <ContentCountItem
-                icon={iconNinja}
-                label="体験・修行"
-                counts={20}
-              />
-            </div>
+            <EachContentsCount />
           </div>
         </div>
       </section>

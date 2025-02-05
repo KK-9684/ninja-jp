@@ -53,10 +53,21 @@ const transformContent = (
     (activity) => activity?.sys.id || ""
   );
 
+  const relationKeyword =
+    entry.fields.relationKeyword
+      ?.filter(
+        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
+      )
+      .map((keyword) => ({
+        slug: keyword.sys.id,
+        title: keyword.fields.title || "",
+      })) || null;
+
   return {
     content: entry.fields.content,
     writer,
     relationActivityIds,
+    relationKeyword,
     ...transformPartialContent(entry),
   };
 };
@@ -77,6 +88,7 @@ const transformPartialContent = (
     title,
     image: images,
     area: parsedArea,
+
     category: {
       slug: category?.sys.id,
       title: category?.fields.title || "",
@@ -107,7 +119,6 @@ export const getSpotList = async (query: Query) => {
     ? { "fields.relationKeyword.sys.id": query.tag }
     : {};
 
-  console.log("query", query);
   const categoryParams =
     query.categories && query.categories.length > 0
       ? { "fields.category.sys.id[in]": query.categories.join(",") }
@@ -119,9 +130,9 @@ export const getSpotList = async (query: Query) => {
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,
+    ...categoryParams,
     ...areaParams,
     ...tagParams,
-    ...categoryParams,
   });
 
   return {
@@ -134,7 +145,7 @@ export const getRelationSpot = async (ids: string[], limit?: number) => {
   const fallbackPerPage = 3;
   const result = await getEntries<SpotSkeleton>({
     content_type: "spot",
-    select: ["fields.title", "fields.image", "fields.area"],
+    select: ["fields.title", "fields.image", "fields.area", "fields.category"],
     order: ["-fields.createdAt"],
     "sys.id[in]": ids,
     limit: limit || fallbackPerPage,

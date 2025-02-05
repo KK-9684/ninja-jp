@@ -17,6 +17,7 @@ type Research = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
   content: Document;
+  summary: EntryFieldTypes.Symbol;
   category?: EntryFieldTypes.EntryLink<ResearchCategoryEntrySkeleton>;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
@@ -56,12 +57,21 @@ const transformContent = (
     (activity) => activity?.sys.id || ""
   );
 
+  const relationKeyword =
+    entry.fields.relationKeyword
+      ?.filter(
+        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
+      )
+      .map((keyword) => ({
+        slug: keyword.sys.id,
+        title: keyword.fields.title || "",
+      })) || null;
+
   return {
-    content: entry.fields.content,
     writer,
-    tag: entry.fields.relationKeyword?.fields.title || "",
     relationActivityIds,
     relationItemIds,
+    relationKeyword,
     ...transformPartialContent(entry),
   };
 };
@@ -69,7 +79,7 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<ResearchSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ) => {
-  const { title, image, category } = entry.fields;
+  const { title, image, category, summary } = entry.fields;
 
   const images = image
     ?.filter((img) => img !== null && img !== undefined)
@@ -83,8 +93,10 @@ const transformPartialContent = (
   return {
     slug: entry.sys.id,
     title,
+    summary,
     image: images,
     category: ct,
+    content: entry.fields.content,
   };
 };
 
@@ -111,7 +123,12 @@ export const getResearchList = async (query: Query) => {
     : {};
   const result = await getEntries<ResearchSkeleton>({
     content_type: "research",
-    select: ["fields.title", "fields.image", "fields.category"],
+    select: [
+      "fields.title",
+      "fields.image",
+      "fields.category",
+      "fields.summary",
+    ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,

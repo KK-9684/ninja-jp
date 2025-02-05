@@ -1,10 +1,11 @@
 interface NewsItemProps {
   date: string;
-  type: string;
+  type?: string;
   title: string;
+  href: string;
 }
 
-const NewsItem = ({ date, type, title }: NewsItemProps) => {
+const NewsItem = ({ href, date, type, title }: NewsItemProps) => {
   const getColor = (type: string) => {
     switch (type) {
       case "ニュース":
@@ -18,13 +19,19 @@ const NewsItem = ({ date, type, title }: NewsItemProps) => {
     }
   };
 
-  return (
-    <div>
+  if (!href) {
+    return null; // hrefがない場合はレンダリングしない
+  }
 
+  return (
+    <a href={href} className="w-[100%] block">
       <div className="md:flex hidden items-center py-4 space-x-8 text-md leading-none text-ninjack-white border-b border-ninjack-line-gray">
         <p className="font-light">{date}</p>
         <p className="flex items-center">
-          <span className="text-2xl leading-none" style={{ color: getColor(type) }}>
+          <span
+            className="text-2xl leading-none"
+            style={{ color: getColor(type) }}
+          >
             ・
           </span>
           <span className="text-ninjack-text-gray">{type}</span>
@@ -36,7 +43,10 @@ const NewsItem = ({ date, type, title }: NewsItemProps) => {
         <div className="flex flex-row gap-2 items-center self-start">
           <p className="text-[12px]">{date}</p>
           <p className="flex items-center">
-            <span className="text-2xl leading-none" style={{ color: getColor(type) }}>
+            <span
+              className="text-2xl leading-none"
+              style={{ color: getColor(type) }}
+            >
               ・
             </span>
             <span className="text-ninjack-text-gray text-[12px]">{type}</span>
@@ -44,7 +54,7 @@ const NewsItem = ({ date, type, title }: NewsItemProps) => {
         </div>
         <p>{title}</p>
       </div>
-    </div>
+    </a>
   );
 };
 

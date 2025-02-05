@@ -1,21 +1,14 @@
-"use client";
-
 import Image from "next/image";
 import iconActivity from "@/assets/icon-ninja.svg";
 import illus6 from "@/assets/illus-6.png";
-import CheckboxGroup from "@/app/components/checkboxGroup";
-import KeywordsGroup from "@/app/components/keywordsGroup";
-import { useRouter } from "next/navigation";
-import imageNinjaThumb from "@/assets/image-ninja-thumb.jpg";
 import NinjaItem from "@/app/components/Common/ninjaItem";
-import Pagination from "@/app/components/pagination";
 import FilterItem from "@/app/components/filterItem";
 
 import { toArrayOfStrings } from "@/lib/util/toArrayOfStrings";
-import Link from "next/link";
 import SearchForm from "@/app/components/Common/SearchForm";
 import { getCategoryList } from "@/lib/contentful/sharedModel";
 import { getMemberList } from "./fetcher";
+import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
@@ -38,59 +31,15 @@ export default async function NinjaPage({
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
   const categories = await getCategoryList("memberCategory");
 
-  const router = useRouter();
-  const showDetail = (index: number) => {
-    router.push(`/ninja/${index}`);
-  };
-  const handlePageChange = () => {};
-
   return (
     <>
-      <SearchForm categories={categories.items} />
-      <h2>商品・忍具一覧</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>タイトル</th>
-            <th>カテゴリ</th>
-            <th>画像</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.items.map((item) => (
-            <tr key={item.slug}>
-              <td>
-                <Link href={`/ninja/${item.slug}`} key={item.slug}>
-                  {item.name}
-                </Link>
-              </td>
-
-              <td>
-                {item.category?.map((ct) => (
-                  <p key={ct.slug}>{ct.name}</p>
-                ))}
-              </td>
-              <td>
-                {item.image?.map((img) => (
-                  <Image
-                    key={img.alt}
-                    src={img.url}
-                    alt={img.alt}
-                    width={324}
-                    height={160}
-                  />
-                ))}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination totalPages={totalPages} />
       <div>
         <section className="container pt-[80px] pb-[52px] mx-auto px-5">
           <div className="md:flex hidden space-x-4 items-center">
             <Image src={iconActivity} alt="現代忍者" width={40} height={40} />
-            <h2 className="text-[36px] text-ninjack-white">現代忍者</h2>
+            <h2 className="text-[36px] text-ninjack-white font-bold">
+              現代忍者
+            </h2>
           </div>
 
           <div className="flex flex-row md:hidden items-center justify-between">
@@ -116,147 +65,33 @@ export default async function NinjaPage({
             </p>
           </div>
         </section>
-        <section className="container md:pb-[160px] mx-auto px-5 flex md:space-x-[60px]">
-          <div className="md:block hidden max-w-[300px]">
-            <CheckboxGroup
-              label="エリア名で絞り込む"
-              options={[
-                { label: "すべて", value: "すべて" },
-                { label: "団体・チーム", value: "団体・チーム" },
-                { label: "個人", value: "個人" },
-              ]}
-              onChange={(selectedValues) => {
-                console.log(selectedValues);
-              }}
-              customClass="w-[240px] py-8"
-              defaultCheckedValues={["すべて"]}
-            />
-            <KeywordsGroup
-              label="キーワードから探す"
-              keywords={[
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "キーワード", value: "キーワード" },
-                { label: "忍者体験", value: "忍者体験" },
-                { label: "修行", value: "修行" },
-              ]}
-            />
+        {/* メインコンテンツ */}
+        <section className="container md:pb-[160px] pb-[40px] mx-auto px-5 flex gap-[60px]">
+          <div className="hidden md:block min-w-[240px] max-w-[300px]">
+            <SearchForm categories={categories.items} />
           </div>
           <div>
             <div className="mb-20 grid md:grid-cols-3 grid-cols-2 md:gap-[40px] gap-8">
-              {ninjas.map((item: any, index: any) => {
+              {list.items.map((item, index) => {
+                if (!item?.slug) return null; // 必要なデータの存在チェック
                 return (
-                  <button key={index} onClick={() => showDetail(index)}>
+                  <div key={`research-${item.slug}-${index}`}>
                     <NinjaItem
-                      image={item.image}
-                      category="ものづくり"
-                      title={item.title}
-                      subTitle={item.subTitle}
-                      content={item.content}
+                      image={item.image?.[0]?.url || "/noimage.png"}
+                      category={item.category.title || ""}
+                      title={item.name || ""}
+                      href={`/ninja/${item.slug}`}
+                      position={item.position || ""}
+                      summary={item.summary}
                     />
-                  </button>
+                  </div>
                 );
               })}
             </div>
           </div>
         </section>
-        <Pagination
-          currentPage={1}
-          totalPages={3}
-          onPageChange={handlePageChange}
-        />
+        <Pagination totalPages={totalPages} />
       </div>
     </>
   );
 }
-
-const ninjas = [
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-  {
-    image: imageNinjaThumb,
-    title: "名前名前名前名前",
-    subTitle: "ここに肩書き入れる",
-    content:
-      "これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ",
-  },
-];

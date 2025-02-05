@@ -45,32 +45,54 @@ export default function SearchForm({ categories, area, tag }: Props) {
 
   return (
     <Form action="/activity">
-      {categories && (
-        <>
-          <h2>カテゴリから探す</h2>
-          <Checkbox
-            name="categories"
-            option={categories}
-            handleSearch={handleSearch}
-          />
-        </>
-      )}
-      {area && (
-        <>
-          <h2>エリアから探す</h2>
-          <Checkbox name="area" option={area} handleSearch={handleSearch} />
-        </>
-      )}
-      {tag && (
-        <>
-          <h2>キーワードから探す</h2>
-          {tag.map((t) => (
-            <Link key={t.slug} href={`${pathname}?tag=${t.slug}`}>
-              #{t.title}
-            </Link>
-          ))}
-        </>
-      )}
+      <div className="mb-5">
+        {categories && (
+          <>
+            <div>
+              <div className="text-sm leading-none font-bold text-ninjack-white mb-5">
+                カテゴリから探す
+              </div>
+              <div className="md:flex md:flex-col  md:space-y-2 grid grid-cols-2 gap-1">
+                <Checkbox
+                  name="categories"
+                  option={categories}
+                  handleSearch={handleSearch}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="mb-5">
+        {area && (
+          <>
+            <div>
+              <div className="text-sm leading-none font-bold text-ninjack-white mb-5">
+                エリアから探す
+              </div>
+              <div className="md:flex md:flex-col  grid grid-cols-2 gap-1">
+                <Checkbox
+                  name="area"
+                  option={area}
+                  handleSearch={handleSearch}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="mb-5">
+        {tag && (
+          <>
+            <h2>キーワードから探す</h2>
+            {tag.map((t) => (
+              <Link key={t.slug} href={`${pathname}?tag=${t.slug}`}>
+                #{t.title}
+              </Link>
+            ))}
+          </>
+        )}
+      </div>
     </Form>
   );
 }

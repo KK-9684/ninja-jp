@@ -14,49 +14,88 @@ import imageEye from "@/assets/eye.svg";
 import MenuItem from "./Common/menuItem";
 import MenuButton from "./Common/menuButton";
 import AboutButtonGroup from "./aboutButtonGroup";
-import IconMessage from '@/assets/icon-message.svg';
+import IconMessage from "@/assets/icon-message.svg";
+import Link from "next/link";
 
 const Header = () => {
-  const openMenu = () => { };
+  const openMenu = () => {};
 
   return (
     <header className="text-ninjack-white">
       <div className="hidden md:block">
         <div className="h-[76px] flex justify-between items-center px-8">
           <h1 className="flex items-center">
-            <Image src={logo} alt="忍者ポータルサイト" />
+            <Link href="/">
+              <Image src={logo} alt="忍者ポータルサイト" />
+            </Link>
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
             <p className="ms-10 text-2xl">11/26</p>
             <p className="mx-1.5 text-2xl">12:00</p>
             <Image src={imageEye} alt="猫の目" />
             <div className="bg-[#222222] px-10 ms-5">
-              <p className="m-3 text-xs">今日の忍術：これはじゅうもじですこれはじゅうもじです</p>
+              <p className="m-3 text-xs">
+                今日の忍術：これはじゅうもじですこれはじゅうもじです
+              </p>
             </div>
           </h1>
           <div className="flex space-x-2.5">
             <MenuButton icon={iconContact} label="お問合せ" link="/contact" />
-            <MenuButton icon={iconHamburger} label="メニュー" handleClick={openMenu} />
+            <MenuButton
+              icon={iconHamburger}
+              label="メニュー"
+              handleClick={openMenu}
+            />
           </div>
         </div>
         <nav className="h-[67px] flex justify-between items-center border-t border-b border-ninjack-line-gray px-8">
           <ul className="flex space-x-8">
             <li>
-              <MenuItem icon={iconActivity} label="体験・修行" link="/activity" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconActivity}
+                label="体験・修行"
+                link="/activity"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconSpot} label="施設・史跡" link="/spot" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconSpot}
+                label="施設・史跡"
+                link="/spot"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconItem} label="商品・忍具" link="/item" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconItem}
+                label="商品・忍具"
+                link="/item"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconResearch} label="研究情報" link="/research" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconResearch}
+                label="研究情報"
+                link="/research"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconFiction} label="創作作品" link="/fiction" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconFiction}
+                label="創作作品"
+                link="/fiction"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconNinja} label="現代忍者" link="/ninja" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconNinja}
+                label="現代忍者"
+                link="/ninja"
+                color="ninjack-text-gray"
+              />
             </li>
           </ul>
           <AboutButtonGroup />
@@ -64,7 +103,9 @@ const Header = () => {
       </div>
       <div className="flex flex-col md:hidden gap-2">
         <div className="bg-[#222222] w-full">
-          <p className="m-3 text-xs text-center">今日の忍術：これはじゅうもじですこれはじゅうもじです</p>
+          <p className="m-3 text-xs text-center">
+            今日の忍術：これはじゅうもじですこれはじゅうもじです
+          </p>
         </div>
         <div className="flex justify-between items-center p-[12px]">
           <h1 className="flex items-center">
@@ -75,7 +116,6 @@ const Header = () => {
             <p className="ms-4 text-xs">11/26</p>
             <p className="mx-1.5 text-xs">12:00</p>
             <Image src={imageEye} alt="猫の目" className="w-[35px]" />
-
           </h1>
           <div className="md:flex hidden space-x-2.5 ">
             <MenuButton icon={iconContact} label="" link="/contact" />
@@ -89,25 +129,54 @@ const Header = () => {
         <nav className="items-center border-t border-b border-ninjack-line-gray p-2 w-full">
           <ul className="flex flex-row justify-between">
             <li>
-              <MenuItem icon={iconActivity} label="体験・修行" link="/activity" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconActivity}
+                label="体験・修行"
+                link="/activity"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconSpot} label="施設・史跡" link="/spot" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconSpot}
+                label="施設・史跡"
+                link="/spot"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconItem} label="商品・忍具" link="/item" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconItem}
+                label="商品・忍具"
+                link="/item"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconResearch} label="研究情報" link="/research" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconResearch}
+                label="研究情報"
+                link="/research"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconFiction} label="創作作品" link="/fiction" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconFiction}
+                label="創作作品"
+                link="/fiction"
+                color="ninjack-text-gray"
+              />
             </li>
             <li>
-              <MenuItem icon={iconNinja} label="現代忍者" link="/ninja" color="ninjack-text-gray" />
+              <MenuItem
+                icon={iconNinja}
+                label="現代忍者"
+                link="/ninja"
+                color="ninjack-text-gray"
+              />
             </li>
           </ul>
-
         </nav>
       </div>
     </header>

@@ -1,25 +1,37 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FictionItemProps {
-  image: StaticImport;
-  category: string;
+  image: StaticImport | string;
+  category?: string;
   title: string;
-  price: string;
+  price?: string;
+  href: string;
 }
 
-const FictionItem = ({ image, category, title, price }: FictionItemProps) => {
+const FictionItem = ({ href, image, category, title }: FictionItemProps) => {
+  if (!href) {
+    return null; // hrefがない場合はレンダリングしない
+  }
+
   return (
-    <div className="flex flex-col space-y-5">
-      <Image src={image} alt="ダミーテキスト" className="rounded-lg" />
-      <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple w-fit text-xs leading-none text-left">{category}</div>
+    <Link href={href} className="flex flex-col space-y-5">
+      <Image
+        src={image}
+        alt="ダミーテキスト"
+        className="rounded-lg w-[216px] h-[216px]"
+        width={220}
+        height={220}
+      />
+      {category && (
+        <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple w-fit text-xs leading-none text-left">
+          {category}
+        </div>
+      )}
+
       <p className="font-bold text-ninjack-white text-left">{title}</p>
-      {
-        price !== "" && (
-          <p className="text-ninjack-text-gray text-sm leading-none">料金：￥{price}〜</p>
-        )
-      }
-    </div>
+    </Link>
   );
 };
 

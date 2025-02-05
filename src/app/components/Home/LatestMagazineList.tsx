@@ -1,5 +1,5 @@
 import { getMagazineList } from "@/app/(pages)/magazine/fetcher";
-import Link from "next/link";
+import NewsItem from "../Common/newsItem";
 
 export default async function LatestMagazineList() {
   // 最新のマガジンを取得
@@ -10,32 +10,17 @@ export default async function LatestMagazineList() {
     tag: "",
   });
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>タイトル</th>
-          <th>カテゴリ</th>
-          <th>公開日</th>
-        </tr>
-      </thead>
-      <tbody>
-        {latestMagazine.items.map((item) => (
-          <tr key={item.slug}>
-            <td>
-              <Link href={`/magazine/${item.slug}`} key={item.slug}>
-                {item.title}
-              </Link>
-            </td>
-
-            <td>
-              {/* {item.category?.map((ct) => (
-                  <p key={ct.slug}>{ct.title}</p>
-                ))} */}
-            </td>
-            <td>{item.createdAt}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {latestMagazine.items.map((item) => (
+        <NewsItem
+          href={`/magazine/${item.slug}`}
+          key={item.slug}
+          date={item.createdAt}
+          // FIXME:カテゴリ取得
+          // type="ニュース"
+          title={item.title}
+        />
+      ))}
+    </>
   );
 }

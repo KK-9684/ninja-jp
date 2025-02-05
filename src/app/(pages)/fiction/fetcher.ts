@@ -6,40 +6,46 @@ import {
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
-import { TagEntrySkeleton } from "../tag/fetcher";
 import { ItemSkeleton } from "../item/fetcher";
 
-type CultureCategoryEntrySkeleton = CategoryEntrySkeleton & {
+type FictionCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "cultureCategory";
 };
 
-type Culture = EntrySkeletonType & {
+type RelationKeywordSkeleton = EntrySkeletonType & {
+  contentTypeId: "relationKeyword";
+  fields: {
+    title: EntryFieldTypes.Symbol;
+  };
+};
+
+type Fiction = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
   content: Document;
   category?: EntryFieldTypes.Array<
-    EntryFieldTypes.EntryLink<CultureCategoryEntrySkeleton>
+    EntryFieldTypes.EntryLink<CategoryEntrySkeleton>
   >;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
-  relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
+  relationKeyword?: EntryFieldTypes.Array<
+    EntryFieldTypes.EntryLink<RelationKeywordSkeleton>
+  >;
   writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
   relationItem?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<ItemSkeleton>>;
 };
 
-export type CultureSkeleton = EntrySkeletonType<Culture> & {
+export type FictionSkeleton = EntrySkeletonType & {
   contentTypeId: "culture";
 };
 
 export type Query = {
   categories?: string[];
   page: number;
-  tag?: string;
+  relationKeyword?: string[];
   perPage?: number;
 };
 
-const transformContent = (
-  entry: Entry<CultureSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-) => {
+const transformContent = (entry: Entry<Fiction>) => {
   const writer = entry.fields.writer
     ? {
         name: entry.fields.writer.fields.name,
@@ -48,21 +54,26 @@ const transformContent = (
     : null;
 
   const relationItemIds = entry.fields.relationItem?.map(
-    (activity) => activity?.sys.id || ""
+    (item) => item?.sys.id || ""
   );
+
+  const relationKeyword = entry.fields.relationKeyword
+    ? entry.fields.relationKeyword.map((keyword) => ({
+        slug: keyword.sys.id,
+        title: keyword.fields.title,
+      }))
+    : [];
 
   return {
     content: entry.fields.content,
-    tag: entry.fields.relationKeyword?.fields.title || "",
+    relationKeyword,
     writer,
     relationItemIds,
     ...transformPartialContent(entry),
   };
 };
 
-const transformPartialContent = (
-  entry: Entry<CultureSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-) => {
+const transformPartialContent = (entry: Entry<Fiction>) => {
   const { title, image, category } = entry.fields;
 
   const images = image
@@ -82,10 +93,9 @@ const transformPartialContent = (
   };
 };
 
-export const getCulture = async (id: string) => {
+export const getFiction = async (id: string) => {
   try {
-    const entry = await getEntry<CultureSkeleton>("culture", id);
-
+    const entry = await getEntry<Fiction>("culture", id);
     return transformContent(entry);
   } catch (error) {
     console.error(error);
@@ -93,24 +103,35 @@ export const getCulture = async (id: string) => {
   }
 };
 
-export const getCultureList = async (query: Query) => {
+export const getFictionList = async (query: Query) => {
   const fallbackPerPage = 100;
   const skip = query.perPage ? (query.page - 1) * query.perPage : 0;
+
   const categoryParams =
     query.categories && query.categories.length > 0
       ? { "fields.category.sys.id[in]": query.categories.join(",") }
       : {};
-  const tagParams = query.tag
-    ? { "fields.relationKeyword.sys.id": query.tag }
-    : {};
-  const result = await getEntries<CultureSkeleton>({
+
+  const relationKeywordParams =
+    query.relationKeyword && query.relationKeyword.length > 0
+      ? {
+          "fields.relationKeyword.sys.id[in]": query.relationKeyword.join(","),
+        }
+      : {};
+
+  const result = await getEntries<Fiction>({
     content_type: "culture",
-    select: ["fields.title", "fields.image", "fields.category"],
+    select: [
+      "fields.title",
+      "fields.image",
+      "fields.category",
+      "fields.relationKeyword",
+    ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,
     ...categoryParams,
-    ...tagParams,
+    ...relationKeywordParams,
   });
 
   return {
@@ -119,8 +140,8 @@ export const getCultureList = async (query: Query) => {
   };
 };
 
-export const cultureCategoryPerItems = async (limit: number) => {
-  const result = await categoryPerItems<CultureSkeleton>(
+export const fictionCategoryPerItems = async (limit: number) => {
+  const result = await categoryPerItems<FictionCategoryEntrySkeleton, Fiction>(
     "cultureCategory",
     limit
   );

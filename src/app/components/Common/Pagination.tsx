@@ -1,8 +1,11 @@
 "use client";
-
 import { generatePagination } from "@/lib/util/generatePagination";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import IconLeft from "@/assets/icon-pagination-left.svg";
+import IconRight from "@/assets/icon-pagination-right.svg";
+import Image from "next/image";
+import clsx from "clsx";
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
   const pathname = usePathname();
@@ -20,13 +23,13 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
 
   return (
     <>
-      <div>
+      <div className="pagination">
         <PaginationArrow
           direction="left"
           href={createPageURL(currentPage - 1)}
           isDisabled={currentPage <= 1}
         />
-        <div className="flex -space-x-px">
+        <div className="flex -space-x-px text-ninjack-white">
           {allPages.map((page, index) => {
             let position: "first" | "last" | "single" | "middle" | undefined;
 
@@ -56,24 +59,27 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   );
 }
 
+interface PaginationNumberProps {
+  page: PaginationItem;
+  href: string;
+  position?: "first" | "last" | "middle" | "single";
+  isActive: boolean;
+}
+
 function PaginationNumber({
   page,
   href,
   isActive,
   position,
-}: {
-  page: number | string;
-  href: string;
-  position?: "first" | "last" | "middle" | "single";
-  isActive: boolean;
-}) {
+}: PaginationNumberProps) {
   return isActive || position === "middle" ? (
-    <div>{page}</div>
+    <div className={clsx("pageNumber", isActive && "active")}>{page}</div>
   ) : (
-    <Link href={href}>{page}</Link>
+    <Link className="pageNumber" href={href}>
+      {page}
+    </Link>
   );
 }
-
 function PaginationArrow({
   href,
   direction,
@@ -83,6 +89,25 @@ function PaginationArrow({
   direction: "left" | "right";
   isDisabled?: boolean;
 }) {
-  const text = direction === "left" ? "前へ" : "次へ";
-  return isDisabled ? <div>{text}</div> : <Link href={href}>{text}</Link>;
+  if (isDisabled) {
+    return (
+      <div className={`arrow arrow-${direction}`}>
+        <Image
+          src={direction === "left" ? IconLeft : IconRight}
+          alt={direction === "left" ? "前へ" : "次へ"}
+          className="self-center mx-auto"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <Link href={href} className={`arrow arrow-${direction}`}>
+      <Image
+        src={direction === "left" ? IconLeft : IconRight}
+        alt={direction === "left" ? "前へ" : "次へ"}
+        className="self-center mx-auto"
+      />
+    </Link>
+  );
 }
