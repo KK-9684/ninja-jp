@@ -16,6 +16,7 @@ import MenuButton from "./Common/menuButton";
 import AboutButtonGroup from "./aboutButtonGroup";
 import IconMessage from "@/assets/icon-message.svg";
 import Link from "next/link";
+import DigitalClock from "./DigitalClock";
 
 const Header = () => {
   const openMenu = () => {};
@@ -29,8 +30,7 @@ const Header = () => {
               <Image src={logo} alt="忍者ポータルサイト" />
             </Link>
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
-            <p className="ms-10 text-2xl">11/26</p>
-            <p className="mx-1.5 text-2xl">12:00</p>
+            <DigitalClock />
             <Image src={imageEye} alt="猫の目" />
             <div className="bg-[#222222] px-10 ms-5">
               <p className="m-3 text-xs">
