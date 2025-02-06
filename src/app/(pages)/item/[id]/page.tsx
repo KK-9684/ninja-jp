@@ -9,19 +9,24 @@ import ImageCeo from "@/assets/image-ceo.png";
 import ImageSub from "@/assets/image-sub-item.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
+import { Metadata } from "next";
 
-export default async function ItemDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};
+
+interface GenerateMetadataProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ItemDetailPage(props: GenerateMetadataProps) {
+  const { id } = await props.params;
   const item = await getItem(id);
 
-  if (item === null) {
-    return <h1>Not Found</h1>;
+  if (!item) {
+    return <div>Not Found</div>;
   }
-
   console.log(item);
 
   return (

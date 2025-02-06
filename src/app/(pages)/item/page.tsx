@@ -13,15 +13,15 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-export default async function ItemPage({
-  searchParams,
-}: {
-  searchParams: {
+type ItemPageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
     tag: string | null;
-  };
-}) {
+  }>;
+};
+
+export default async function ItemPage({ searchParams }: ItemPageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getItemList({
@@ -34,7 +34,6 @@ export default async function ItemPage({
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
   const categories = await getCategoryList("itemCategory");
   const tag = await getTagList();
-
   return (
     <>
       <div>

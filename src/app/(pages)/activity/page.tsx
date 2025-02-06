@@ -13,16 +13,17 @@ import FilterItem from "@/app/components/filterItem";
 
 const PER_PAGE = 12;
 
-export default async function ActivityPage({
-  searchParams,
-}: {
-  searchParams: {
+type ActivityPageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
     area: string | string[];
     tag: string | null;
-  };
-}) {
+  }>;
+};
+export default async function ActivityPage({
+  searchParams,
+}: ActivityPageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
 
@@ -34,6 +35,7 @@ export default async function ActivityPage({
     page: currentPage,
     perPage: PER_PAGE,
   });
+
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
   const categories = await getCategoryList("activityCategory");
   const tag = await getTagList();

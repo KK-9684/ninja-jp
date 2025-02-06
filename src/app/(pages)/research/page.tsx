@@ -14,15 +14,17 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-export default async function ResearchPage({
-  searchParams,
-}: {
-  searchParams: {
+type ResearchPageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
     tag: string | null;
-  };
-}) {
+  }>;
+};
+
+export default async function ResearchPage({
+  searchParams,
+}: ResearchPageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getResearchList({

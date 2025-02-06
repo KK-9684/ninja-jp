@@ -14,25 +14,29 @@ import iconItem from "@/assets/icon-item.svg";
 import ImageSub from "@/assets/image-sub-fiction.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
+import { Metadata } from "next";
 
 interface Category {
   slug: string;
   title: string;
 }
 
-export default async function FictionDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};
+
+interface GenerateMetadataProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function FictionDetailPage(props: GenerateMetadataProps) {
+  const { id } = await props.params;
   const item = await getFiction(id);
 
   if (!item) {
     return <div>Not Found</div>;
   }
-
-  console.log(item);
   return (
     <>
       <div className="flex flex-row">

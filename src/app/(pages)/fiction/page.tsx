@@ -14,17 +14,19 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-export default async function FictionPage({
-  searchParams,
-}: {
-  searchParams: {
+type FictionPageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
     tag: string | null;
-  };
-}) {
+  }>;
+};
+
+export default async function FictionPage({ searchParams }: FictionPageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
+
+  // データ取得
   const list = await getFictionList({
     categories: params.categories ? toArrayOfStrings(params.categories) : [],
     tag: params.tag || "",
@@ -32,8 +34,11 @@ export default async function FictionPage({
     perPage: PER_PAGE,
   });
 
+  // totalPagesの計算を追加
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
-  const categories = await getCategoryList("cultureCategory");
+
+  // カテゴリーとタグのデータを取得
+  const categories = await getCategoryList("fictionCategory");
   const tag = await getTagList();
 
   return (

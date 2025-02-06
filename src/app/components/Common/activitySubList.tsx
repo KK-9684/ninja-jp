@@ -20,7 +20,7 @@ const ActivitySubList = ({
   time,
 }: ActivitySubListProps) => {
   return (
-    <Link href={href} className="flex space-x-5 items-center">
+    <Link href={href} className="flex space-x-5 items-center mb-3">
       <Image
         src={image}
         alt="ダミーテキスト"

@@ -1,8 +1,7 @@
 import Image from "next/image";
-import RichContent from "@/app/components/Common/RichContent";
+import RichContent from "../../../components/Common/RichContent";
 import { getSpot } from "../fetcher";
 import RecommendActivity from "@/app/components/Common/RecommendActivity";
-
 import ImageViewer from "@/app/components/Imageviwer";
 
 import ImageMap from "@/assets/image-map.png";
@@ -11,24 +10,28 @@ import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-spot.png";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
+};
 
 interface Keyword {
   slug: string;
   title: string;
 }
 
-export default async function SpotDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
+interface GenerateMetadataProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function SpotDetailPage(props: GenerateMetadataProps) {
+  const { id } = await props.params;
   const spot = await getSpot(id);
 
-  if (spot === null) {
-    return <h1>Not Found</h1>;
+  if (!spot) {
+    return <div>Not Found</div>;
   }
-
   console.log(spot.relationKeyword);
 
   return (

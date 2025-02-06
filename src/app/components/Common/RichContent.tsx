@@ -1,3 +1,4 @@
+import React, { ReactNode } from "react";
 import Image from "next/image";
 import { BLOCKS, MARKS, Document } from "@contentful/rich-text-types";
 import {
@@ -14,34 +15,34 @@ export default function RichContent({ document }: RichContentProps) {
 
   const options: Options = {
     renderMark: {
-      [MARKS.BOLD]: (text) => <strong>{text}</strong>,
-      [MARKS.ITALIC]: (text) => <em>{text}</em>,
-      [MARKS.UNDERLINE]: (text) => <u>{text}</u>,
-      [MARKS.CODE]: (text) => <code>{text}</code>,
+      [MARKS.BOLD]: (text): ReactNode => <strong>{text}</strong>,
+      [MARKS.ITALIC]: (text): ReactNode => <em>{text}</em>,
+      [MARKS.UNDERLINE]: (text): ReactNode => <u>{text}</u>,
+      [MARKS.CODE]: (text): ReactNode => <code>{text}</code>,
     },
     renderNode: {
-      [BLOCKS.PARAGRAPH]: (node, children) => (
+      [BLOCKS.PARAGRAPH]: (node, children): ReactNode => (
         <p className="mb-4">{children}</p>
       ),
-      [BLOCKS.HEADING_1]: (node, children) => (
+      [BLOCKS.HEADING_1]: (node, children): ReactNode => (
         <h1 className="text-2xl font-bold mb-4">{children}</h1>
       ),
-      [BLOCKS.HEADING_2]: (node, children) => (
+      [BLOCKS.HEADING_2]: (node, children): ReactNode => (
         <h2 className="text-xl font-bold mb-3">{children}</h2>
       ),
-      [BLOCKS.HEADING_3]: (node, children) => (
+      [BLOCKS.HEADING_3]: (node, children): ReactNode => (
         <h3 className="text-lg font-bold mb-2">{children}</h3>
       ),
-      [BLOCKS.HEADING_4]: (node, children) => (
+      [BLOCKS.HEADING_4]: (node, children): ReactNode => (
         <h4 className="text-base font-bold mb-2">{children}</h4>
       ),
-      [BLOCKS.HEADING_5]: (node, children) => (
+      [BLOCKS.HEADING_5]: (node, children): ReactNode => (
         <h5 className="text-sm font-bold mb-2">{children}</h5>
       ),
-      [BLOCKS.HEADING_6]: (node, children) => (
+      [BLOCKS.HEADING_6]: (node, children): ReactNode => (
         <h6 className="text-xs font-bold mb-2">{children}</h6>
       ),
-      [BLOCKS.EMBEDDED_ASSET]: (node) => {
+      [BLOCKS.EMBEDDED_ASSET]: (node): ReactNode => {
         return (
           <div className="my-4">
             <Image
@@ -54,26 +55,26 @@ export default function RichContent({ document }: RichContentProps) {
           </div>
         );
       },
-      [BLOCKS.UL_LIST]: (node, children) => (
+      [BLOCKS.UL_LIST]: (node, children): ReactNode => (
         <ul className="list-disc pl-6 mb-4">{children}</ul>
       ),
-      [BLOCKS.OL_LIST]: (node, children) => (
+      [BLOCKS.OL_LIST]: (node, children): ReactNode => (
         <ol className="list-decimal pl-6 mb-4">{children}</ol>
       ),
-      [BLOCKS.LIST_ITEM]: (node, children) => (
+      [BLOCKS.LIST_ITEM]: (node, children): ReactNode => (
         <li className="mb-2">{children}</li>
       ),
-      [BLOCKS.QUOTE]: (node, children) => (
+      [BLOCKS.QUOTE]: (node, children): ReactNode => (
         <blockquote className="border-l-4 border-gray-300 pl-4 my-4 italic">
           {children}
         </blockquote>
       ),
-      [BLOCKS.HR]: () => <hr className="my-8 border-gray-300" />,
-      [BLOCKS.TABLE]: (node, children) => (
+      [BLOCKS.HR]: (): ReactNode => <hr className="my-8 border-gray-300" />,
+      [BLOCKS.TABLE]: (node, children): ReactNode => (
         <table className="w-full my-4 border-collapse">{children}</table>
       ),
-      [BLOCKS.TABLE_ROW]: (node, children) => <tr>{children}</tr>,
-      [BLOCKS.TABLE_CELL]: (node, children) => (
+      [BLOCKS.TABLE_ROW]: (node, children): ReactNode => <tr>{children}</tr>,
+      [BLOCKS.TABLE_CELL]: (node, children): ReactNode => (
         <td className="border border-gray-300 p-2">{children}</td>
       ),
     },

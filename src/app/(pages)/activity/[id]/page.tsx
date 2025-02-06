@@ -14,39 +14,29 @@ import ImageSub from "@/assets/image-sub-activity.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import DetailItemList from "@/app/components/Common/detailItemList";
+import { Metadata } from "next";
 
-interface Activity {
-  title: string;
-  price?: string;
-  time?: string;
-  content: Document;
-  area?: string;
-  category?: Array<{
-    slug: string;
-    title: string;
-  }>;
-  tag?: Tag[] | string;
-  writer?: {
-    name: string;
-    content?: Document;
-  };
-  relationSpotIds?: string[];
-  relationActivityIds?: string[];
-}
-
-// Next.jsの型定義を使用
-type PageProps = {
-  params: { id: string };
+export const metadata: Metadata = {
+  title: "Ninja",
+  description: "",
 };
 
-export default async function ActivityDetailPage({ params }: PageProps) {
-  const { id } = params; // awaitを削除
-  const activity: Activity | null = await getActivity(id);
+interface Tag {
+  slug?: string;
+  title: string;
+}
+
+interface GenerateMetadataProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ActivityDetailPage(props: GenerateMetadataProps) {
+  const { id } = await props.params;
+  const activity = await getActivity(id);
 
   if (!activity) {
     return <div>Not Found</div>;
   }
-
   return (
     <>
       <div className="flex flex-row">
@@ -79,7 +69,7 @@ export default async function ActivityDetailPage({ params }: PageProps) {
                   <div className="py-2">
                     <div className="flex md:flex-row flex-wrap gap-2">
                       {(typeof activity.tag === "string"
-                        ? [{ title: activity.tag }]
+                        ? [{ title: activity.tag, slug: undefined }] // slugを明示的に指定
                         : activity.tag
                       ).map((item: Tag, index: number) => (
                         <div

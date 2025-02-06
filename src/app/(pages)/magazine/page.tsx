@@ -11,15 +11,17 @@ import clsx from "clsx";
 
 const PER_PAGE = 12;
 
-export default async function MagazinePage({
-  searchParams,
-}: {
-  searchParams: {
+type MagazinePageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
     tag: string | null;
-  };
-}) {
+  }>;
+};
+
+export default async function MagazinePage({
+  searchParams,
+}: MagazinePageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getMagazineList({

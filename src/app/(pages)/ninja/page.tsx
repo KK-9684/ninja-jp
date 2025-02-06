@@ -12,14 +12,14 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-export default async function NinjaPage({
-  searchParams,
-}: {
-  searchParams: {
+type NinjaPageProps = {
+  searchParams: Promise<{
     page: string;
     categories: string | string[];
-  };
-}) {
+  }>;
+};
+
+export default async function NinjaPage({ searchParams }: NinjaPageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getMemberList({
