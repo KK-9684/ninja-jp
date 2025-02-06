@@ -100,8 +100,8 @@ export default async function ActivityDetailPage({
 
           {activity.plans &&
             Array.isArray(activity.plans) &&
-            activity.plans.map((plan) => (
-              <DetailItemList key={plan.title} plan={plan} />
+            activity.plans.map((plan, index) => (
+              <DetailItemList key={`${plan.title}-${index}`} plan={plan} />
             ))}
           {/* <div className="md:hidden mt-8">
             <Image
