@@ -119,6 +119,11 @@ export const getMagazineList = async (query: Query) => {
   const tagParams = query.tag
     ? { "fields.relationKeyword.sys.id": query.tag }
     : {};
+
+  const categoryParams =
+    query.categories && query.categories.length > 0
+      ? { "fields.category.sys.id[in]": query.categories.join(",") }
+      : {};
   const result = await getEntries<MagazineSkeleton>({
     content_type: "magazine",
     select: [
@@ -132,6 +137,7 @@ export const getMagazineList = async (query: Query) => {
     limit: query.perPage || fallbackPerPage,
     skip: skip,
     ...tagParams,
+    ...categoryParams,
   });
 
   return {

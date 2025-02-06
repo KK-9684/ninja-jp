@@ -3,11 +3,11 @@ import Image from "next/image";
 import MagazineList from "@/app/components/Common/magazineList";
 import { toArrayOfStrings } from "@/lib/util/toArrayOfStrings";
 import { getMagazineList } from "./fetcher";
-// import { getTagList } from "../tag/fetcher";
-// import { shuffle } from "@/lib/util/shuffle";
 import Pagination from "@/app/components/Common/Pagination";
 import TagList from "@/app/components/Common/TagList";
 import clsx from "clsx";
+import Link from "next/link";
+import { getCategoryList } from "@/lib/contentful/sharedModel";
 
 const PER_PAGE = 12;
 
@@ -33,8 +33,7 @@ export default async function MagazinePage({
 
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
 
-  // const tag = await getTagList();
-  // const tagItems = shuffle(tag.items).slice(0, 20);
+  const categories = await getCategoryList("magazineCategory");
 
   return (
     <>
@@ -44,69 +43,47 @@ export default async function MagazinePage({
             <span className="text-ninjack-purple">Ninjack</span>
             <span className="text-ninjack-white">MAGAZINE</span>
           </div>
-          {/* FIXME:カテゴリ実装 */}
           <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
-            <div
-              key="all"
-              role="button"
-              tabIndex={0}
-              className="cursor-pointer"
-            >
+            <Link href={"/magazine"}>
               <div
-                className={clsx(
-                  "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
-                  "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white",
-                  "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                )}
+                key="all"
+                role="button"
+                tabIndex={0}
+                className="cursor-pointer"
               >
-                すべて
+                <div
+                  className={clsx(
+                    "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
+                    params.categories?.length > 0
+                      ? "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]"
+                      : "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white",
+                    "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
+                  )}
+                >
+                  すべて
+                </div>
               </div>
-            </div>
-
-            <div role="button" tabIndex={0} className="cursor-pointer">
-              <div
-                className={clsx(
-                  "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
-                  "text-ninjack-text-gray md:text-[16px] text-[12px]",
-                  "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                )}
+            </Link>
+            {categories.items.map((category) => (
+              <Link
+                href={`/magazine?categories=${category.slug}`}
+                key={category.slug}
               >
-                カテゴリ
-              </div>
-            </div>
-            <div role="button" tabIndex={0} className="cursor-pointer">
-              <div
-                className={clsx(
-                  "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
-                  "text-ninjack-text-gray md:text-[16px] text-[12px]",
-                  "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                )}
-              >
-                カテゴリ
-              </div>
-            </div>
-            <div role="button" tabIndex={0} className="cursor-pointer">
-              <div
-                className={clsx(
-                  "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
-                  "text-ninjack-text-gray md:text-[16px] text-[12px]",
-                  "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                )}
-              >
-                カテゴリ
-              </div>
-            </div>
-            <div role="button" tabIndex={0} className="cursor-pointer">
-              <div
-                className={clsx(
-                  "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
-                  "text-ninjack-text-gray md:text-[16px] text-[12px]",
-                  "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                )}
-              >
-                カテゴリ
-              </div>
-            </div>
+                <div role="button" tabIndex={0} className="cursor-pointer">
+                  <div
+                    className={clsx(
+                      "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
+                      params.categories?.includes(category.slug)
+                        ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
+                        : "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]",
+                      "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
+                    )}
+                  >
+                    {category.title}
+                  </div>
+                </div>
+              </Link>
+            ))}
             {/* <SectionLinkGroup links={sectionNinjackMagazineLinks} /> */}
           </div>
           <div className="md:px-[139px] px-8">
