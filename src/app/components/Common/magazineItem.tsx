@@ -3,13 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface MagazineItemProps {
-  image: StaticImport;
+  image: StaticImport | string;
   isNew: boolean;
   category: string;
   date: string;
   title: string;
   content: string;
   href: string;
+  imageWidth: number;
+  imageHeight: number;
 }
 
 const MagazineItem = ({

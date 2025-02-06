@@ -19,15 +19,17 @@ export const metadata: Metadata = {
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function ResearchDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
-  const reseach = await getResearch(id);
+export default async function ResearchDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
+  const research = await getResearch(id);
 
-  if (!reseach) {
+  if (!research) {
     return <div>Not Found</div>;
   }
 

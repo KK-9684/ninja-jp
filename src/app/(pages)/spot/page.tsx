@@ -15,16 +15,18 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-type SpotPageProps = {
-  searchParams: Promise<{
-    page: string;
-    area: string | string[];
-    categories: string | string[];
-    tag: string | null;
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  area: string | string[];
+  categories: string | string[];
+  tag: string | null;
+}>;
 
-export default async function SpotPage({ searchParams }: SpotPageProps) {
+export default async function SpotPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getSpotList({

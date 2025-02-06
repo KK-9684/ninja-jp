@@ -21,17 +21,14 @@ export const metadata: Metadata = {
   description: "",
 };
 
-interface Tag {
-  slug?: string;
-  title: string;
-}
+type Params = Promise<{ id: string }>;
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function ActivityDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function ActivityDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
   const activity = await getActivity(id);
 
   if (!activity) {
@@ -47,7 +44,7 @@ export default async function ActivityDetailPage(props: GenerateMetadataProps) {
                 <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
                   {activity.category?.map((ct) => (
                     <div
-                      key={ct.slug}
+                      key={`category-${ct.slug}`}
                       className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none"
                     >
                       {ct.title}
@@ -68,12 +65,9 @@ export default async function ActivityDetailPage(props: GenerateMetadataProps) {
                 {activity.tag && (
                   <div className="py-2">
                     <div className="flex md:flex-row flex-wrap gap-2">
-                      {(typeof activity.tag === "string"
-                        ? [{ title: activity.tag, slug: undefined }] // slugを明示的に指定
-                        : activity.tag
-                      ).map((item: Tag, index: number) => (
+                      {activity.tag.map((item, index: number) => (
                         <div
-                          key={item.slug || index}
+                          key={`${item.slug}-${index}`}
                           className="text-ninjack-white text-xs leading-none items-center p-2 border border-ninjack-line-gray w-fit rounded-[4px]"
                         >
                           #&nbsp;{item.title}
@@ -104,7 +98,11 @@ export default async function ActivityDetailPage(props: GenerateMetadataProps) {
             <RichContent document={activity.content} />
           </section>
 
-          <DetailItemList />
+          {activity.plans &&
+            Array.isArray(activity.plans) &&
+            activity.plans.map((plan) => (
+              <DetailItemList key={plan.title} plan={plan} />
+            ))}
           {/* <div className="md:hidden mt-8">
             <Image
               src={ImageVideo}

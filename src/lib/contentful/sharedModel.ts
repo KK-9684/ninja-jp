@@ -7,7 +7,7 @@ type CategoryContentTypes =
   | "spotCategory"
   | "itemCategory"
   | "researchCategory"
-  | "fictionCategory"
+  | "cultureCategory"
   | "memberCategory"
   | "magazineCategory";
 

@@ -11,17 +11,17 @@ import { getCategoryList } from "@/lib/contentful/sharedModel";
 
 const PER_PAGE = 12;
 
-type MagazinePageProps = {
-  searchParams: Promise<{
-    page: string;
-    categories: string | string[];
-    tag: string | null;
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  categories: string | string[];
+  tag: string | null;
+}>;
 
 export default async function MagazinePage({
   searchParams,
-}: MagazinePageProps) {
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getMagazineList({

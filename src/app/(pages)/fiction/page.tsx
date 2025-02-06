@@ -14,15 +14,17 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-type FictionPageProps = {
-  searchParams: Promise<{
-    page: string;
-    categories: string | string[];
-    tag: string | null;
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  categories: string | string[];
+  tag: string | null;
+}>;
 
-export default async function FictionPage({ searchParams }: FictionPageProps) {
+export default async function FictionPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
 

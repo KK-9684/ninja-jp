@@ -36,18 +36,24 @@ export default function Checkbox({ name, option, handleSearch }: Props) {
           key={opt.slug}
           className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px]"
         >
-          <div className="custom-checkbox">
-            <input
-              type="checkbox"
-              name={name}
-              value={opt.slug}
-              onChange={handleSearch}
-              checked={searchParams.getAll(name).includes(opt.slug)}
-              className="hidden" // Hide the default checkbox
-              id={opt.slug}
-            />
-            <span className="checkmark"></span> {/* This span will be styled */}
-          </div>
+          <label
+            htmlFor={`${opt.slug}-check`}
+            className="text-ninjack-white text-sm"
+          >
+            <div className="custom-checkbox">
+              <input
+                type="checkbox"
+                name={name}
+                value={opt.slug}
+                onChange={handleSearch}
+                checked={searchParams.getAll(name).includes(opt.slug)}
+                className="hidden" // Hide the default checkbox
+                id={`${opt.slug}-check`}
+              />
+              <span className="checkmark"></span>{" "}
+              {/* This span will be styled */}
+            </div>
+          </label>
           <p className="text-ninjack-white text-sm">{opt.title}</p>
         </div>
       ))}

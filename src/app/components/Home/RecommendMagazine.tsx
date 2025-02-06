@@ -1,17 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { magazineCategoryPerItems } from "@/app/(pages)/magazine/fetcher";
+import {
+  magazineCategoryPerItems,
+  MagazineCore,
+} from "@/app/(pages)/magazine/fetcher";
 import MagazineItem from "../Common/magazineItem";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 
+type Magazine = MagazineCore & {
+  categoryTitle: string;
+  uniqueId: string;
+};
+
 export default function RecommendMagazine() {
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<
+    {
+      items: MagazineCore[];
+      slug: string;
+      title: string;
+      total: number;
+    }[]
+  >([]);
   const [active, setActive] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState(true);
-  const [latestItem, setLatestItem] = useState(null);
-  const [displayItems, setDisplayItems] = useState([]);
+  const [latestItem, setLatestItem] = useState<Magazine>();
+  const [displayItems, setDisplayItems] = useState<Magazine[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +65,7 @@ export default function RecommendMagazine() {
           category.items.map((item) => ({
             ...item,
             categoryTitle: category.title,
+            uniqueId: `${category.slug}-${item.slug}`,
           }))
         )
         .sort(
@@ -64,6 +80,7 @@ export default function RecommendMagazine() {
           .map((item) => ({
             ...item,
             categoryTitle: result[active].title,
+            uniqueId: `${result[active].slug}-${item.slug}`,
           }))
           .sort(
             (a, b) =>

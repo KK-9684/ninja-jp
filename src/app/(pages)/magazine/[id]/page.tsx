@@ -13,12 +13,14 @@ export const metadata: Metadata = {
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function MagazineDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function MagazineDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
   const magazine = await getMagazine(id);
 
   if (!magazine) {

@@ -20,12 +20,10 @@ export const metadata: Metadata = {
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function NinjaDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function NinjaDetailPage({ params }: { params: Params }) {
+  const { id } = await params;
   const item = await getMember(id);
 
   if (!item) {

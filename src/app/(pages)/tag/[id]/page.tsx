@@ -7,13 +7,9 @@ import { getTagLinkEntries } from "../fetcher";
 // import SearchForm from "@/app/components/Common/SearchForm";
 // import Pagination from "@/app/components/Common/Pagination";
 
-type TagDetailPageProps = {
-  params: Promise<{
-    id: string;
-  }>;
-};
+type Params = Promise<{ id: string }>;
 
-export default async function TagDetailPage({ params }: TagDetailPageProps) {
+export default async function TagDetailPage({ params }: { params: Params }) {
   const { id } = await params;
   const entries = await getTagLinkEntries(id);
 
@@ -54,7 +50,7 @@ export default async function TagDetailPage({ params }: TagDetailPageProps) {
           ))}
         </tbody>
       </table>
-      {/* 
+      {/*
       <div>
         <section className="container pt-[80px] pb-[52px] mx-auto px-5">
           <div className="md:flex hidden space-x-4 items-center">

@@ -16,12 +16,10 @@ export const metadata: Metadata = {
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function ItemDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function ItemDetailPage({ params }: { params: Params }) {
+  const { id } = await params;
   const item = await getItem(id);
 
   if (!item) {

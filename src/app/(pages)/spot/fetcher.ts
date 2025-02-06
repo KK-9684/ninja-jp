@@ -24,7 +24,9 @@ type Spot = EntrySkeletonType & {
   relationActivity?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivitySkeleton>
   >;
-  relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
+  relationKeyword?: EntryFieldTypes.Array<
+    EntryFieldTypes.EntryLink<TagEntrySkeleton>
+  >;
 };
 
 type SpotSkeleton = EntrySkeletonType<Spot> & {
@@ -53,15 +55,12 @@ const transformContent = (
     (activity) => activity?.sys.id || ""
   );
 
-  const relationKeyword =
-    entry.fields.relationKeyword
-      ?.filter(
-        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
-      )
-      .map((keyword) => ({
-        slug: keyword.sys.id,
-        title: keyword.fields.title || "",
-      })) || null;
+  const relationKeyword = entry.fields.relationKeyword
+    ? entry.fields.relationKeyword.map((keyword) => ({
+        slug: keyword?.sys.id,
+        title: keyword?.fields.title,
+      }))
+    : [];
 
   return {
     content: entry.fields.content,

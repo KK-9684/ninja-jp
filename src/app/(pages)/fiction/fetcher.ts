@@ -8,6 +8,33 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ItemSkeleton } from "../item/fetcher";
 
+export type Fiction = FictionCore & {
+  content: never;
+  writer: {
+    name: string;
+    content: never;
+  } | null;
+  relationKeyword: {
+    slug: string | undefined;
+    title: string | undefined;
+  }[];
+  relationItemIds: string[];
+};
+
+export type FictionCore = {
+  slug: string;
+  title: string;
+  image: {
+    url: string;
+    alt: string;
+  }[];
+  category: {
+    slug: string | undefined;
+    title: string;
+  }[];
+  createdAt: string;
+};
+
 type FictionCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "cultureCategory";
 };
@@ -19,12 +46,12 @@ type RelationKeywordSkeleton = EntrySkeletonType & {
   };
 };
 
-type Fiction = EntrySkeletonType & {
+type Fields = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
   content: Document;
   category?: EntryFieldTypes.Array<
-    EntryFieldTypes.EntryLink<CategoryEntrySkeleton>
+    EntryFieldTypes.EntryLink<FictionCategoryEntrySkeleton>
   >;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   relationKeyword?: EntryFieldTypes.Array<
@@ -34,7 +61,7 @@ type Fiction = EntrySkeletonType & {
   relationItem?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<ItemSkeleton>>;
 };
 
-export type FictionSkeleton = EntrySkeletonType & {
+export type FictionSkeleton = EntrySkeletonType<Fields> & {
   contentTypeId: "culture";
 };
 
@@ -43,9 +70,12 @@ export type Query = {
   page: number;
   relationKeyword?: string[];
   perPage?: number;
+  tag?: string | null;
 };
 
-const transformContent = (entry: Entry<Fiction>) => {
+const transformContent = (
+  entry: Entry<FictionSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
+): Fiction => {
   const writer = entry.fields.writer
     ? {
         name: entry.fields.writer.fields.name,
@@ -53,14 +83,14 @@ const transformContent = (entry: Entry<Fiction>) => {
       }
     : null;
 
-  const relationItemIds = entry.fields.relationItem?.map(
-    (item) => item?.sys.id || ""
-  );
+  const relationItemIds = entry.fields.relationItem
+    ? entry.fields.relationItem?.map((item) => item?.sys.id || "")
+    : [];
 
   const relationKeyword = entry.fields.relationKeyword
     ? entry.fields.relationKeyword.map((keyword) => ({
-        slug: keyword.sys.id,
-        title: keyword.fields.title,
+        slug: keyword?.sys.id,
+        title: keyword?.fields.title,
       }))
     : [];
 
@@ -73,29 +103,36 @@ const transformContent = (entry: Entry<Fiction>) => {
   };
 };
 
-const transformPartialContent = (entry: Entry<Fiction>) => {
-  const { title, image, category } = entry.fields;
+const transformPartialContent = (
+  entry: Entry<FictionSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
+): FictionCore => {
+  const { title, image, category, createdAt } = entry.fields;
 
   const images = image
-    ?.filter((img) => img !== null && img !== undefined)
-    .map(transformAsset);
+    ? image
+        ?.filter((img) => img !== null && img !== undefined)
+        .map(transformAsset)
+    : [];
 
-  const ct = category?.map((ct) => ({
-    slug: ct?.sys.id,
-    title: ct?.fields.title || "",
-  }));
+  const ct = category
+    ? category?.map((ct) => ({
+        slug: ct?.sys.id,
+        title: ct?.fields.title || "",
+      }))
+    : [];
 
   return {
     slug: entry.sys.id,
     title,
     image: images,
     category: ct,
+    createdAt,
   };
 };
 
 export const getFiction = async (id: string) => {
   try {
-    const entry = await getEntry<Fiction>("culture", id);
+    const entry = await getEntry<FictionSkeleton>("culture", id);
     return transformContent(entry);
   } catch (error) {
     console.error(error);
@@ -119,7 +156,7 @@ export const getFictionList = async (query: Query) => {
         }
       : {};
 
-  const result = await getEntries<Fiction>({
+  const result = await getEntries<FictionSkeleton>({
     content_type: "culture",
     select: [
       "fields.title",
@@ -141,7 +178,7 @@ export const getFictionList = async (query: Query) => {
 };
 
 export const fictionCategoryPerItems = async (limit: number) => {
-  const result = await categoryPerItems<FictionCategoryEntrySkeleton, Fiction>(
+  const result = await categoryPerItems<FictionSkeleton>(
     "cultureCategory",
     limit
   );

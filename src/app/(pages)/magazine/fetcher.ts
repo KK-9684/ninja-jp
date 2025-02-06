@@ -9,24 +9,54 @@ import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { differenceInDays } from "date-fns";
 import { TagEntrySkeleton } from "../tag/fetcher";
 
+export type Magazine = MagazineCore & {
+  writer: {
+    name: string;
+    content: never;
+  } | null;
+  relationKeyword: {
+    slug: string | undefined;
+    title: string | undefined;
+  }[];
+};
+
+export type MagazineCore = {
+  slug: string;
+  title: string;
+  summary: string;
+  image: {
+    url: string;
+    alt: string;
+  }[];
+  isNew: boolean;
+  content: never;
+  createdAt: string;
+  category: {
+    slug: string | undefined;
+    title: string;
+  }[];
+};
+
 type MagazineCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "magazineCategory";
 };
 
-type Magazine = EntrySkeletonType & {
+type Fields = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   summary: EntryFieldTypes.Text;
   createdAt: EntryFieldTypes.Date;
   content: Document;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
-  relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
+  relationKeyword?: EntryFieldTypes.Array<
+    EntryFieldTypes.EntryLink<TagEntrySkeleton>
+  >;
   category?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<MagazineCategoryEntrySkeleton>
   >;
   writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
 };
 
-type MagazineSkeleton = EntrySkeletonType<Magazine> & {
+type MagazineSkeleton = EntrySkeletonType<Fields> & {
   contentTypeId: "magazine";
 };
 
@@ -49,25 +79,21 @@ const formatCreatedAt = (
 
 const transformContent = (
   entry: Entry<MagazineSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-) => {
+): Magazine => {
   const writer = entry.fields.writer
     ? {
         name: entry.fields.writer.fields.name,
         content: entry.fields.writer.fields.content,
       }
     : null;
-  const relationKeyword =
-    entry.fields.relationKeyword
-      ?.filter(
-        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
-      )
-      .map((keyword) => ({
-        slug: keyword.sys.id,
-        title: keyword.fields.title || "",
-      })) || null;
+  const relationKeyword = entry.fields.relationKeyword
+    ? entry.fields.relationKeyword.map((keyword) => ({
+        slug: keyword?.sys.id,
+        title: keyword?.fields.title,
+      }))
+    : [];
 
   return {
-    content: entry.fields.content,
     writer,
     relationKeyword,
 
@@ -77,17 +103,21 @@ const transformContent = (
 
 const transformPartialContent = (
   entry: Entry<MagazineSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
-) => {
-  const { title, summary, image, category, createdAt } = entry.fields;
+): MagazineCore => {
+  const { title, summary, image, category, createdAt, content } = entry.fields;
 
   const images = image
-    ?.filter((img) => img !== null && img !== undefined)
-    .map(transformAsset);
+    ? image
+        ?.filter((img) => img !== null && img !== undefined)
+        .map(transformAsset)
+    : [];
 
-  const ct = category?.map((ct) => ({
-    slug: ct?.sys.id,
-    title: ct?.fields.title || "",
-  }));
+  const ct = category
+    ? category?.map((ct) => ({
+        slug: ct?.sys.id,
+        title: ct?.fields.title || "",
+      }))
+    : [];
 
   const isNew = differenceInDays(new Date(), new Date(createdAt)) <= 14;
 
@@ -97,6 +127,7 @@ const transformPartialContent = (
     summary,
     image: images,
     isNew,
+    content,
     createdAt: formatCreatedAt(createdAt),
     category: ct,
   };
@@ -132,6 +163,7 @@ export const getMagazineList = async (query: Query) => {
       "fields.summary",
       "fields.category",
       "fields.createdAt",
+      "fields.content",
     ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,

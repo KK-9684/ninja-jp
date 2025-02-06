@@ -1,8 +1,9 @@
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 
 interface MagazineListProps {
-  image: StaticImport;
+  image: string | StaticImport;
   newone?: boolean;
   category?: string;
   date?: string;
