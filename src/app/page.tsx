@@ -27,7 +27,7 @@ import clsx from "clsx";
 import { GeistFont } from "./components/Common/font";
 import SpotSelectorPC from "./components/spotSelectorPc";
 import SwitchContentNavigation from "./components/Common/SwitchContentNavigation";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
   title: "Ninja",

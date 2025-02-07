@@ -14,7 +14,7 @@ import ImageSub from "@/assets/image-sub-activity.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import DetailItemList from "@/app/components/Common/detailItemList";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
   title: "Ninja",

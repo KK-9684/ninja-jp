@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { Metadata } from "next/types";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/free-mode";

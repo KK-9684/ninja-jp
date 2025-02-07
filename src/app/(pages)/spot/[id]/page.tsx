@@ -10,7 +10,7 @@ import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-spot.png";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",

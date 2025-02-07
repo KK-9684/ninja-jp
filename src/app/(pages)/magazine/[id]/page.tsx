@@ -6,7 +6,7 @@ import ImageSub from "@/assets/image-sub-magazine.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import RecommendMagazine from "@/app/components/Common/RecommendMagazine";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
   title: "Ninja",

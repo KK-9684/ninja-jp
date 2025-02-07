@@ -14,7 +14,7 @@ import iconItem from "@/assets/icon-item.svg";
 import ImageSub from "@/assets/image-sub-fiction.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 type Params = Promise<{ id: string }>;
 

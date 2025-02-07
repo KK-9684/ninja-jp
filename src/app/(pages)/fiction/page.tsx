@@ -40,7 +40,7 @@ export default async function FictionPage({
   const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
 
   // カテゴリーとタグのデータを取得
-  const categories = await getCategoryList("fictionCategory");
+  const categories = await getCategoryList("cultureCategory");
   const tag = await getTagList();
 
   return (

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 // レイアウトコンポーネントの定義
 export default function MagazinePageLayout({
