@@ -75,6 +75,21 @@ export const categoryPerItems = async <T extends EntrySkeletonType>(
   );
 };
 
+type NinjutsuSkeleton = EntrySkeletonType<{
+  content: EntryFieldTypes.Symbol;
+}> & {
+  contentTypeId: "ninjutsu";
+};
+export const getNinjutsu = async () => {
+  const result = await getEntries<NinjutsuSkeleton>({
+    content_type: "ninjutsu",
+    select: ["fields.content"],
+    limit: 100,
+  });
+
+  return result.items.map((ninjutsu) => ninjutsu.fields.content);
+};
+
 type CarouselLinkEntry = {
   contentTypeId: "topCarousel";
   fields: {
