@@ -12,8 +12,18 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import iconMail from "@/assets/icon-mail.svg";
 import CustomLargeButton from "./Common/customLargeButton";
 import FooterSpItem from "./footerSpItem";
+import { allActiveCategories } from "@/lib/contentful/sharedModel";
 
-const Footer = () => {
+const Footer = async () => {
+  const {
+    activityCategory,
+    spotCategory,
+    itemCategory,
+    researchCategory,
+    fictionCategory,
+    memberCategory,
+  } = await allActiveCategories();
+
   return (
     <footer className="text-ninjack-text-gray text-center p-4">
       <div className="hidden md:block">
@@ -36,8 +46,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー 体験</p>
-              <p>ー ものづくり</p>
+              {activityCategory.map((category) => (
+                <Link
+                  href={`/activity?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -49,12 +65,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー 史跡</p>
-              <p>ー テーマパーク</p>
-              <p>ー 道場</p>
-              <p>ー 販売店</p>
-              <p>ー 飲食店</p>
-              <p>ー その他</p>
+              {spotCategory.map((category) => (
+                <Link
+                  href={`/spot?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -66,10 +84,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー 忍具</p>
-              <p>ー 衣装</p>
-              <p>ー 書籍</p>
-              <p>ー アクセサリー</p>
+              {itemCategory.map((category) => (
+                <Link
+                  href={`/item?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -81,9 +103,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー 書籍・論文</p>
-              <p>ー 歴史・人物</p>
-              <p>ー 忍術</p>
+              {researchCategory.map((category) => (
+                <Link
+                  href={`/research?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -95,14 +122,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー 漫画</p>
-              <p>ー アニメ</p>
-              <p>ー 映画</p>
-              <p>ー ドラマ</p>
-              <p>ー 舞台</p>
-              <p>ー ゲーム</p>
-              <p>ー 音楽</p>
-              <p>ー その他</p>
+              {fictionCategory.map((category) => (
+                <Link
+                  href={`/fiction?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -114,8 +141,14 @@ const Footer = () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              <p>ー チーム・団体</p>
-              <p>ー 個人</p>
+              {memberCategory.map((category) => (
+                <Link
+                  href={`/ninja?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  {`ー ${category.title}`}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

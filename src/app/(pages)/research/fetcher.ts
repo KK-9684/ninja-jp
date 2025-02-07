@@ -5,6 +5,7 @@ import { ActivitySkeleton } from "../activity/fetcher";
 import { ItemSkeleton } from "../item/fetcher";
 import {
   CategoryEntrySkeleton,
+  categoryPerItems,
   WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { TagEntrySkeleton } from "../tag/fetcher";
@@ -139,4 +140,13 @@ export const getResearchList = async (query: Query) => {
     total: result.total,
     items: result.items.map((item) => transformPartialContent(item)),
   };
+};
+
+export const researchCategoryHasItems = async (limit: number) => {
+  const result = await categoryPerItems<ResearchSkeleton>(
+    "researchCategory",
+    limit
+  );
+
+  return result.filter((item) => item.total > 0);
 };

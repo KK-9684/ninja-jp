@@ -1,5 +1,8 @@
 import { getEntries, getEntry } from "@/lib/contentful/client";
-import { CategoryEntrySkeleton } from "@/lib/contentful/sharedModel";
+import {
+  CategoryEntrySkeleton,
+  categoryPerItems,
+} from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ActivitySkeleton } from "../activity/fetcher";
@@ -139,4 +142,13 @@ export const getRelationMember = async (ids: string[], limit?: number) => {
     total: result.total,
     items: result.items.map((item) => transformPartialContent(item)),
   };
+};
+
+export const memberCategoryHasItems = async (limit: number) => {
+  const result = await categoryPerItems<MemberSkeleton>(
+    "memberCategory",
+    limit
+  );
+
+  return result.filter((item) => item.total > 0);
 };
