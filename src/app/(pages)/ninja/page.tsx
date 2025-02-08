@@ -12,14 +12,16 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-type NinjaPageProps = {
-  searchParams: Promise<{
-    page: string;
-    categories: string | string[];
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  categories: string | string[];
+}>;
 
-export default async function NinjaPage({ searchParams }: NinjaPageProps) {
+export default async function NinjaPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getMemberList({
@@ -78,7 +80,7 @@ export default async function NinjaPage({ searchParams }: NinjaPageProps) {
                   <div key={`research-${item.slug}-${index}`}>
                     <NinjaItem
                       image={item.image?.[0]?.url || "/noimage.png"}
-                      category={item.category.title || ""}
+                      category={(item.category && item.category[0].slug) || ""}
                       title={item.name || ""}
                       href={`/ninja/${item.slug}`}
                       position={item.position || ""}

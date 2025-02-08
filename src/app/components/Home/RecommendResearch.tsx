@@ -22,9 +22,9 @@ export default async function RecommendResearch() {
             key={item.slug}
             image={item.image?.[0]?.url || "/noimage.png"}
             href={`/research/${item.slug}`}
-            categroy={item.category.title || ""}
+            category={item.category.title}
             title={item.title}
-            // FIXME:本文取得できず
+            summary={item.summary}
             content={item.content}
           />
         );

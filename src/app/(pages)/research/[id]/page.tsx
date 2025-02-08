@@ -13,21 +13,23 @@ import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/icon-sub-research.png";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function ResearchDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
-  const reseach = await getResearch(id);
+export default async function ResearchDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
+  const research = await getResearch(id);
 
-  if (!reseach) {
+  if (!research) {
     return <div>Not Found</div>;
   }
 

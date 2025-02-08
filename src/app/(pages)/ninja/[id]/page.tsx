@@ -13,19 +13,17 @@ import ImageSub from "@/assets/image-sub-ninja.png";
 import iconNinja from "@/assets/icon-ninja.svg";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function NinjaDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function NinjaDetailPage({ params }: { params: Params }) {
+  const { id } = await params;
   const item = await getMember(id);
 
   if (!item) {

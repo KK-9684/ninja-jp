@@ -16,10 +16,11 @@ export default async function RecommendMember() {
       {items.map((item) => (
         <NinjaItem
           key={item.slug}
-          image={item.image[0].url}
+          image={item.image?.[0].url || ""}
           title={item.name}
           position={item.position}
-          content="これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ"
+          summary={item.summary}
+          category={item.category?.[0].name || ""}
           href={`/member/${item.slug}`}
         />
       ))}

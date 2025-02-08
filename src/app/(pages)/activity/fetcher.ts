@@ -1,11 +1,13 @@
 import { getEntries, getEntry } from "@/lib/contentful/client";
 import {
   CategoryEntrySkeleton,
+  categoryPerItems,
   WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
+import { Document } from "@contentful/rich-text-types";
 
 type AreaEntrySkeleton = {
   contentTypeId: "area";
@@ -28,6 +30,13 @@ type ActivityRelationSpotEntrySkeleton = {
   };
 };
 
+export type Plan = {
+  name?: string;
+  price?: string;
+  description?: string;
+  url?: string;
+};
+
 type ActivityTagsEntrySkeleton = {
   contentTypeId: "tag";
   fields: {
@@ -42,7 +51,7 @@ type Activity = EntrySkeletonType & {
   price: EntryFieldTypes.Symbol;
   time: EntryFieldTypes.Symbol;
   content: Document;
-  plans: EntryFieldTypes.Object;
+  plans?: EntryFieldTypes.Object;
   category?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivityCategoryEntrySkeleton>
   >;
@@ -84,11 +93,15 @@ const transformContent = (
         content: entry.fields.writer.fields.content,
       }
     : null;
+
+  const plans = entry.fields.plans ? entry.fields.plans : [];
+
   return {
     content: entry.fields.content,
     relationSpotIds,
     relationActivityIds,
     writer,
+    plans,
     ...transformPartialContent(entry),
   };
 };
@@ -226,4 +239,13 @@ export const getRelationActivity = async (ids: string[], limit?: number) => {
     total: result.total,
     items: result.items.map((activity) => transformPartialContent(activity)),
   };
+};
+
+export const activityCategoryHasItems = async (limit: number) => {
+  const result = await categoryPerItems<ActivitySkeleton>(
+    "activityCategory",
+    limit
+  );
+
+  return result.filter((item) => item.total > 0);
 };

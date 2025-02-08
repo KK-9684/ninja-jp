@@ -3,6 +3,7 @@ import Form from "next/form";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Checkbox from "./Checkbox";
+import { useState } from "react";
 
 type Props = {
   categories?: {
@@ -23,6 +24,7 @@ export default function SearchForm({ categories, area, tag }: Props) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const [search, setSearch] = useState<URLSearchParams>(searchParams);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name, checked } = event.target;
@@ -39,7 +41,7 @@ export default function SearchForm({ categories, area, tag }: Props) {
     } else {
       params.delete(name, value);
     }
-
+    setSearch(params);
     replace(`${pathname}?${params.toString()}`);
   };
 
@@ -56,6 +58,7 @@ export default function SearchForm({ categories, area, tag }: Props) {
                 <Checkbox
                   name="categories"
                   option={categories}
+                  params={search}
                   handleSearch={handleSearch}
                 />
               </div>
@@ -74,6 +77,7 @@ export default function SearchForm({ categories, area, tag }: Props) {
                 <Checkbox
                   name="area"
                   option={area}
+                  params={search}
                   handleSearch={handleSearch}
                 />
               </div>

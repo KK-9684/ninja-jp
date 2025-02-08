@@ -60,7 +60,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
 }
 
 interface PaginationNumberProps {
-  page: PaginationItem;
+  page: string | number;
   href: string;
   position?: "first" | "last" | "middle" | "single";
   isActive: boolean;

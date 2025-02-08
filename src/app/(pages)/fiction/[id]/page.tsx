@@ -14,24 +14,21 @@ import iconItem from "@/assets/icon-item.svg";
 import ImageSub from "@/assets/image-sub-fiction.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
-interface Category {
-  slug: string;
-  title: string;
-}
+type Params = Promise<{ id: string }>;
 
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function FictionDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function FictionDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
   const item = await getFiction(id);
 
   if (!item) {
@@ -47,7 +44,7 @@ export default async function FictionDetailPage(props: GenerateMetadataProps) {
                 <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
                   {item.category && item.category.length > 0 && (
                     <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
-                      {item.category.map((ct: Category) => (
+                      {item.category.map((ct) => (
                         <div
                           key={ct.slug}
                           className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none"
@@ -57,12 +54,13 @@ export default async function FictionDetailPage(props: GenerateMetadataProps) {
                       ))}
                     </div>
                   )}
-                  {item.area && (
+                  {/* FIXME contentfulにareaの定義が必要 */}
+                  {/* {item.area && (
                     <div className="flex items-center text-ninjack-text-gray">
                       <span className="text-2xl leading-none">・</span>
                       <span className="text-sm leading-none">{item.area}</span>
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div>
                   <p className="font-bold text-ninjack-white mb-3 text-[28px]">

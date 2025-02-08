@@ -10,23 +10,16 @@ import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-spot.png";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
 };
 
-interface Keyword {
-  slug: string;
-  title: string;
-}
+type Params = Promise<{ id: string }>;
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
-
-export default async function SpotDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function SpotDetailPage({ params }: { params: Params }) {
+  const { id } = await params;
   const spot = await getSpot(id);
 
   if (!spot) {
@@ -55,22 +48,21 @@ export default async function SpotDetailPage(props: GenerateMetadataProps) {
                     {spot.title}
                   </p>
                 </div>
-                {spot.relationKeyword && (
-                  <div className="py-2">
-                    <div className="flex md:flex-row flex-wrap gap-2 ">
-                      {spot.relationKeyword.map(
-                        (item: Keyword, index: number) => (
+                {spot.relationKeyword &&
+                  Array.isArray(spot.relationKeyword) && (
+                    <div className="py-2">
+                      <div className="flex md:flex-row flex-wrap gap-2">
+                        {spot.relationKeyword.map((keyword, index) => (
                           <div
-                            key={item.slug || index}
+                            key={index}
                             className="text-ninjack-white text-xs leading-none items-center p-2 border border-ninjack-line-gray w-fit rounded-[4px]"
                           >
-                            #&nbsp;{item.title}
+                            #&nbsp;{keyword.title}
                           </div>
-                        )
-                      )}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
 

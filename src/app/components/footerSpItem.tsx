@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useState } from "react";
 import IconMin from "@/assets/icon-min.svg";
 import IconPlus from "@/assets/icon-plus.svg";

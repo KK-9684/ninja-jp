@@ -4,7 +4,13 @@ import React from "react";
 import IconLeft from "@/assets/icon-pagination-left.svg";
 import IconRight from "@/assets/icon-pagination-right.svg";
 import Image from "next/image";
-const Pagination = ({ currentPage, totalPages, onPageChange }: any) => {
+
+type Props = {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+};
+const Pagination = ({ currentPage, totalPages, onPageChange }: Props) => {
   const pageNumbers = [];
 
   for (let i = 1; i <= totalPages; i++) {

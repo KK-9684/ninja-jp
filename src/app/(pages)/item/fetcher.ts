@@ -1,6 +1,7 @@
 import { getEntries, getEntry } from "@/lib/contentful/client";
 import {
   CategoryEntrySkeleton,
+  categoryPerItems,
   WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
@@ -21,7 +22,9 @@ type Item = EntrySkeletonType & {
   >; // カテゴリだけどIDがitemになっている
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
-  relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
+  relationKeyword?: EntryFieldTypes.Array<
+    EntryFieldTypes.EntryLink<TagEntrySkeleton>
+  >;
 };
 
 export type ItemSkeleton = EntrySkeletonType<Item> & {
@@ -45,15 +48,12 @@ const transformContent = (
       }
     : null;
 
-  const relationKeyword =
-    entry.fields.relationKeyword
-      ?.filter(
-        (keyword): keyword is NonNullable<typeof keyword> => keyword != null
-      )
-      .map((keyword) => ({
-        slug: keyword.sys.id,
-        title: keyword.fields.title || "",
-      })) || null;
+  const relationKeyword = entry.fields.relationKeyword
+    ? entry.fields.relationKeyword.map((keyword) => ({
+        slug: keyword?.sys.id,
+        title: keyword?.fields.title,
+      }))
+    : [];
 
   return {
     content: entry.fields.content,
@@ -139,4 +139,10 @@ export const getRelationItem = async (ids: string[], limit?: number) => {
     total: result.total,
     items: result.items.map((item) => transformPartialContent(item)),
   };
+};
+
+export const itemCategoryHasItems = async (limit: number) => {
+  const result = await categoryPerItems<ItemSkeleton>("itemCategory", limit);
+
+  return result.filter((item) => item.total > 0);
 };

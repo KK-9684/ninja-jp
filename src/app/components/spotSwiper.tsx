@@ -5,19 +5,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Pagination } from "swiper/modules";
 import SpotItem from "./Common/spotItem";
 import { spotCategoryPerItems } from "@/app/(pages)/spot/fetcher";
-
-// 型定義
-interface SpotImage {
-  url: string;
-  alt?: string;
-}
-
 interface SpotItem {
   slug: string;
   title: string;
-  image: SpotImage[];
-  area?: string;
-  tilte: string; // typo? titleの間違いかもしれません
+  image:
+    | {
+        url: string;
+        alt: string;
+      }[]
+    | undefined;
+  area: string | null | undefined;
+  category: {
+    slug: string | undefined;
+    title: string;
+  };
 }
 
 interface SpotCategory {
@@ -79,10 +80,10 @@ const SpotSwiper = () => {
           <SwiperSlide key={item.slug}>
             <SpotItem
               href={`/spot/${item.slug}`}
-              image={item.image[0]?.url || "/noimage.png"}
+              image={item.image?.[0]?.url || "/noimage.png"}
               categroy="ものづくり"
-              areaName={item.area}
-              title={item.title || item.tilte} // titleプロパティを優先
+              areaName={item.area || ""}
+              title={item.title}
               price="XXXX"
             />
           </SwiperSlide>

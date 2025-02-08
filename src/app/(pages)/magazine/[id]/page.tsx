@@ -6,19 +6,21 @@ import ImageSub from "@/assets/image-sub-magazine.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import RecommendMagazine from "@/app/components/Common/RecommendMagazine";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
 };
 
-interface GenerateMetadataProps {
-  params: Promise<{ id: string }>;
-}
+type Params = Promise<{ id: string }>;
 
-export default async function MagazineDetailPage(props: GenerateMetadataProps) {
-  const { id } = await props.params;
+export default async function MagazineDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
+  const { id } = await params;
   const magazine = await getMagazine(id);
 
   if (!magazine) {

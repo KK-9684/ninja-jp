@@ -1,13 +1,19 @@
 import { EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { getEntries } from "./client";
 import { transformAsset } from "./transformContent";
+import { activityCategoryHasItems } from "@/app/(pages)/activity/fetcher";
+import { spotCategoryPerItems } from "@/app/(pages)/spot/fetcher";
+import { itemCategoryHasItems } from "@/app/(pages)/item/fetcher";
+import { researchCategoryHasItems } from "@/app/(pages)/research/fetcher";
+import { fictionCategoryPerItems } from "@/app/(pages)/fiction/fetcher";
+import { memberCategoryHasItems } from "@/app/(pages)/ninja/fetcher";
 
 type CategoryContentTypes =
   | "activityCategory"
   | "spotCategory"
   | "itemCategory"
   | "researchCategory"
-  | "fictionCategory"
+  | "cultureCategory"
   | "memberCategory"
   | "magazineCategory";
 
@@ -75,6 +81,21 @@ export const categoryPerItems = async <T extends EntrySkeletonType>(
   );
 };
 
+type NinjutsuSkeleton = EntrySkeletonType<{
+  content: EntryFieldTypes.Symbol;
+}> & {
+  contentTypeId: "ninjutsu";
+};
+export const getNinjutsu = async () => {
+  const result = await getEntries<NinjutsuSkeleton>({
+    content_type: "ninjutsu",
+    select: ["fields.content"],
+    limit: 100,
+  });
+
+  return result.items.map((ninjutsu) => ninjutsu.fields.content);
+};
+
 type CarouselLinkEntry = {
   contentTypeId: "topCarousel";
   fields: {
@@ -133,5 +154,23 @@ export const getLinkEntries = async () => {
         ?.filter((img) => img !== null && img !== undefined)
         .map(transformAsset),
     })),
+  };
+};
+
+export const allActiveCategories = async () => {
+  const activityCategory = await activityCategoryHasItems(1);
+  const spotCategory = await spotCategoryPerItems(1);
+  const itemCategory = await itemCategoryHasItems(1);
+  const researchCategory = await researchCategoryHasItems(1);
+  const fictionCategory = await fictionCategoryPerItems(1);
+  const memberCategory = await memberCategoryHasItems(1);
+
+  return {
+    activityCategory,
+    spotCategory,
+    itemCategory,
+    researchCategory,
+    fictionCategory,
+    memberCategory,
   };
 };

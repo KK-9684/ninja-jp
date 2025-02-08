@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export interface ActivitySubListProps {
   href: string;
-  image: StaticImport;
+  image: string | StaticImport;
   category: string;
   title: string;
   price: string;

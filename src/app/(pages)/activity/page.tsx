@@ -13,17 +13,18 @@ import FilterItem from "@/app/components/filterItem";
 
 const PER_PAGE = 12;
 
-type ActivityPageProps = {
-  searchParams: Promise<{
-    page: string;
-    categories: string | string[];
-    area: string | string[];
-    tag: string | null;
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  categories: string | string[];
+  area: string | string[];
+  tag: string | null;
+}>;
+
 export default async function ActivityPage({
   searchParams,
-}: ActivityPageProps) {
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
 

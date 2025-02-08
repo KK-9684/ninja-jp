@@ -18,17 +18,20 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
     <>
       {items.map((item) => (
         <Link
-          key={item.slug}
+          key={`recommend-magazine-${item.slug}`}
           href={`/magazine/${item.slug}`}
           className="flex md:flex-col flex-row gap-6"
         >
-          <Image
-            src={item.image?.[0].url}
-            alt={item.image?.[0].alt}
-            width={380}
-            height={240}
-            className="rounded-md w-[380px] h-[240px]  object-cover"
-          />
+          {item.image?.[0].url && item.image?.[0].alt && (
+            <Image
+              src={item.image?.[0].url}
+              alt={item.image?.[0].alt}
+              width={380}
+              height={240}
+              className="rounded-md w-[380px] h-[240px]  object-cover"
+            />
+          )}
+
           <div className="flex flex-col md:gap-5 gap-3">
             <div className="flex justify-between gap-5">
               <div className="flex space-x-1 items-center">
@@ -48,7 +51,7 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
             <p className="text-ninjack-white md:text-xl text-[14px] font-bold">
               {item.title}
             </p>
-            <p className="text-ninjack-text-gray text-xs">{item.content}</p>
+            <p className="text-ninjack-text-gray text-xs">{item.summary}</p>
           </div>
         </Link>
       ))}

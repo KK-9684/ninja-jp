@@ -13,8 +13,8 @@ export default async function RelationMember({ ids }: Props) {
       {list.items.map((item) => (
         <NinjaItem
           key={item.slug}
-          image={item.image[0].url}
-          category={item.category?.[0].name}
+          image={item.image?.[0].url || ""}
+          category={item.category?.[0].name || ""}
           title={item.name}
           position={item.position}
           summary={item.summary}

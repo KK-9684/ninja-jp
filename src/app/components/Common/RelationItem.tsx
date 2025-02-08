@@ -13,8 +13,8 @@ export default async function RelationItem({ ids }: Props) {
       {list.items.map((item) => (
         <ItemItem
           key={item.slug}
-          image={item.image[0].url}
-          category={item.category?.[0].title}
+          image={item.image?.[0].url || ""}
+          category={item.category?.[0].title || ""}
           title={item.title}
           price={item.price}
           href={`/item/${item.slug}`}

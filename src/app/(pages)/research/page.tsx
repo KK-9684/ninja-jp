@@ -14,17 +14,17 @@ import Pagination from "@/app/components/Common/Pagination";
 
 const PER_PAGE = 12;
 
-type ResearchPageProps = {
-  searchParams: Promise<{
-    page: string;
-    categories: string | string[];
-    tag: string | null;
-  }>;
-};
+type SearchParams = Promise<{
+  page: string;
+  categories: string | string[];
+  tag: string | null;
+}>;
 
 export default async function ResearchPage({
   searchParams,
-}: ResearchPageProps) {
+}: {
+  searchParams: SearchParams;
+}) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
   const list = await getResearchList({
@@ -90,6 +90,7 @@ export default async function ResearchPage({
                       title={item.title || ""}
                       href={`/research/${item.slug}`}
                       summary={item.summary}
+                      content={item.content}
                     />
                   </div>
                 );

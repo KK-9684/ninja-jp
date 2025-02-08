@@ -16,9 +16,28 @@ import MenuButton from "./Common/menuButton";
 import AboutButtonGroup from "./aboutButtonGroup";
 import IconMessage from "@/assets/icon-message.svg";
 import Link from "next/link";
+import DigitalClock from "./DigitalClock";
+import { getNinjutsu } from "@/lib/contentful/sharedModel";
+import { Suspense, useEffect, useState } from "react";
 
 const Header = () => {
   const openMenu = () => {};
+  const [ninjutsu, setNinjutsu] = useState<string>("");
+
+  useEffect(() => {
+    const fetchNinjutsu = async () => {
+      try {
+        const ninjutsus = await getNinjutsu();
+        const shuffledNinjutsus = ninjutsus.sort(() => Math.random() - 0.5);
+        setNinjutsu(shuffledNinjutsus[0] || "データ読み込み中...");
+      } catch (error) {
+        console.error("Error fetching ninjutsu:", error);
+        setNinjutsu("データ読み込みエラー");
+      }
+    };
+
+    fetchNinjutsu();
+  }, []);
 
   return (
     <header className="text-ninjack-white">
@@ -29,13 +48,12 @@ const Header = () => {
               <Image src={logo} alt="忍者ポータルサイト" />
             </Link>
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
-            <p className="ms-10 text-2xl">11/26</p>
-            <p className="mx-1.5 text-2xl">12:00</p>
+            <DigitalClock />
             <Image src={imageEye} alt="猫の目" />
             <div className="bg-[#222222] px-10 ms-5">
-              <p className="m-3 text-xs">
-                今日の忍術：これはじゅうもじですこれはじゅうもじです
-              </p>
+              <Suspense fallback={<p className="m-3 text-xs">今日の忍術：</p>}>
+                <p className="m-3 text-xs">{`今日の忍術：${ninjutsu}`}</p>
+              </Suspense>
             </div>
           </h1>
           <div className="flex space-x-2.5">

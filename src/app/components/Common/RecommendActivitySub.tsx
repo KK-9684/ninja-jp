@@ -22,7 +22,6 @@ export default async function RecommendActivitySub({
           <ActivitySubList
             image={item.image?.[0]?.url || "/noimage.png"}
             category={item.category?.[0]?.title || ""}
-            areaName={item.area || ""}
             title={item.title}
             time={item.time}
             price={item.price}

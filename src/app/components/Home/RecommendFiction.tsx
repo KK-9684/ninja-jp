@@ -3,13 +3,28 @@
 import FictionItem from "../Common/FictionItem";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
-import { fictionCategoryPerItems } from "@/app/(pages)/fiction/fetcher";
+import {
+  fictionCategoryPerItems,
+  FictionCore,
+} from "@/app/(pages)/fiction/fetcher";
+
+type Fiction = FictionCore & {
+  categoryTitle: string;
+  uniqueId: string;
+};
 
 export default function RecommendFiction() {
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<
+    {
+      items: FictionCore[];
+      slug: string;
+      title: string;
+      total: number;
+    }[]
+  >([]);
   const [active, setActive] = useState(-1);
   const [isLoading, setIsLoading] = useState(true);
-  const [allItems, setAllItems] = useState([]);
+  const [allItems, setAllItems] = useState<Fiction[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
