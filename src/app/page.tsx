@@ -292,8 +292,7 @@ export default async function Home() {
             <div className="flex flex-col space-y-7 text-ninjack-white items-center md:items-start">
               <p className="md:text-[35px] text-[24px] font-bold">
                 すべての忍者をJackする。
-              </p>
-              <p className="md:text-[35px] text-[24px] font-bold">
+                <br />
                 忍者ですべてをJackする。
               </p>
               <p className="md:text-[20px] text-[14px]">

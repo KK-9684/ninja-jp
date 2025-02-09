@@ -5,8 +5,6 @@ import RelationActivity from "@/app/components/Common/RelationActivity";
 import { shuffle } from "@/lib/util/shuffle";
 import RelationMember from "@/app/components/Common/RelationMember";
 
-import ImageViewer from "@/app/components/Imageviwer";
-
 import ImageMap from "@/assets/image-map.png";
 import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-ninja.png";
@@ -14,6 +12,7 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
 import { Metadata } from "next/types";
+import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
 export const metadata: Metadata = {
   title: "Ninja",
@@ -33,8 +32,8 @@ export default async function NinjaDetailPage({ params }: { params: Params }) {
 
   return (
     <>
-      <div className="flex flex-row">
-        <div className="w-full flex flex-col md:p-[60px] p-8 md:pl-[100px]">
+      <div className="flex md:max-w-[1240px] md:mx-auto">
+        <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
           <section className="flex flex-col md:gap-[48px]">
             <div className="flex flex-col md:space-y-6 gap-4">
               <div className="flex flex-col justify-between py-1">
@@ -55,8 +54,16 @@ export default async function NinjaDetailPage({ params }: { params: Params }) {
                 </div>
               </div>
             </div>
-            <div>
-              <ImageViewer />
+            <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
+              <DetailPageSwiper
+                images={
+                  item.image?.map((img) => ({
+                    ...img,
+                    width: 1200,
+                    height: 800,
+                  })) ?? []
+                }
+              />
             </div>
           </section>
 

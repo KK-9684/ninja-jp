@@ -14,11 +14,24 @@ interface CustomButtonProps {
   isLarge?: boolean;
 }
 
-const CustomButton = ({ isArrow = false, text, font = "NotoSansJp", color = "ninjack-white", link, handleClick }: CustomButtonProps) => {
+const CustomButton = ({
+  isArrow = false,
+  text,
+  font = "NotoSansJp",
+  color = "ninjack-white",
+  link,
+  handleClick,
+}: CustomButtonProps) => {
   const content = (
-    <div className="py-3 px-4 flex items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray">
-      <span className={`font-${font} text-${color} text-base leading-4`}>{text}</span>
-      {isArrow && <Image src={iconRightArrow} alt="icon-right-arrow" className="ms-1.5" />}
+    <div className="py-3 px-4 flex items-center border border-ninjack-line-gray rounded bg-ninjack-bg-gray group">
+      <span
+        className={`font-${font} text-${color} text-base leading-4 group-hover:text-ninjack-purple`}
+      >
+        {text}
+      </span>
+      {isArrow && (
+        <Image src={iconRightArrow} alt="icon-right-arrow" className="ms-1.5" />
+      )}
     </div>
   );
 

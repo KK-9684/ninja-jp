@@ -4,7 +4,6 @@ import RichContent from "@/app/components/Common/RichContent";
 import RelationActivity from "@/app/components/Common/RelationActivity";
 import RelationSpot from "@/app/components/Common/RelationSpot";
 import { shuffle } from "@/lib/util/shuffle";
-import ImageViewer from "@/app/components/Imageviwer";
 
 import IconTimer from "@/assets/icon-timer.svg";
 import ImageCeo from "@/assets/image-ceo.png";
@@ -15,6 +14,7 @@ import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import DetailItemList from "@/app/components/Common/detailItemList";
 import { Metadata } from "next/types";
+import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
 export const metadata: Metadata = {
   title: "Ninja",
@@ -34,11 +34,13 @@ export default async function ActivityDetailPage({
   if (!activity) {
     return <div>Not Found</div>;
   }
+
+  console.log(activity);
   return (
     <>
-      <div className="flex flex-row">
-        <div className="w-full flex flex-col md:p-[60px] p-8 md:pl-[100px]">
-          <section className="flex flex-col gap-[48px]">
+      <div className="flex md:max-w-[1240px] md:mx-auto">
+        <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
+          <section className="flex flex-col gap-[20px]">
             <div className="flex flex-col md:space-y-6 gap-4">
               <div className="flex flex-col justify-between py-1">
                 <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
@@ -79,9 +81,22 @@ export default async function ActivityDetailPage({
               </div>
             </div>
             <div>
-              <ImageViewer />
+              <DetailPageSwiper
+                images={
+                  activity.image?.map((img) => ({
+                    ...img,
+                    width: 1200,
+                    height: 800,
+                  })) ?? []
+                }
+              />
+              {/* {activity.image?.map((image) => (
+                <div key={image.url}>
+                  <img src={image.url} />
+                </div>
+              ))} */}
             </div>
-            <div className="mt-[32px] flex flex-row gap-[20px] items-center">
+            <div className="flex flex-row gap-[20px] items-center">
               <div className="text-[36px] text-[#ffffff]">{activity.price}</div>
               <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit">
                 <Image
@@ -94,7 +109,7 @@ export default async function ActivityDetailPage({
             </div>
           </section>
 
-          <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
+          <section className="richContent flex flex-col mt-[40px] text-[#ffffff] gap-11">
             <RichContent document={activity.content} />
           </section>
 
@@ -103,19 +118,7 @@ export default async function ActivityDetailPage({
             activity.plans.map((plan, index) => (
               <DetailItemList key={`${plan.title}-${index}`} plan={plan} />
             ))}
-          {/* <div className="md:hidden mt-8">
-            <Image
-              src={ImageVideo}
-              alt=""
-              className="self-center object-contain rounded-md"
-            />
-          </div> */}
           <section className="flex flex-col mt-[44px]">
-            {/* <Image
-              src={ImageMap}
-              alt=""
-              className="w-full md:px-[60px] object-contain"
-            /> */}
             <ShareButton />
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
@@ -187,7 +190,7 @@ export default async function ActivityDetailPage({
           </section>
         </div>
 
-        <div className="max-w-[500px] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] pr-[100px] hidden md:block">
+        <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
           <DetailSideContent />
 
           <section className="mt-[52px]">

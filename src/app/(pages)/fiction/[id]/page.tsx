@@ -3,7 +3,6 @@ import RichContent from "@/app/components/Common/RichContent";
 import { getFiction } from "../fetcher";
 import { shuffle } from "@/lib/util/shuffle";
 import RelationItem from "@/app/components/Common/RelationItem";
-import ImageViewer from "@/app/components/Imageviwer";
 
 import ImageMap from "@/assets/image-map.png";
 import ImageCeo from "@/assets/image-ceo.png";
@@ -15,6 +14,7 @@ import ImageSub from "@/assets/image-sub-fiction.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import { Metadata } from "next/types";
+import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
 type Params = Promise<{ id: string }>;
 
@@ -36,8 +36,8 @@ export default async function FictionDetailPage({
   }
   return (
     <>
-      <div className="flex flex-row">
-        <div className="w-full flex flex-col md:p-[60px] p-8 md:pl-[100px]">
+      <div className="flex md:max-w-[1240px] md:mx-auto">
+        <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
           <section className="flex flex-col md:gap-[48px]">
             <div className="flex flex-col md:space-y-6 gap-4">
               <div className="flex flex-col py-1">
@@ -84,7 +84,20 @@ export default async function FictionDetailPage({
               </div>
             </div>
             <div>
-              <ImageViewer />
+              <DetailPageSwiper
+                images={
+                  item.image?.map((img) => ({
+                    ...img,
+                    width: 1200,
+                    height: 800,
+                  })) ?? []
+                }
+              />
+              {/* {activity.image?.map((image) => (
+                <div key={image.url}>
+                  <img src={image.url} />
+                </div>
+              ))} */}
             </div>
           </section>
 
@@ -146,7 +159,7 @@ export default async function FictionDetailPage({
           </section>
         </div>
 
-        <div className="md:block hidden max-w-[500px] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] pr-[100px]">
+        <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
           <DetailSideContent />
 
           <section className="mt-[52px]">

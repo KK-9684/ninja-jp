@@ -20,25 +20,28 @@ const ActivitySubList = ({
   time,
 }: ActivitySubListProps) => {
   return (
-    <Link href={href} className="flex space-x-5 items-center mb-3">
+    <Link href={href} className="flex gap-3 items-center mb-3 group">
       <Image
         src={image}
         alt="ダミーテキスト"
-        width={100}
+        width={80}
         height={80}
-        className="rounded-[6px] w-[100px] h-[100px] object-cover"
+        className="rounded-[6px] w-[80px] h-[80px] object-cover"
       />
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
-          <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none">
+          <div className="rounded-tl-[6px] py-1.5 px-2 text-ninjack-white bg-ninjack-purple text-[10px] leading-none">
             {category}
           </div>
         </div>
         <div>
-          <p className="text-[12px] font-bold text-ninjack-white ">{title}</p>
-          <div className="text-ninjack-text-gray text-sm">
-            <span className="me-5">￥{price}〜</span>
-            <span>/ {time}</span>
+          <p className="text-[12px] font-bold text-ninjack-white group-hover:text-ninjack-purple">
+            {title}
+          </p>
+          <div className="text-ninjack-text-gray text-[10px] flex gap-2">
+            <span>{price}</span>
+            <span>/</span>
+            <span>{time}</span>
           </div>
         </div>
       </div>

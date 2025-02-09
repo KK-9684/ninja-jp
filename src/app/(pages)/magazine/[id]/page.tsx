@@ -7,6 +7,7 @@ import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import RecommendMagazine from "@/app/components/Common/RecommendMagazine";
 import { Metadata } from "next/types";
+import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
 export const metadata: Metadata = {
   title: "Ninja",
@@ -28,8 +29,8 @@ export default async function MagazineDetailPage({
   }
   return (
     <>
-      <div className="flex flex-row">
-        <div className="w-full flex flex-col md:p-[60px] md:pl-[100px] p-8">
+      <div className="flex md:max-w-[1240px] md:mx-auto">
+        <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
           <section className="flex flex-col ">
             <div className="flex justify-between">
               <div className="flex gap-6 items-center text-[14px] mb-6">
@@ -68,17 +69,15 @@ export default async function MagazineDetailPage({
                   </div>
                 </div>
               )}
-            {/* <ImageViewer /> */}
-            {magazine.image?.map((img) => (
-              <Image
-                key={img.alt}
-                src={img.url}
-                alt={img.alt}
-                width={640}
-                height={480}
-                className="w-[100%] h-[600px]"
-              />
-            ))}
+            <DetailPageSwiper
+              images={
+                magazine.image?.map((img) => ({
+                  ...img,
+                  width: 1200,
+                  height: 800,
+                })) ?? []
+              }
+            />
           </section>
 
           <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
@@ -131,7 +130,7 @@ export default async function MagazineDetailPage({
           </section>
         </div>
 
-        <div className="md:block hidden max-w-[500px] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] pr-[100px]">
+        <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
           <DetailSideContent />
         </div>
       </div>

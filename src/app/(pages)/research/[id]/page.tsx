@@ -4,7 +4,6 @@ import RelationActivity from "@/app/components/Common/RelationActivity";
 import { shuffle } from "@/lib/util/shuffle";
 import { getResearch } from "../fetcher";
 import RelationItem from "@/app/components/Common/RelationItem";
-import ImageViewer from "@/app/components/Imageviwer";
 
 import ImageMap from "@/assets/image-map.png";
 import ImageCeo from "@/assets/image-ceo.png";
@@ -14,6 +13,7 @@ import ImageSub from "@/assets/icon-sub-research.png";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
 import { Metadata } from "next/types";
+import DetailPageSwiper from "@/app/components/detailPageSwiper";
 export const metadata: Metadata = {
   title: "Ninja",
   description: "",
@@ -37,8 +37,8 @@ export default async function ResearchDetailPage({
 
   return (
     <>
-      <div className="flex flex-row">
-        <div className="w-full flex flex-col md:p-[60px] p-10 md:pl-[100px]">
+      <div className="flex md:max-w-[1240px] md:mx-auto">
+        <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
           <section className="flex flex-col md:gap-[48px] gap-4">
             <div className="flex flex-col md:space-y-6 gap-4">
               <div className="flex flex-col justify-between py-1">
@@ -70,14 +70,20 @@ export default async function ResearchDetailPage({
               </div>
             </div>
             <div>
-              <ImageViewer />
+              <DetailPageSwiper
+                images={
+                  research.image?.map((img) => ({
+                    ...img,
+                    width: 1200,
+                    height: 800,
+                  })) ?? []
+                }
+              />
             </div>
           </section>
-
           <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
             <RichContent document={research.content} />
           </section>
-
           <section className="flex flex-col mt-[44px]">
             <Image
               src={ImageMap}
@@ -115,7 +121,6 @@ export default async function ResearchDetailPage({
               )}
             </div>
           </section>
-
           <section className="mt-[120px] flex flex-col gap-7">
             <div className="flex space-x-4 items-center">
               <Image src={iconItem} alt="施設・史跡" width={40} height={40} />
@@ -129,7 +134,6 @@ export default async function ResearchDetailPage({
               )}
             </div>
           </section>
-
           <section className="mt-[90px] flex flex-col gap-7">
             <div className="flex space-x-4 items-center">
               <Image
@@ -149,8 +153,7 @@ export default async function ResearchDetailPage({
             </div>
           </section>
         </div>
-
-        <div className="md:block hidden max-w-[500px] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] pr-[100px]">
+        <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
           <DetailSideContent />
 
           <section className="mt-[52px]">

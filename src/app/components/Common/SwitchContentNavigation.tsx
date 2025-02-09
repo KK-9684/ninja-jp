@@ -17,7 +17,8 @@ import { useState } from "react";
 import clsx from "clsx";
 
 const SwitchContentNavigation = () => {
-  const [activeIcon, setActiveIcon] = useState<string | null>(null);
+  const [activeIcon, setActiveIcon] = useState<string>(""); // 初期値を空文字列に設定
+
   return (
     <section className="bg-ninjack-bg-gray">
       <div className="container mx-auto py-[60px] px-5 flex md:flex-row flex-col justify-between items-center">
@@ -36,16 +37,19 @@ const SwitchContentNavigation = () => {
             <p className="text-ninjack-white">
               about
               <span
-                className={clsx("text-ninjack-purple ml-4 ", {
-                  inlineBlock: activeIcon === "",
-                  hidden: activeIcon !== "",
-                })}
+                className={clsx(
+                  "text-ninjack-purple ml-4 overflow-hidden relative",
+                  {
+                    "inline-block": activeIcon === "",
+                    hidden: activeIcon !== "",
+                  }
+                )}
               >
                 CONTENT.
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "activity",
+                  "inline-block": activeIcon === "activity",
                   hidden: activeIcon !== "activity",
                 })}
               >
@@ -53,7 +57,7 @@ const SwitchContentNavigation = () => {
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "spot",
+                  "inline-block": activeIcon === "spot",
                   hidden: activeIcon !== "spot",
                 })}
               >
@@ -61,7 +65,7 @@ const SwitchContentNavigation = () => {
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "item",
+                  "inline-block": activeIcon === "item",
                   hidden: activeIcon !== "item",
                 })}
               >
@@ -69,7 +73,7 @@ const SwitchContentNavigation = () => {
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "research",
+                  "inline-block": activeIcon === "research",
                   hidden: activeIcon !== "research",
                 })}
               >
@@ -77,7 +81,7 @@ const SwitchContentNavigation = () => {
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "fiction",
+                  "inline-block": activeIcon === "fiction",
                   hidden: activeIcon !== "fiction",
                 })}
               >
@@ -85,7 +89,7 @@ const SwitchContentNavigation = () => {
               </span>
               <span
                 className={clsx("text-ninjack-purple ml-4", {
-                  inlineBlock: activeIcon === "ninja",
+                  "inline-block": activeIcon === "ninja",
                   hidden: activeIcon !== "ninja",
                 })}
               >
@@ -96,7 +100,7 @@ const SwitchContentNavigation = () => {
           <div className="text-ninjack-purple text-sm text-end leading-none hidden md:block">
             <span
               className={clsx({
-                inlineBlock: activeIcon === "",
+                "inline-block": activeIcon === "",
                 hidden: activeIcon !== "",
               })}
             >
@@ -104,7 +108,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "activity",
+                "inline-block": activeIcon === "activity",
                 hidden: activeIcon !== "activity",
               })}
             >
@@ -112,7 +116,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "spot",
+                "inline-block": activeIcon === "spot",
                 hidden: activeIcon !== "spot",
               })}
             >
@@ -120,7 +124,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "item",
+                "inline-block": activeIcon === "item",
                 hidden: activeIcon !== "item",
               })}
             >
@@ -128,7 +132,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "research",
+                "inline-block": activeIcon === "research",
                 hidden: activeIcon !== "research",
               })}
             >
@@ -136,7 +140,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "fiction",
+                "inline-block": activeIcon === "fiction",
                 hidden: activeIcon !== "fiction",
               })}
             >
@@ -144,7 +148,7 @@ const SwitchContentNavigation = () => {
             </span>
             <span
               className={clsx({
-                inlineBlock: activeIcon === "ninja",
+                "inline-block": activeIcon === "ninja",
                 hidden: activeIcon !== "ninja",
               })}
             >

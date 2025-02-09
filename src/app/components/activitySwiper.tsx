@@ -48,42 +48,66 @@ const ActivitySwiper = () => {
       className="w-full"
     >
       <SwiperSlide>
-        <Image src={topSlide1} alt="体験・修行" />
+        <Image
+          src={topSlide1}
+          alt="体験・修行"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="体験・修行"
           content="タイトルタイトルタイトルタイトルタイトル"
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src={topSlide2} alt="施設・史跡" />
+        <Image
+          src={topSlide2}
+          alt="施設・史跡"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="施設・史跡"
           content="タイトルタイトルタイトルタイトルタイトル"
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src={topSlide3} alt="商品・忍具" />
+        <Image
+          src={topSlide3}
+          alt="商品・忍具"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="商品・忍具"
           content="タイトルタイトルタイトルタイトルタイトル"
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src={topSlide1} alt="研究情報" />
+        <Image
+          src={topSlide1}
+          alt="研究情報"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="研究情報"
           content="タイトルタイトルタイトルタイトルタイトル"
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src={topSlide2} alt="創作作品" />
+        <Image
+          src={topSlide2}
+          alt="創作作品"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="創作作品"
           content="タイトルタイトルタイトルタイトルタイトル"
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Image src={topSlide3} alt="現代忍者" />
+        <Image
+          src={topSlide3}
+          alt="現代忍者"
+          className="rounded-[20%_6px_6px_6px]"
+        />
         <TopSlideDescription
           title="現代忍者"
           content="タイトルタイトルタイトルタイトルタイトル"

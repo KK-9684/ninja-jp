@@ -1,7 +1,6 @@
 import { shuffle } from "@/lib/util/shuffle";
 import { getItemList } from "@/app/(pages)/item/fetcher";
-import ItemItem from "./itemItem";
-
+import ItemItemSub from "./itemItemSub";
 // おすすめの忍者アイテム
 export default async function RecommendItemSub({ limit }: { limit: number }) {
   const list = await getItemList({
@@ -14,7 +13,7 @@ export default async function RecommendItemSub({ limit }: { limit: number }) {
   return (
     <>
       {items.map((item) => (
-        <ItemItem
+        <ItemItemSub
           image={item.image?.[0]?.url || "/noimage.png"}
           title={item.title || ""}
           price={item.price}
