@@ -19,10 +19,27 @@ import Link from "next/link";
 import DigitalClock from "./DigitalClock";
 import { getNinjutsu } from "@/lib/contentful/sharedModel";
 import { Suspense, useEffect, useState } from "react";
+import { allActiveCategories } from "@/lib/contentful/sharedModel";
+import HamburgerMenu from "./Common/humbergerMenu";
 
 const Header = () => {
-  const openMenu = () => {};
+  const openMenu = () => setIsMenuOpen(true);
   const [ninjutsu, setNinjutsu] = useState<string>("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categoriesData = await allActiveCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchNinjutsu = async () => {
@@ -197,6 +214,13 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+      {categories && (
+        <HamburgerMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          categories={categories}
+        />
+      )}
     </header>
   );
 };
