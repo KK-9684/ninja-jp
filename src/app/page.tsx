@@ -83,7 +83,7 @@ export default async function Home() {
 
         <div className="flex flex-col self-start md:hidden p-8 bg-ninjack-bg-gray border rounded-[10px] border-ninjack-line-gray w-full">
           <div className="flex flex-col ">
-            <div className="flex items-center mb-8 ">
+            <div className="flex items-center ">
               <p className="text-ninjack-white text-[20px] leading-none me-3">
                 WHAT’S NEW
               </p>
@@ -118,8 +118,8 @@ export default async function Home() {
         <div className="hidden md:grid md:grid-cols-2 grid-cols-1 gap-x-[72px] justify-between mt-10">
           <RecommendActivity limit={6} />
         </div>
-        <div className="md:hidden grid grid-cols-1 gap-6 justify-between my-10">
-          <RecommendActivity limit={6} />
+        <div className="md:hidden grid grid-cols-1 gap-0 justify-between my-10">
+          <RecommendActivity limit={3} />
         </div>
         <div className="md:hidden mx-auto">
           <DetailButton href="/activity" size={350} />

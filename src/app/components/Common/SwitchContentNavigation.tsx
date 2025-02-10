@@ -156,7 +156,7 @@ const SwitchContentNavigation = () => {
             </span>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-6 md:flex gap-2">
           <Link
             href="/activity"
             className="group"
@@ -168,7 +168,7 @@ const SwitchContentNavigation = () => {
               alt="体験・修行"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
           <Link
@@ -182,7 +182,7 @@ const SwitchContentNavigation = () => {
               alt="施設・史跡"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
           <Link
@@ -196,7 +196,7 @@ const SwitchContentNavigation = () => {
               alt="商品・忍具"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
           <Link
@@ -210,7 +210,7 @@ const SwitchContentNavigation = () => {
               alt="研究情報"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
           <Link
@@ -224,7 +224,7 @@ const SwitchContentNavigation = () => {
               alt="創作作品"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
           <Link
@@ -238,7 +238,7 @@ const SwitchContentNavigation = () => {
               alt="現代忍者"
               width={72}
               height={72}
-              className="m-8 w-[72px] h-[72px]"
+              className="md:m-8 w-[48px] h-[48px] md:w-[72px] md:h-[72px]"
             />
           </Link>
         </div>

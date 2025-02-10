@@ -75,7 +75,7 @@ export default function RecommendFiction() {
 
   return (
     <>
-      <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
+      <div className="border border-ninjack-line-gray rounded-[30px] flex max-w-[calc(100vw_-_40px)] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
         {/* すべてタブ */}
         <div
           key="all"
@@ -86,7 +86,7 @@ export default function RecommendFiction() {
         >
           <div
             className={clsx(
-              "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
+              "whitespace-nowrap md:py-4 py-3 md:px-5 px-4 text-sm leading-none border border-transparent",
               active === -1
                 ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
                 : "text-ninjack-text-gray md:text-[16px] text-[12px]",
@@ -108,7 +108,7 @@ export default function RecommendFiction() {
           >
             <div
               className={clsx(
-                "md:py-4 py-3 md:px-5 px-4 textsm leading-none border border-transparent",
+                "whitespace-nowrap md:py-4 py-3 md:px-5 px-4 text-sm leading-none border border-transparent",
                 active === index
                   ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
                   : "text-ninjack-text-gray md:text-[16px] text-[12px]",
