@@ -99,7 +99,8 @@ export const getNinjutsu = async () => {
 type CarouselLinkEntry = {
   contentTypeId: "topCarousel";
   fields: {
-    title: EntryFieldTypes.Symbol;
+    title?: EntryFieldTypes.Symbol;
+    name?: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   };
@@ -122,39 +123,40 @@ export const resolveModel = (contentType: string) => {
       return { id: "item", name: "商品・忍具" };
     case "research":
       return { id: "research", name: "研究情報" };
-    case "fiction":
+    case "culture":
       return { id: "fiction", name: "創作作品" };
     case "member":
       return { id: "ninja", name: "現代忍者" };
     case "magazine":
       return { id: "magazine", name: "マガジン" };
     default:
-      return { id: "activity", name: "アクティビティ" };
+      return { id: "activity", name: "体験・旅行" };
   }
 };
-export const getLinkEntries = async () => {
+export const getTopCarousel = async () => {
   const result = await getEntries<CarouselLinkEntrySkeleton>({
     content_type: "topCarousel",
     order: ["-sys.createdAt"],
   });
 
-  const items = result.items[0].fields.item;
+  const topCarousels = result.items[0].fields.item;
 
-  if (!items) {
-    return { total: 0, items: [] };
+  if (!topCarousels) {
+    return [];
   }
 
-  return {
-    total: result.total,
-    items: items.map((item) => ({
-      // model: resolveModel(item?.sys.contentType.sys.id),
-      slug: item?.sys.id,
-      title: item?.fields.title || "",
-      image: item?.fields.image
-        ?.filter((img) => img !== null && img !== undefined)
-        .map(transformAsset),
-    })),
-  };
+  return topCarousels
+    .filter((item) => item !== undefined)
+    .map((item) => ({
+      slug: item.sys.id || "",
+      title: resolveModel(item.sys.contentType.sys.id).name,
+      content: item.fields.title || item.fields.name || "",
+      image: item.fields.image
+        ? item.fields.image
+            .filter((img) => img !== null && img !== undefined)
+            .map(transformAsset)[0]
+        : null,
+    }));
 };
 
 type Category = {
