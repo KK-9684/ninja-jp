@@ -2,10 +2,10 @@ import { EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { getEntries } from "./client";
 import { transformAsset } from "./transformContent";
 import { activityCategoryHasItems } from "@/app/(pages)/activity/fetcher";
-import { spotCategoryPerItems } from "@/app/(pages)/spot/fetcher";
+import { spotCategoryHasItems } from "@/app/(pages)/spot/fetcher";
 import { itemCategoryHasItems } from "@/app/(pages)/item/fetcher";
 import { researchCategoryHasItems } from "@/app/(pages)/research/fetcher";
-import { fictionCategoryPerItems } from "@/app/(pages)/fiction/fetcher";
+import { fictionCategoryHasItems } from "@/app/(pages)/fiction/fetcher";
 import { memberCategoryHasItems } from "@/app/(pages)/ninja/fetcher";
 
 type CategoryContentTypes =
@@ -157,13 +157,27 @@ export const getLinkEntries = async () => {
   };
 };
 
-export const allActiveCategories = async () => {
-  const activityCategory = await activityCategoryHasItems(1);
-  const spotCategory = await spotCategoryPerItems(1);
-  const itemCategory = await itemCategoryHasItems(1);
-  const researchCategory = await researchCategoryHasItems(1);
-  const fictionCategory = await fictionCategoryPerItems(1);
-  const memberCategory = await memberCategoryHasItems(1);
+type Category = {
+  slug: string;
+  title: string;
+};
+
+export type AllActiveCategories = {
+  activityCategory: Category[];
+  spotCategory: Category[];
+  itemCategory: Category[];
+  researchCategory: Category[];
+  fictionCategory: Category[];
+  memberCategory: Category[];
+};
+
+export const allActiveCategories = async (): Promise<AllActiveCategories> => {
+  const activityCategory = await activityCategoryHasItems();
+  const spotCategory = await spotCategoryHasItems();
+  const itemCategory = await itemCategoryHasItems();
+  const researchCategory = await researchCategoryHasItems();
+  const fictionCategory = await fictionCategoryHasItems();
+  const memberCategory = await memberCategoryHasItems();
 
   return {
     activityCategory,
