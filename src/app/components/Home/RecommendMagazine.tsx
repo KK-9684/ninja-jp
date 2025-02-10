@@ -195,7 +195,10 @@ export default function RecommendMagazine() {
               if (!item?.slug) return null;
 
               return (
-                <div key={`magazine-${item.slug}`} className="flex flex-col">
+                <div
+                  key={`magazine-${item.slug}-${item.categoryTitle}`}
+                  className="flex flex-col"
+                >
                   <MagazineItem
                     image={item?.image?.[0]?.url || "/noimage.png"}
                     imageWidth={240} // 追加
