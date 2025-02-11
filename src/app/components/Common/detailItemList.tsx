@@ -8,7 +8,7 @@ type DetailItemListProps = { plan: Plan };
 
 const DetailItemList = ({ plan }: DetailItemListProps) => {
   return (
-    <div className="bg-[#171717] border-[#2e2e2e] border-[1px] p-[20px] md:flex hidden flex-row justify-between rounded-[10px] w-full">
+    <div className="bg-[#171717] border-[#2e2e2e] border-[1px] p-[20px] md:flex hidden flex-row justify-between rounded-[10px] w-full mb-5">
       <div className="flex flex-row gap-6">
         <div className="flex flex-col gap-[20px] self-center">
           <div className="text-[#ffffff] text-[16px] text-left">

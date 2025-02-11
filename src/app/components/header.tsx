@@ -163,9 +163,9 @@ const Header = () => {
             <MenuButton icon={iconHamburger} label="" handleClick={openMenu} />
           </div>
         </div>
-        <nav className="items-center border-t border-b border-ninjack-line-gray p-2 w-full">
-          <ul className="flex flex-row justify-between">
-            <li>
+        <nav className="items-center border-t border-b border-ninjack-line-gray p-2 w-full overflow-x-auto">
+          <ul className="flex flex-row md:justify-between items-center min-w-max gap-6 px-2">
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconActivity}
                 label="体験・修行"
@@ -173,7 +173,7 @@ const Header = () => {
                 color="ninjack-text-gray"
               />
             </li>
-            <li>
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconSpot}
                 label="施設・史跡"
@@ -181,7 +181,7 @@ const Header = () => {
                 color="ninjack-text-gray"
               />
             </li>
-            <li>
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconItem}
                 label="商品・忍具"
@@ -189,15 +189,16 @@ const Header = () => {
                 color="ninjack-text-gray"
               />
             </li>
-            <li>
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconResearch}
                 label="研究情報"
                 link="/research"
                 color="ninjack-text-gray"
+                isSmall
               />
             </li>
-            <li>
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconFiction}
                 label="創作作品"
@@ -205,7 +206,7 @@ const Header = () => {
                 color="ninjack-text-gray"
               />
             </li>
-            <li>
+            <li className="flex-shrink-0">
               <MenuItem
                 icon={iconNinja}
                 label="現代忍者"

@@ -43,7 +43,7 @@ const NewsItem = ({ href, date, type, title }: NewsItemProps) => {
         <p>{title}</p>
       </div>
 
-      <div className="flex flex-col gap-2 md:hidden items-center py-4  text-md leading-none text-ninjack-white border-b border-ninjack-line-gray">
+      <div className="flex flex-col gap-2 md:hidden items-start py-4  text-md leading-none text-ninjack-white border-b border-ninjack-line-gray">
         <div className="flex flex-row gap-2 items-center self-start">
           <p className="text-[12px]">{date}</p>
           <p className="flex items-center">

@@ -95,7 +95,7 @@ export default function RecommendMagazine() {
 
   return (
     <div>
-      <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
+      <div className="border border-ninjack-line-gray rounded-[30px] flex max-w-[calc(100vw_-_40px)] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll mb-6">
         <div
           key="all"
           onClick={() => setActive(-1)}
@@ -149,18 +149,18 @@ export default function RecommendMagazine() {
           </span>
         </div>
 
-        <div className="flex md:flex-row flex-col justify-between gap-x-20">
+        <div className="flex md:flex-row flex-col justify-between">
           {latestItem && (
-            <div className="flex flex-col space-y-10">
+            <div className="flex flex-col">
               <Image
                 src={latestItem.image?.[0]?.url || "/noimage.png"}
                 alt={latestItem.title || ""}
                 width={500}
                 height={300}
-                className=""
+                className="rounded-[10px]"
               />
-              <div>
-                <div className="flex justify-between mb-9">
+              <div className="mt-3">
+                <div className="flex justify-between ">
                   <div className="flex space-x-4 items-center">
                     {latestItem.isNew && (
                       <div className="text-xs leading-none bg-ninjack-white px-[7px] py-[5px]">
@@ -183,15 +183,15 @@ export default function RecommendMagazine() {
                 <p className="text-ninjack-white text-xl font-bold mb-4">
                   {latestItem.title}
                 </p>
-                <p className="text-ninjack-text-gray text-xs">
+                <p className="text-ninjack-text-gray text-xs mb-5">
                   {latestItem.summary}
                 </p>
               </div>
             </div>
           )}
 
-          <div className="grid md:grid-cols-2 grid-cols-1 md:gap-12 gap-6 mb-8">
-            {displayItems.map((item) => {
+          <div className="grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-4 mb-8">
+            {displayItems.map((item, index) => {
               if (!item?.slug) return null;
 
               return (

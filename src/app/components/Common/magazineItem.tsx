@@ -24,7 +24,7 @@ const MagazineItem = ({
   content,
 }: MagazineItemProps) => {
   return (
-    <Link href={href} className="flex space-x-6">
+    <Link href={href} className="flex gap-4">
       <Image
         src={image}
         alt="ダミーテキスト"
@@ -32,8 +32,8 @@ const MagazineItem = ({
         height={144}
         className="rounded-lg"
       />
-      <div className="py-3">
-        <div className="flex justify-between mb-4">
+      <div className="py-3 w-[100%]">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex gap-2 items-center text-[10px]">
             {isNew && (
               <div className="leading-none bg-ninjack-white px-[7px] py-[5px]">
@@ -44,12 +44,12 @@ const MagazineItem = ({
               <span className="text-xl" style={{ color: "#63B8A7" }}>
                 ・
               </span>
-              <span className="text-ninjack-text-gray w-[50px]">
+              <span className="text-ninjack-text-gray w-[50px] whitespace-nowrap">
                 {category}
               </span>
             </div>
           </div>
-          <div className="text-sm text-ninjack-text-gray">{date}</div>
+          <div className="text-[10px] text-ninjack-text-gray">{date}</div>
         </div>
         <p className="text-ninjack-white text-sm font-bold mb-2">{title}</p>
         <p className="text-ninjack-text-gray text-xs line-clamp-2">{content}</p>

@@ -1,7 +1,6 @@
 import { getActivityList } from "@/app/(pages)/activity/fetcher";
 import { shuffle } from "@/lib/util/shuffle";
 import ActivityListItem from "./activityListItem";
-
 // 注目の体験
 export default async function RecommendActivity({ limit }: { limit: number }) {
   const list = await getActivityList({
