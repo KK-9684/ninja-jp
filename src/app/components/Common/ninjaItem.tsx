@@ -23,17 +23,21 @@ const NinjaItem = ({
   }
 
   return (
-    <Link href={href} className="flex flex-col space-y-5">
-      <Image
-        src={image}
-        alt="ダミーテキスト"
-        className="rounded-lg w-[280px] h-[380px] object-cover"
-        width={280}
-        height={380}
-      />
+    <Link href={href} className="flex flex-col space-y-5 group">
+      <div className="overflow-hidden rounded-lg w-[280px] h-[380px]">
+        <Image
+          src={image}
+          alt="ダミーテキスト"
+          className="rounded-lg w-[280px] h-[380px] object-cover group-hover:scale-105 transition-all duration-300"
+          width={280}
+          height={380}
+        />
+      </div>
       <div>
-        <p className="font-bold text-ninjack-white text-left ">{title}</p>
-        <p className="text-ninjack-white text-sm text-left">{position}</p>
+        <p className="font-bold text-ninjack-white text-left group-hover:text-ninjack-purple">
+          {title}
+        </p>
+        <p className="mt-2 text-ninjack-white text-sm text-left">{position}</p>
       </div>
       <p className="text-ninjack-text-gray text-xs line-clamp-2 leading-[1.5]">
         {summary}

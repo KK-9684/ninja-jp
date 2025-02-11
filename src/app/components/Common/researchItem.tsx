@@ -25,15 +25,17 @@ const ResearchItem = ({
   return (
     <Link
       href={href}
-      className="flex gap-6 py-6 border-t-[1px] border-ninjack-line-gray"
+      className="flex gap-6 py-6 border-t-[1px] border-ninjack-line-gray group"
     >
-      <Image
-        src={image}
-        alt="ダミーテキスト"
-        className="rounded-lg md:w-[144px] md:h-[144px] w-[100px] h-[100px] self-center object-cover"
-        width={160}
-        height={160}
-      />
+      <div className="overflow-hidden rounded-lg md:w-[144px] md:h-[144px] md:min-w-[144px] md:min-h-[144px] w-[100px] h-[100px] self-center">
+        <Image
+          src={image}
+          alt="ダミーテキスト"
+          className="rounded-lg md:w-[144px] md:h-[144px] w-[100px] h-[100px] self-center object-cover group-hover:scale-105 transition-all duration-300"
+          width={160}
+          height={160}
+        />
+      </div>
       <div className="flex flex-col py-1 gap-4">
         {category && (
           <div className="text-xs leading-none rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple w-fit">
@@ -41,7 +43,7 @@ const ResearchItem = ({
           </div>
         )}
         <div>
-          <p className="font-bold text-ninjack-white leading-none mb-3 text-left">
+          <p className="font-bold text-ninjack-white leading-none mb-3 text-left group-hover:text-ninjack-purple">
             {title}
           </p>
           <p className="text-ninjack-text-gray text-xs line-clamp-2 text-left">

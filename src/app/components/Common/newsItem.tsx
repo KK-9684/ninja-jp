@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface NewsItemProps {
   date: string;
   type?: string;
@@ -24,19 +26,21 @@ const NewsItem = ({ href, date, type, title }: NewsItemProps) => {
   }
 
   return (
-    <a href={href} className="w-[100%] block">
+    <Link href={href} className="w-[100%] block group">
       <div className="md:flex hidden items-center py-4 space-x-8 text-md leading-none text-ninjack-white border-b border-ninjack-line-gray">
         <p className="font-light">{date}</p>
         <p className="flex items-center">
           {type && (
             <>
               <span
-                className="text-2xl leading-none"
+                className="text-2xl leading-none group-hover:text-ninjack-purple"
                 style={{ color: getColor(type) }}
               >
                 ・
               </span>
-              <span className="text-ninjack-text-gray">{type}</span>
+              <span className="text-ninjack-text-gray group-hover:text-ninjack-purple">
+                {type}
+              </span>
             </>
           )}
         </p>
@@ -50,7 +54,7 @@ const NewsItem = ({ href, date, type, title }: NewsItemProps) => {
             {type && (
               <>
                 <span
-                  className="text-2xl leading-none"
+                  className="text-2xl leading-none group-hover:text-ninjack-purple"
                   style={{ color: getColor(type) }}
                 >
                   ・
@@ -64,7 +68,7 @@ const NewsItem = ({ href, date, type, title }: NewsItemProps) => {
         </div>
         <p>{title}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 

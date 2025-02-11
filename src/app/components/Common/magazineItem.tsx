@@ -24,14 +24,16 @@ const MagazineItem = ({
   content,
 }: MagazineItemProps) => {
   return (
-    <Link href={href} className="flex gap-4">
-      <Image
-        src={image}
-        alt="ダミーテキスト"
-        width={144}
-        height={144}
-        className="rounded-lg"
-      />
+    <Link href={href} className="flex gap-4 group">
+      <div className="overflow-hidden rounded-lg w-[144px] h-[144px] min-w-[144px] min-h-[144px]">
+        <Image
+          src={image}
+          alt="ダミーテキスト"
+          width={144}
+          height={144}
+          className="rounded-lg group-hover:scale-105 transition-all duration-300 object-cover w-[144px] h-[144px] min-w-[144px] min-h-[144px]"
+        />
+      </div>
       <div className="py-3 w-[100%]">
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-2 items-center text-[10px]">
@@ -51,7 +53,9 @@ const MagazineItem = ({
           </div>
           <div className="text-[10px] text-ninjack-text-gray">{date}</div>
         </div>
-        <p className="text-ninjack-white text-sm font-bold mb-2">{title}</p>
+        <p className="text-ninjack-white text-sm font-bold mb-2 group-hover:text-ninjack-purple">
+          {title}
+        </p>
         <p className="text-ninjack-text-gray text-xs line-clamp-2">{content}</p>
       </div>
     </Link>

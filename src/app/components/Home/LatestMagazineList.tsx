@@ -9,6 +9,7 @@ export default async function LatestMagazineList() {
     categories: [],
     tag: "",
   });
+  console.log(latestMagazine);
   return (
     <>
       {latestMagazine.items.map((item) => (
@@ -16,8 +17,7 @@ export default async function LatestMagazineList() {
           href={`/magazine/${item.slug}`}
           key={item.slug}
           date={item.createdAt}
-          // FIXME:きよしさん->カテゴリ取得
-          // type="ニュース"
+          type={item.category[0].title}
           title={item.title}
         />
       ))}

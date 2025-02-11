@@ -15,7 +15,7 @@ const SpotSelectorPC = async () => {
         <Link
           key={category.slug}
           href={`/spot?categories=${category.slug}`}
-          className="border-b border-ninjack-line-gray p-4"
+          className="border-b border-ninjack-line-gray p-4 hover:text-ninjack-purple"
         >
           {category.title}
         </Link>

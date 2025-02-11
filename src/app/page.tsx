@@ -94,7 +94,10 @@ export default async function Home() {
                 / 新着記事
               </p>
             </div>
-            <DetailButton href="/news" size={230} />
+            <DetailButton
+              href="/magazine?categories=7yuoDUav7Oxk41dmjtsevp"
+              size={230}
+            />
           </div>
           <div className="flex flex-col py-4 w-[100%]">
             <LatestMagazineList />

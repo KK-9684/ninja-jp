@@ -20,16 +20,18 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
         <Link
           key={`recommend-magazine-${item.slug}`}
           href={`/magazine/${item.slug}`}
-          className="flex md:flex-col flex-row gap-6"
+          className="flex md:flex-col flex-row gap-6 group"
         >
           {item.image?.[0].url && item.image?.[0].alt && (
-            <Image
-              src={item.image?.[0].url}
-              alt={item.image?.[0].alt}
-              width={380}
-              height={240}
-              className="rounded-md w-[380px] h-[240px]  object-cover"
-            />
+            <div className="overflow-hidden rounded-md w-[240px] h-[240px] min-w-[240px] min-h-[240px]">
+              <Image
+                src={item.image?.[0].url}
+                alt={item.image?.[0].alt}
+                width={380}
+                height={240}
+                className="rounded-md w-[240px] h-[240px]  object-cover group-hover:scale-105 transition-all duration-300"
+              />
+            </div>
           )}
 
           <div className="flex flex-col md:gap-5 gap-3">
@@ -39,7 +41,7 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
                   <span className="text-2xl" style={{ color: "#63B8A7" }}>
                     ・
                   </span>
-                  <span className="text-ninjack-text-gray text-xs">
+                  <span className="text-ninjack-text-gray text-xs ">
                     {item.category?.[0].title || ""}
                   </span>
                 </div>
@@ -48,7 +50,7 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
                 {item.createdAt}
               </div>
             </div>
-            <p className="text-ninjack-white md:text-xl text-[14px] font-bold">
+            <p className="text-ninjack-white md:text-xl text-[14px] font-bold group-hover:text-ninjack-purple">
               {item.title}
             </p>
             <p className="text-ninjack-text-gray text-xs">{item.summary}</p>

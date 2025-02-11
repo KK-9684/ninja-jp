@@ -20,14 +20,16 @@ const ActivitySubList = ({
   time,
 }: ActivitySubListProps) => {
   return (
-    <Link href={href} className="flex gap-3 items-center mb-3 group">
-      <Image
-        src={image}
-        alt="ダミーテキスト"
-        width={80}
-        height={80}
-        className="rounded-[6px] w-[80px] h-[80px] object-cover"
-      />
+    <Link href={href} className="flex gap-3 items-center mb-4 group">
+      <div className="overflow-hidden rounded-[6px] w-[80px] h-[80px] min-w-[80px] min-h-[80px]">
+        <Image
+          src={image}
+          alt="ダミーテキスト"
+          width={80}
+          height={80}
+          className="rounded-[6px] w-[80px] h-[80px] object-cover group-hover:scale-105 transition-all duration-300"
+        />
+      </div>
       <div className="flex flex-col gap-2">
         <div className="flex justify-between items-center">
           <div className="rounded-tl-[6px] py-1.5 px-2 text-ninjack-white bg-ninjack-purple text-[10px] leading-none">

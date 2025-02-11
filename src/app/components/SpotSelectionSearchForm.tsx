@@ -34,7 +34,11 @@ export default function SpotSelectionSearchForm({ categories }: Props) {
       >
         <option value="すべて">すべて</option>
         {categories?.map((category) => (
-          <option key={category.slug} value={category.slug}>
+          <option
+            key={category.slug}
+            value={category.slug}
+            className="hover:text-ninjack-purple"
+          >
             {category.title}
           </option>
         ))}

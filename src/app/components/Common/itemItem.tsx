@@ -16,20 +16,24 @@ const ItemItem = ({ href, image, title, price, category }: ItemItemProps) => {
   }
 
   return (
-    <Link href={href} className="flex flex-col space-y-5">
-      <Image
-        src={image}
-        alt={title}
-        className="rounded-lg w-full"
-        width={500}
-        height={500}
-      />
+    <Link href={href} className="flex flex-col space-y-5 group">
+      <div className="overflow-hidden rounded-lg">
+        <Image
+          src={image}
+          alt={title}
+          className="rounded-lg w-full group-hover:scale-105 transition-all duration-300"
+          width={500}
+          height={500}
+        />
+      </div>
       {category !== "" && (
         <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none w-[80px]">
           {category}
         </div>
       )}
-      <p className="font-bold text-ninjack-white text-left">{title}</p>
+      <p className="font-bold text-ninjack-white text-left group-hover:text-ninjack-purple">
+        {title}
+      </p>
       <p className="text-ninjack-text-gray text-sm text-left">{price}</p>
     </Link>
   );

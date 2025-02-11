@@ -28,15 +28,17 @@ const ActivityListItem = ({
   href,
 }: ActivityListItemProps) => {
   return (
-    <Link href={href}>
+    <Link href={href} className="group">
       <div className="flex gap-4 md:gap-0 md:space-x-10 md:py-10 py-4 border-t-[1px] border-[#2e2e2e]">
-        <Image
-          src={image}
-          alt={title}
-          width={imgWidth}
-          height={imgHeight}
-          className="rounded-lg rounded-tl-[25%] w-[80px] h-[80px] min-w-[80px] md:w-[320px] md:h-[220px] md:min-w-[320px] object-cover"
-        />
+        <div className="overflow-hidden rounded-lg rounded-lg rounded-tl-[80px] w-[80px] h-[80px] min-w-[80px] md:w-[320px] md:h-[220px] md:min-w-[320px]">
+          <Image
+            src={image}
+            alt={title}
+            width={imgWidth}
+            height={imgHeight}
+            className="rounded-lg rounded-tl-[80px] w-[80px] h-[80px] min-w-[80px] md:w-[320px] md:h-[220px] md:min-w-[320px] object-cover group-hover:scale-105 transition-all duration-300"
+          />
+        </div>
         <div className="flex flex-col md:py-8 w-[100%]">
           <div className="mb-[6px] md:mb-[27px] flex justify-between items-center">
             <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-[12px] md:text-[14px] leading-none">
@@ -48,7 +50,7 @@ const ActivityListItem = ({
             </div>
           </div>
           <div>
-            <p className="text-[14px] md:text-[16px] font-bold text-ninjack-white md:mb-3">
+            <p className="text-[14px] md:text-[16px] font-bold text-ninjack-white md:mb-3 group-hover:text-ninjack-purple">
               {title}
             </p>
             <div className="text-ninjack-text-gray text-[12px] md:text-[14px]">

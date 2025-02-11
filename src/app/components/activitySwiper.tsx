@@ -9,6 +9,7 @@ import TopSlideDescription from "./Common/topSlideDescription";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
+import Link from "next/link";
 
 type ActivitySwiperProps = {
   slides: {
@@ -43,6 +44,8 @@ const ActivitySwiper = ({ slides }: ActivitySwiperProps) => {
     };
   }, []);
 
+  console.log(slides);
+
   return (
     <Swiper
       slidesPerView={slidesPerView}
@@ -55,16 +58,21 @@ const ActivitySwiper = ({ slides }: ActivitySwiperProps) => {
     >
       {slides.map((slide) => (
         <SwiperSlide key={`recommend-contents-${slide.slug}`}>
-          {slide.image && (
-            <Image
-              src={slide.image.url}
-              alt={slide.image.alt}
-              width={800}
-              height={1020}
-              className="rounded-[20%_6px_6px_6px]"
-            />
-          )}
-          <TopSlideDescription title={slide.title} content={slide.content} />
+          {/* // FIXME:きよしさん->記事のURLを取得 */}
+          <Link href={`/FIXME/${slide.slug}`} className="group">
+            {slide.image && (
+              <div className="overflow-hidden rounded-[20%_10px_10px_10px] w-[400px] h-[560px]">
+                <Image
+                  src={slide.image.url}
+                  alt={slide.image.alt}
+                  width={800}
+                  height={1020}
+                  className="rounded-[20%_10px_10px_10px] w-[400px] h-[560px] object-cover group-hover:scale-105 transition-all duration-300"
+                />
+              </div>
+            )}
+            <TopSlideDescription title={slide.title} content={slide.content} />
+          </Link>
         </SwiperSlide>
       ))}
     </Swiper>

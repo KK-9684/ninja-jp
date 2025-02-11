@@ -23,13 +23,15 @@ const ItemItemSub = ({
 
   return (
     <Link href={href} className="flex flex-col gap-2 group">
-      <Image
-        src={image}
-        alt={title}
-        className="rounded-lg w-full"
-        width={500}
-        height={500}
-      />
+      <div className="overflow-hidden rounded-lg w-[144px] h-[144px] min-w-[144px] min-h-[144px]">
+        <Image
+          src={image}
+          alt={title}
+          className="rounded-lg w-full group-hover:scale-105 transition-all duration-300"
+          width={144}
+          height={144}
+        />
+      </div>
       {category !== "" && (
         <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-[10px] leading-none w-fit">
           {category}

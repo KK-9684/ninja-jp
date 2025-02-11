@@ -85,7 +85,7 @@ const Header = () => {
           </div>
         </div>
         <nav className="h-[67px] flex justify-between items-center border-t border-b border-ninjack-line-gray px-8">
-          <ul className="flex space-x-8">
+          <ul className="flex space-x-8 items-center">
             <li>
               <MenuItem
                 icon={iconActivity}

@@ -8,6 +8,7 @@ import {
 import MagazineItem from "../Common/magazineItem";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 type Magazine = MagazineCore & {
   categoryTitle: string;
@@ -151,14 +152,19 @@ export default function RecommendMagazine() {
 
         <div className="flex md:flex-row flex-col justify-between">
           {latestItem && (
-            <div className="flex flex-col">
-              <Image
-                src={latestItem.image?.[0]?.url || "/noimage.png"}
-                alt={latestItem.title || ""}
-                width={500}
-                height={300}
-                className="rounded-[10px]"
-              />
+            <Link
+              href={`/magazine/${latestItem.slug}`}
+              className="flex flex-col group"
+            >
+              <div className="overflow-hidden rounded-[10px]">
+                <Image
+                  src={latestItem.image?.[0]?.url || "/noimage.png"}
+                  alt={latestItem.title || ""}
+                  width={500}
+                  height={300}
+                  className="rounded-[10px] group-hover:scale-105 transition-all duration-300"
+                />
+              </div>
               <div className="mt-3">
                 <div className="flex justify-between ">
                   <div className="flex space-x-4 items-center">
@@ -180,14 +186,14 @@ export default function RecommendMagazine() {
                     {new Date(latestItem.createdAt).toLocaleDateString("ja-JP")}
                   </div>
                 </div>
-                <p className="text-ninjack-white text-xl font-bold mb-4">
+                <p className="text-ninjack-white text-xl font-bold mb-4 group-hover:text-ninjack-purple">
                   {latestItem.title}
                 </p>
                 <p className="text-ninjack-text-gray text-xs mb-5">
                   {latestItem.summary}
                 </p>
               </div>
-            </div>
+            </Link>
           )}
 
           <div className="grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-4 mb-8">
