@@ -16,7 +16,7 @@ export default async function LatestMagazineList() {
           href={`/magazine/${item.slug}`}
           key={item.slug}
           date={item.createdAt}
-          // FIXME:カテゴリ取得
+          // FIXME:きよしさん->カテゴリ取得
           // type="ニュース"
           title={item.title}
         />
