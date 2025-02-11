@@ -27,7 +27,7 @@ import { GeistFont } from "./components/Common/font";
 import SpotSelectorPC from "./components/spotSelectorPc";
 import SwitchContentNavigation from "./components/Common/SwitchContentNavigation";
 import { Metadata } from "next/types";
-import RecommendContentList from "./components/RecommendContentList";
+import RecommendContentList from "./components/Home/RecommendContentList";
 
 export const metadata: Metadata = {
   title: "Ninja",

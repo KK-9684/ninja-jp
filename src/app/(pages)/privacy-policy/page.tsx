@@ -89,7 +89,6 @@ export default function PrivacyPolicyPage() {
               </li>
             </ul>
           </section>
-          // 前のコードの続き...
           <section className="leading-relaxed">
             <h2 className="text-xl md:text-2xl font-bold mb-4 text-ninjack-white">
               第6条（個人情報の開示）

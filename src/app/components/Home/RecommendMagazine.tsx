@@ -191,7 +191,7 @@ export default function RecommendMagazine() {
           )}
 
           <div className="grid md:grid-cols-2 grid-cols-1 md:gap-6 gap-4 mb-8">
-            {displayItems.map((item, index) => {
+            {displayItems.map((item) => {
               if (!item?.slug) return null;
 
               return (
