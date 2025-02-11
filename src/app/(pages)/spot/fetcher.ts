@@ -168,3 +168,13 @@ export const spotCategoryPerItems = async (limit: number) => {
       };
     });
 };
+
+export const spotCategoryHasItems = async () => {
+  const result = await categoryPerItems<SpotSkeleton>("spotCategory", 1);
+
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
+};

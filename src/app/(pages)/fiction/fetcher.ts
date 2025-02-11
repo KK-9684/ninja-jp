@@ -192,3 +192,13 @@ export const fictionCategoryPerItems = async (limit: number) => {
       };
     });
 };
+
+export const fictionCategoryHasItems = async () => {
+  const result = await categoryPerItems<FictionSkeleton>("cultureCategory", 1);
+
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
+};

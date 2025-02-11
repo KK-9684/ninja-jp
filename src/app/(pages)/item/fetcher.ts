@@ -141,8 +141,12 @@ export const getRelationItem = async (ids: string[], limit?: number) => {
   };
 };
 
-export const itemCategoryHasItems = async (limit: number) => {
-  const result = await categoryPerItems<ItemSkeleton>("itemCategory", limit);
+export const itemCategoryHasItems = async () => {
+  const result = await categoryPerItems<ItemSkeleton>("itemCategory", 1);
 
-  return result.filter((item) => item.total > 0);
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
 };

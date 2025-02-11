@@ -144,11 +144,12 @@ export const getRelationMember = async (ids: string[], limit?: number) => {
   };
 };
 
-export const memberCategoryHasItems = async (limit: number) => {
-  const result = await categoryPerItems<MemberSkeleton>(
-    "memberCategory",
-    limit
-  );
+export const memberCategoryHasItems = async () => {
+  const result = await categoryPerItems<MemberSkeleton>("memberCategory", 1);
 
-  return result.filter((item) => item.total > 0);
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
 };

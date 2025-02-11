@@ -14,18 +14,12 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import iconMail from "@/assets/icon-mail.svg";
 import iconClose from "@/assets/icon-close.svg";
 import CustomLargeButton from "./customLargeButton";
+import { AllActiveCategories } from "@/lib/contentful/sharedModel";
 
 type HamburgerMenuProps = {
   isOpen: boolean;
   onClose: () => void;
-  categories: {
-    activityCategory: any[];
-    spotCategory: any[];
-    itemCategory: any[];
-    researchCategory: any[];
-    fictionCategory: any[];
-    memberCategory: any[];
-  };
+  categories: AllActiveCategories;
 };
 
 const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {

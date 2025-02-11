@@ -2,10 +2,10 @@ import { EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { getEntries } from "./client";
 import { transformAsset } from "./transformContent";
 import { activityCategoryHasItems } from "@/app/(pages)/activity/fetcher";
-import { spotCategoryPerItems } from "@/app/(pages)/spot/fetcher";
+import { spotCategoryHasItems } from "@/app/(pages)/spot/fetcher";
 import { itemCategoryHasItems } from "@/app/(pages)/item/fetcher";
 import { researchCategoryHasItems } from "@/app/(pages)/research/fetcher";
-import { fictionCategoryPerItems } from "@/app/(pages)/fiction/fetcher";
+import { fictionCategoryHasItems } from "@/app/(pages)/fiction/fetcher";
 import { memberCategoryHasItems } from "@/app/(pages)/ninja/fetcher";
 
 type CategoryContentTypes =
@@ -99,7 +99,8 @@ export const getNinjutsu = async () => {
 type CarouselLinkEntry = {
   contentTypeId: "topCarousel";
   fields: {
-    title: EntryFieldTypes.Symbol;
+    title?: EntryFieldTypes.Symbol;
+    name?: EntryFieldTypes.Symbol;
     slug: EntryFieldTypes.Symbol;
     image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   };
@@ -122,48 +123,63 @@ export const resolveModel = (contentType: string) => {
       return { id: "item", name: "商品・忍具" };
     case "research":
       return { id: "research", name: "研究情報" };
-    case "fiction":
+    case "culture":
       return { id: "fiction", name: "創作作品" };
     case "member":
       return { id: "ninja", name: "現代忍者" };
     case "magazine":
       return { id: "magazine", name: "マガジン" };
     default:
-      return { id: "activity", name: "アクティビティ" };
+      return { id: "activity", name: "体験・旅行" };
   }
 };
-export const getLinkEntries = async () => {
+export const getTopCarousel = async () => {
   const result = await getEntries<CarouselLinkEntrySkeleton>({
     content_type: "topCarousel",
     order: ["-sys.createdAt"],
   });
 
-  const items = result.items[0].fields.item;
+  const topCarousels = result.items[0].fields.item;
 
-  if (!items) {
-    return { total: 0, items: [] };
+  if (!topCarousels) {
+    return [];
   }
 
-  return {
-    total: result.total,
-    items: items.map((item) => ({
-      // model: resolveModel(item?.sys.contentType.sys.id),
-      slug: item?.sys.id,
-      title: item?.fields.title || "",
-      image: item?.fields.image
-        ?.filter((img) => img !== null && img !== undefined)
-        .map(transformAsset),
-    })),
-  };
+  return topCarousels
+    .filter((item) => item !== undefined)
+    .map((item) => ({
+      slug: item.sys.id || "",
+      title: resolveModel(item.sys.contentType.sys.id).name,
+      content: item.fields.title || item.fields.name || "",
+      image: item.fields.image
+        ? item.fields.image
+            .filter((img) => img !== null && img !== undefined)
+            .map(transformAsset)[0]
+        : null,
+    }));
 };
 
-export const allActiveCategories = async () => {
-  const activityCategory = await activityCategoryHasItems(1);
-  const spotCategory = await spotCategoryPerItems(1);
-  const itemCategory = await itemCategoryHasItems(1);
-  const researchCategory = await researchCategoryHasItems(1);
-  const fictionCategory = await fictionCategoryPerItems(1);
-  const memberCategory = await memberCategoryHasItems(1);
+type Category = {
+  slug: string;
+  title: string;
+};
+
+export type AllActiveCategories = {
+  activityCategory: Category[];
+  spotCategory: Category[];
+  itemCategory: Category[];
+  researchCategory: Category[];
+  fictionCategory: Category[];
+  memberCategory: Category[];
+};
+
+export const allActiveCategories = async (): Promise<AllActiveCategories> => {
+  const activityCategory = await activityCategoryHasItems();
+  const spotCategory = await spotCategoryHasItems();
+  const itemCategory = await itemCategoryHasItems();
+  const researchCategory = await researchCategoryHasItems();
+  const fictionCategory = await fictionCategoryHasItems();
+  const memberCategory = await memberCategoryHasItems();
 
   return {
     activityCategory,

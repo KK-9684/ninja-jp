@@ -196,7 +196,7 @@ export default function RecommendMagazine() {
 
               return (
                 <div
-                  key={`magazine-${item.slug}-${index}`}
+                  key={`magazine-${item.slug}-${item.categoryTitle}`}
                   className="flex flex-col"
                 >
                   <MagazineItem

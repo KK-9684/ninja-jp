@@ -241,11 +241,15 @@ export const getRelationActivity = async (ids: string[], limit?: number) => {
   };
 };
 
-export const activityCategoryHasItems = async (limit: number) => {
+export const activityCategoryHasItems = async () => {
   const result = await categoryPerItems<ActivitySkeleton>(
     "activityCategory",
-    limit
+    1
   );
 
-  return result.filter((item) => item.total > 0);
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
 };

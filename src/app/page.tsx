@@ -20,7 +20,6 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import imageNinjackConcept from "@/assets/image-ninjack-concept.png";
 import DetailButton from "./components/Common/detailButton";
 import SectionTitlePart from "./components/Common/sectionTitlePart";
-import ActivitySwiper from "./components/activitySwiper";
 import SpotSwiper from "./components/spotSwiper";
 import SpotSelector from "./components/spotSelector";
 import clsx from "clsx";
@@ -28,6 +27,7 @@ import { GeistFont } from "./components/Common/font";
 import SpotSelectorPC from "./components/spotSelectorPc";
 import SwitchContentNavigation from "./components/Common/SwitchContentNavigation";
 import { Metadata } from "next/types";
+import RecommendContentList from "./components/RecommendContentList";
 
 export const metadata: Metadata = {
   title: "Ninja",
@@ -54,7 +54,7 @@ export default async function Home() {
               </p>
             </div>
           </div>
-          <ActivitySwiper />
+          <RecommendContentList />
         </div>
       </section>
 

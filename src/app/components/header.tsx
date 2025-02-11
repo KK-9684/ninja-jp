@@ -17,7 +17,7 @@ import AboutButtonGroup from "./aboutButtonGroup";
 import IconMessage from "@/assets/icon-message.svg";
 import Link from "next/link";
 import DigitalClock from "./DigitalClock";
-import { getNinjutsu } from "@/lib/contentful/sharedModel";
+import { AllActiveCategories, getNinjutsu } from "@/lib/contentful/sharedModel";
 import { Suspense, useEffect, useState } from "react";
 import { allActiveCategories } from "@/lib/contentful/sharedModel";
 import HamburgerMenu from "./Common/humbergerMenu";
@@ -26,7 +26,9 @@ const Header = () => {
   const openMenu = () => setIsMenuOpen(true);
   const [ninjutsu, setNinjutsu] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [categories, setCategories] = useState<any>(null);
+  const [categories, setCategories] = useState<AllActiveCategories | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async () => {

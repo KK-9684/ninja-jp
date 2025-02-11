@@ -142,11 +142,15 @@ export const getResearchList = async (query: Query) => {
   };
 };
 
-export const researchCategoryHasItems = async (limit: number) => {
+export const researchCategoryHasItems = async () => {
   const result = await categoryPerItems<ResearchSkeleton>(
     "researchCategory",
-    limit
+    1
   );
 
-  return result.filter((item) => item.total > 0);
+  return result
+    .filter((item) => item.total > 0)
+    .map((item) => {
+      return { slug: item.slug, title: item.title };
+    });
 };
