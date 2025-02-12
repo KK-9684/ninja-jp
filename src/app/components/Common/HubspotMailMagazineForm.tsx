@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
+export const HubSpotMailMagazineForm = ({ HSF_ID }: { HSF_ID: string }) => {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.hsforms.net/forms/v2.js";
@@ -19,10 +19,10 @@ export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
     });
   }, [HSF_ID]);
   return (
-    <div className="p-6">
+    <div className="p-5">
       <div id="hubspotForm"></div>
     </div>
   );
 };
 
-export default HubSpotContactForm;
+export default HubSpotMailMagazineForm;

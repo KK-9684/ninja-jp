@@ -188,6 +188,7 @@ const Footer = async () => {
           </div>
           <AboutButtonGroup />
         </div>
+
         <div className="flex flex-col justify-between px-6 mb-10">
           <div className="flex flex-col space-y-6 items-start">
             <FooterSpItem
@@ -196,7 +197,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/activity",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",
@@ -216,7 +217,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/spot",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",
@@ -252,7 +253,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/item",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",
@@ -280,7 +281,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/research",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",
@@ -304,7 +305,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/fiction",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",
@@ -348,7 +349,7 @@ const Footer = async () => {
               items={[
                 {
                   link: "/ninja",
-                  title: "一覧",
+                  title: "すべて見る",
                 },
                 {
                   link: "/",

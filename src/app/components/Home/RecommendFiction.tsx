@@ -121,7 +121,7 @@ export default function RecommendFiction() {
         ))}
       </div>
 
-      <div className="grid md:grid-cols-5 grid-cols-2 gap-10 justify-between mt-10">
+      <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:gap-10 justify-between mt-10">
         {displayItems.map((item) => {
           if (!item?.slug) return null;
 

@@ -17,11 +17,11 @@ const FictionItem = ({ href, image, category, title }: FictionItemProps) => {
 
   return (
     <Link href={href} className="flex flex-col space-y-5 group">
-      <div className="overflow-hidden rounded-lg w-[216px] h-[216px]">
+      <div className="overflow-hidden rounded-lg w-[100%] h-[100%] aspect-square md:w-[216px] md:h-[216px]">
         <Image
           src={image}
           alt="ダミーテキスト"
-          className="rounded-lg w-[216px] h-[216px] group-hover:scale-105 transition-all duration-300"
+          className="rounded-lg w-[100%] h-[100%] aspect-square md:w-[216px] md:h-[216px] group-hover:scale-105 transition-all duration-300"
           width={220}
           height={220}
         />

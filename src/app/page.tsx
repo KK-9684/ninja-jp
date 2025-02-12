@@ -222,8 +222,8 @@ export default async function Home() {
         <div className="md:hidden">
           <SectionTitlePart
             icon={iconResearch}
-            title="施設・史跡"
-            subTitle="忍者の足跡を巡る"
+            title="研究情報"
+            subTitle="忍者研究の最前線"
           />
         </div>
         <div className="hidden md:grid md:grid-cols-2 grid-cols-1 gap-x-[72px] justify-between mt-10">
@@ -280,7 +280,7 @@ export default async function Home() {
               subTitle="今を生きる忍者たち"
             />
           </div>
-          <div className="hidden md:grid grid-cols-4 gap-10 justify-between mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10 justify-between mt-10">
             <RecommendMember />
           </div>
           <div className="md:hidden mt-6">

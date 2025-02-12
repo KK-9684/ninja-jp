@@ -88,7 +88,7 @@ export default async function ActivityPage({
             tag={shuffle(tag.items).slice(0, 10)}
           />
         </div>
-        <div className="flex flex-row md:flex-col w-[100%]">
+        <div className="flex flex-col w-[100%]">
           {list.items.map((item, index) => {
             if (!item?.slug) return null; // 必要なデータの存在チェック
             return (
