@@ -8,13 +8,24 @@ interface MenuItemProps {
   link: string;
   color: string;
   isSmall?: boolean;
+  isFlex?: boolean;
 }
 
-const MenuItem = ({ icon, label, link, color, isSmall }: MenuItemProps) => {
+const MenuItem = ({
+  icon,
+  isFlex,
+  label,
+  link,
+  color,
+  isSmall,
+}: MenuItemProps) => {
   return (
     <Link
       href={link}
-      className="flex md:flex-row flex-col items-center gap-2 group"
+      className={clsx(
+        "flex md:flex-row items-center gap-2 group",
+        isFlex ? "flex-row" : "flex-col"
+      )}
     >
       <Image
         src={icon}
@@ -24,7 +35,8 @@ const MenuItem = ({ icon, label, link, color, isSmall }: MenuItemProps) => {
       />
       <span
         className={`text-${color} md:text-[16px] text-[12px] ms-1 group-hover:text-ninjack-purple ${clsx(
-          isSmall && "font-bold"
+          isSmall && "font-bold",
+          isFlex && "text-[16px]"
         )}`}
       >
         {label}

@@ -30,7 +30,7 @@ export default function SpotSelectionSearchForm({ categories }: Props) {
     <Form action="/spot">
       <select
         onChange={onChange}
-        className="md:hidden p-4 bg-ninjack-bg-gray rounded-md border-ninjack-line-gray border-[1px] text-[14px] text-ninjack-white custom-select"
+        className="md:hidden w-[100%] p-4 bg-ninjack-bg-gray rounded-md border-ninjack-line-gray border-[1px] text-[14px] text-ninjack-white custom-select"
       >
         <option value="すべて">すべて</option>
         {categories?.map((category) => (

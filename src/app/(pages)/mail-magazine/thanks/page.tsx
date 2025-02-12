@@ -2,7 +2,7 @@ import CustomButton from "@/app/components/Common/customButton";
 import iconContact from "@/assets/icon-contact.svg";
 import Image from "next/image";
 
-const MailMagazineThanksPage = () => {
+export default function ContactThanksPage() {
   return (
     <div className="flex flex-col md:w-[720px] md:max-w-[720px] md:mx-auto mt-[100px]">
       <h1 className="text-2xl md:text-3xl font-bold text-center text-ninjack-white  mb-3">
@@ -33,6 +33,4 @@ const MailMagazineThanksPage = () => {
       </div>
     </div>
   );
-};
-
-export default MailMagazineThanksPage;
+}

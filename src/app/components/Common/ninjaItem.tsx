@@ -24,7 +24,7 @@ const NinjaItem = ({
 
   return (
     <Link href={href} className="flex flex-col space-y-5 group">
-      <div className="overflow-hidden rounded-lg w-[280px] h-[380px]">
+      <div className="overflow-hidden rounded-lg w-[100%] h-[auto] aspect-[280/380] md:w-[280px] md:h-[380px]">
         <Image
           src={image}
           alt="ダミーテキスト"

@@ -27,7 +27,7 @@ const ResearchItem = ({
       href={href}
       className="flex gap-6 py-6 border-t-[1px] border-ninjack-line-gray group"
     >
-      <div className="overflow-hidden rounded-lg md:w-[144px] md:h-[144px] md:min-w-[144px] md:min-h-[144px] w-[100px] h-[100px] self-center">
+      <div className="overflow-hidden rounded-lg md:w-[144px] md:h-[144px] md:min-w-[144px] md:min-h-[144px] w-[100px] h-[100px] min-w-[100px] min-h-[100px] self-center">
         <Image
           src={image}
           alt="ダミーテキスト"

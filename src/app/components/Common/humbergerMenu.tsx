@@ -13,6 +13,7 @@ import iconFiction from "@/assets/icon-fiction.svg";
 import iconNinja from "@/assets/icon-ninja.svg";
 import iconMail from "@/assets/icon-mail.svg";
 import iconClose from "@/assets/icon-close.svg";
+import iconPlus from "@/assets/icon-plus.svg";
 import CustomLargeButton from "./customLargeButton";
 import { AllActiveCategories } from "@/lib/contentful/sharedModel";
 
@@ -37,11 +38,11 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
         isOpen ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="container mx-auto px-6 py-4 flex flex-col h-full justify-center">
-        <div className="flex justify-between items-center mb-8">
+      <div className="container mx-auto px-6 md:py-4 py-10 flex flex-col h-full md:justify-center justify-start max-h-[100vh] overflow-y-scroll md:overflow-hidden">
+        <div className="flex flex-col md:flex-row gap-6 justify-between md:justify-between w-[100%] items-center mb-8">
           <div>
             <Image src={logo} alt="忍者ポータルサイト" className="w-[240px]" />
-            <p className="text-xs text-ninjack-white mt-3">
+            <p className="text-xs text-center md:text-left text-ninjack-white mt-3">
               忍者ポータルサイト
             </p>
           </div>
@@ -52,176 +53,379 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
             <Image src={iconClose} alt="閉じる" />
           </button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 my-12">
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconActivity}
-              label="体験・修行"
-              link="/activity"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/activity" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.activityCategory.map((category) => (
+        <div className="flex flex-col md:grid md:grid-cols-6 md:gap-8 md:my-12 my-2">
+          {/* 施設・史跡のセクション */}
+          <div className="flex flex-col">
+            <details className="md:hidden flex flex-col pt-4 group">
+              <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+                <MenuItem
+                  icon={iconSpot}
+                  label="施設・史跡"
+                  link="/spot"
+                  color="ninjack-white"
+                  isSmall
+                  isFlex
+                />
+                <Image
+                  src={iconPlus}
+                  alt="開く"
+                  className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+                />
+              </summary>
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/activity?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/spot"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
+                {categories.spotCategory.map((category) => (
+                  <Link
+                    href={`/spot?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <div className="hidden md:flex md:flex-col gap-6">
+              <MenuItem
+                icon={iconSpot}
+                label="施設・史跡"
+                link="/spot"
+                color="ninjack-white"
+                isSmall
+                isFlex
+              />
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+                <Link
+                  href="/spot"
+                  onClick={onClose}
+                  className="hover:text-ninjack-purple"
+                >
+                  ー すべて見る
+                </Link>
+                {categories.spotCategory.map((category) => (
+                  <Link
+                    href={`/spot?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconSpot}
-              label="施設・史跡"
-              link="/spot"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/spot" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.spotCategory.map((category) => (
+          {/* 商品・忍具のセクション */}
+          <div className="flex flex-col">
+            <details className="md:hidden flex flex-col pt-4 group">
+              <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+                <MenuItem
+                  icon={iconItem}
+                  label="商品・忍具"
+                  link="/item"
+                  color="ninjack-white"
+                  isSmall
+                  isFlex
+                />
+                <Image
+                  src={iconPlus}
+                  alt="開く"
+                  className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+                />
+              </summary>
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/spot?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/item"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
+                {categories.itemCategory.map((category) => (
+                  <Link
+                    href={`/item?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <div className="hidden md:flex md:flex-col gap-6">
+              <MenuItem
+                icon={iconItem}
+                label="商品・忍具"
+                link="/item"
+                color="ninjack-white"
+                isSmall
+                isFlex
+              />
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+                <Link
+                  href="/item"
+                  onClick={onClose}
+                  className="hover:text-ninjack-purple"
+                >
+                  ー すべて見る
+                </Link>
+                {categories.itemCategory.map((category) => (
+                  <Link
+                    href={`/item?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconItem}
-              label="商品・忍具"
-              link="/item"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/item" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.itemCategory.map((category) => (
+          {/* 研究情報のセクション */}
+          <div className="flex flex-col">
+            <details className="md:hidden flex flex-col pt-4 group">
+              <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+                <MenuItem
+                  icon={iconResearch}
+                  label="研究情報"
+                  link="/research"
+                  color="ninjack-white"
+                  isSmall
+                  isFlex
+                />
+                <Image
+                  src={iconPlus}
+                  alt="開く"
+                  className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+                />
+              </summary>
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/item?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/research"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
+                {categories.researchCategory.map((category) => (
+                  <Link
+                    href={`/research?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <div className="hidden md:flex md:flex-col gap-6">
+              <MenuItem
+                icon={iconResearch}
+                label="研究情報"
+                link="/research"
+                color="ninjack-white"
+                isSmall
+                isFlex
+              />
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+                <Link
+                  href="/research"
+                  onClick={onClose}
+                  className="hover:text-ninjack-purple"
+                >
+                  ー すべて見る
+                </Link>
+                {categories.researchCategory.map((category) => (
+                  <Link
+                    href={`/research?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconResearch}
-              label="研究情報"
-              link="/research"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/research" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.researchCategory.map((category) => (
+          {/* 創作作品のセクション */}
+          <div className="flex flex-col">
+            <details className="md:hidden flex flex-col pt-4 group">
+              <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+                <MenuItem
+                  icon={iconFiction}
+                  label="創作作品"
+                  link="/fiction"
+                  color="ninjack-white"
+                  isSmall
+                  isFlex
+                />
+                <Image
+                  src={iconPlus}
+                  alt="開く"
+                  className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+                />
+              </summary>
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/research?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/fiction"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
+                {categories.fictionCategory.map((category) => (
+                  <Link
+                    href={`/fiction?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <div className="hidden md:flex md:flex-col gap-6">
+              <MenuItem
+                icon={iconFiction}
+                label="創作作品"
+                link="/fiction"
+                color="ninjack-white"
+                isSmall
+                isFlex
+              />
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+                <Link
+                  href="/fiction"
+                  onClick={onClose}
+                  className="hover:text-ninjack-purple"
+                >
+                  ー すべて見る
+                </Link>
+                {categories.fictionCategory.map((category) => (
+                  <Link
+                    href={`/fiction?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconFiction}
-              label="創作作品"
-              link="/fiction"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/fiction" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.fictionCategory.map((category) => (
+          {/* 現代忍者のセクション */}
+          <div className="flex flex-col">
+            <details className="md:hidden flex flex-col pt-4 group">
+              <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+                <MenuItem
+                  icon={iconNinja}
+                  label="現代忍者"
+                  link="/ninja"
+                  color="ninjack-white"
+                  isSmall
+                  isFlex
+                />
+                <Image
+                  src={iconPlus}
+                  alt="開く"
+                  className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+                />
+              </summary>
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/fiction?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/ninja"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col space-y-6">
-            <MenuItem
-              icon={iconNinja}
-              label="現代忍者"
-              link="/ninja"
-              color="ninjack-white"
-              isSmall
-            />
-            <div className="flex flex-col items-start space-y-4 text-xs text-ninjack-text-gray">
-              <Link href="/ninja" onClick={onClose}>
-                ー 一覧
-              </Link>
-              {categories.memberCategory.map((category) => (
+                {categories.memberCategory.map((category) => (
+                  <Link
+                    href={`/ninja?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
+            </details>
+            <div className="hidden md:flex md:flex-col gap-6">
+              <MenuItem
+                icon={iconNinja}
+                label="現代忍者"
+                link="/ninja"
+                color="ninjack-white"
+                isSmall
+                isFlex
+              />
+              <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
                 <Link
-                  href={`/ninja?categories=${category.slug}`}
-                  key={category.slug}
+                  href="/ninja"
                   onClick={onClose}
+                  className="hover:text-ninjack-purple"
                 >
-                  {`ー ${category.title}`}
+                  ー すべて見る
                 </Link>
-              ))}
+                {categories.memberCategory.map((category) => (
+                  <Link
+                    href={`/ninja?categories=${category.slug}`}
+                    key={category.slug}
+                    onClick={onClose}
+                    className="hover:text-ninjack-purple"
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mt-12">
-          <div className="flex flex-col md:flex-row gap-4 md:gap-8 text-sm text-ninjack-text-gray">
+          <div className="flex flex-row gap-4 md:gap-8 text-sm text-ninjack-text-gray flex-wrap justify-center">
             <Link href="/commercial" onClick={onClose}>
               特定商取引法の表示
             </Link>
-            <Link href="" onClick={onClose}>
+            <Link href="/terms" onClick={onClose}>
               利用規約
             </Link>
-            <Link href="" onClick={onClose}>
+            <Link href="/privacy-policy" onClick={onClose}>
               プライバシーポリシー
             </Link>
           </div>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col-reverse md:flex-row gap-4">
             <CustomLargeButton
               icon={iconMail}
               text="お問い合わせ"
               type={1}
               font="NotoSansJp"
+              link="/contact"
             />
             <CustomLargeButton
               text="メールマガジン配信登録"
               font="NotoSansJp"
               type={2}
               isArrow
+              link="/mail-magazine"
             />
           </div>
         </div>

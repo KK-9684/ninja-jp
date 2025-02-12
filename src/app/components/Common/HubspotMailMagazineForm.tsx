@@ -2,29 +2,15 @@
 
 import { useEffect } from "react";
 
-declare global {
-  interface Window {
-    hbspt: {
-      forms: {
-        create: (options: {
-          portalId: string;
-          formId: string;
-          target: string;
-        }) => void;
-      };
-    };
-  }
-}
-
-export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
+export const HubSpotMailMagazineForm = ({ HSF_ID }: { HSF_ID: string }) => {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://js.hsforms.net/forms/v2.js";
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
-      if (window.hbspt) {
-        window.hbspt.forms.create({
+      if ((window as any).hbspt) {
+        (window as any).hbspt.forms.create({
           portalId: "48915762",
           formId: HSF_ID,
           target: "#hubspotForm",
@@ -33,10 +19,10 @@ export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
     });
   }, [HSF_ID]);
   return (
-    <div className="p-6">
+    <div className="p-5">
       <div id="hubspotForm"></div>
     </div>
   );
 };
 
-export default HubSpotContactForm;
+export default HubSpotMailMagazineForm;

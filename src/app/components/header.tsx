@@ -21,6 +21,7 @@ import { AllActiveCategories, getNinjutsu } from "@/lib/contentful/sharedModel";
 import { Suspense, useEffect, useState } from "react";
 import { allActiveCategories } from "@/lib/contentful/sharedModel";
 import HamburgerMenu from "./Common/humbergerMenu";
+import TodayNinjutsu from "./Common/todayNinjutsu";
 
 const Header = () => {
   const openMenu = () => setIsMenuOpen(true);
@@ -43,20 +44,20 @@ const Header = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchNinjutsu = async () => {
-      try {
-        const ninjutsus = await getNinjutsu();
-        const shuffledNinjutsus = ninjutsus.sort(() => Math.random() - 0.5);
-        setNinjutsu(shuffledNinjutsus[0] || "データ読み込み中...");
-      } catch (error) {
-        console.error("Error fetching ninjutsu:", error);
-        setNinjutsu("データ読み込みエラー");
-      }
-    };
+  // useEffect(() => {
+  //   const fetchNinjutsu = async () => {
+  //     try {
+  //       const ninjutsus = await getNinjutsu();
+  //       const shuffledNinjutsus = ninjutsus.sort(() => Math.random() - 0.5);
+  //       setNinjutsu(shuffledNinjutsus[0] || "データ読み込み中...");
+  //     } catch (error) {
+  //       console.error("Error fetching ninjutsu:", error);
+  //       setNinjutsu("データ読み込みエラー");
+  //     }
+  //   };
 
-    fetchNinjutsu();
-  }, []);
+  //   fetchNinjutsu();
+  // }, []);
 
   return (
     <header className="text-ninjack-white">
@@ -69,11 +70,7 @@ const Header = () => {
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
             <DigitalClock />
             <Image src={imageEye} alt="猫の目" />
-            <div className="bg-[#222222] px-10 ms-5">
-              <Suspense fallback={<p className="m-3 text-xs">今日の忍術：</p>}>
-                <p className="m-3 text-xs">{`今日の忍術：${ninjutsu}`}</p>
-              </Suspense>
-            </div>
+            <TodayNinjutsu />
           </h1>
           <div className="flex space-x-2.5">
             <MenuButton icon={iconContact} label="お問合せ" link="/contact" />
@@ -139,11 +136,7 @@ const Header = () => {
         </nav>
       </div>
       <div className="flex flex-col md:hidden gap-2">
-        <div className="bg-[#222222] w-full">
-          <p className="m-3 text-xs text-center">
-            今日の忍術：これはじゅうもじですこれはじゅうもじです
-          </p>
-        </div>
+        <TodayNinjutsu />
         <div className="flex justify-between items-center p-[12px]">
           <h1 className="flex items-center">
             <div className="flex flex-col gap-1 items-center">

@@ -25,11 +25,11 @@ export default function FooterSpItem({
   const [isOpen, setIsOpen] = useState(false);
   return !isOpen ? (
     <button
-      className="flex flex-row justify-between border-b-[1px] border-ninjack-line-gray p-3 w-full"
+      className="flex flex-row justify-between border-b-[1px] border-ninjack-line-gray py-5 w-full"
       onClick={() => setIsOpen(true)}
     >
       <div className="flex flex-row gap-2">
-        <Image src={image} alt="" />
+        <Image src={image} alt="" className="w-[24px] h-[24px]" />
         <span className="text-ninjack-white font-bold text-[16px]">
           {title}
         </span>
@@ -37,13 +37,13 @@ export default function FooterSpItem({
       <Image src={IconPlus} alt="" />
     </button>
   ) : (
-    <div className="flex flex-col border-b-[1px] border-ninjack-line-gray gap-2 p-3 w-full">
+    <div className="flex flex-col border-b-[1px] border-ninjack-line-gray gap-2 py-5 w-full">
       <button
         className="flex flex-row justify-between "
         onClick={() => setIsOpen(false)}
       >
         <div className="flex flex-row gap-2">
-          <Image src={image} alt="" />
+          <Image src={image} alt="" className="w-[24px] h-[24px]" />
           <span className="text-ninjack-white font-bold text-[16px]">
             {title}
           </span>
@@ -53,7 +53,11 @@ export default function FooterSpItem({
       <div className="flex flex-col gap-2 px-8 text-left text-ninjack-white">
         {items.map((item: FooterItem, index: number) => {
           return (
-            <Link className="text-[12px]" href={item.link} key={index}>
+            <Link
+              className="text-[12px] text-ninjack-text-gray"
+              href={item.link}
+              key={index}
+            >
               <span className="text-[20px]">-</span> &nbsp;{item.title}
             </Link>
           );
