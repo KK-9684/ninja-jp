@@ -9,6 +9,7 @@ import {
   WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { TagEntrySkeleton } from "../tag/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type ResearchCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "researchCategory";
@@ -67,11 +68,17 @@ const transformContent = (
       }))
     : [];
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     writer,
     relationActivityIds,
     relationItemIds,
     relationKeyword,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

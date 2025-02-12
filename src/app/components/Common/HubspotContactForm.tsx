@@ -2,6 +2,20 @@
 
 import { useEffect } from "react";
 
+declare global {
+  interface Window {
+    hbspt: {
+      forms: {
+        create: (options: {
+          portalId: string;
+          formId: string;
+          target: string;
+        }) => void;
+      };
+    };
+  }
+}
+
 export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
   useEffect(() => {
     const script = document.createElement("script");
@@ -9,8 +23,8 @@ export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
-      if ((window as any).hbspt) {
-        (window as any).hbspt.forms.create({
+      if (window.hbspt) {
+        window.hbspt.forms.create({
           portalId: "48915762",
           formId: HSF_ID,
           target: "#hubspotForm",

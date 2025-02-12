@@ -7,6 +7,7 @@ import {
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ItemSkeleton } from "../item/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 export type Fiction = FictionCore & {
   content: never;
@@ -19,6 +20,7 @@ export type Fiction = FictionCore & {
     title: string | undefined;
   }[];
   relationItemIds: string[];
+  metaDescription: string;
 };
 
 export type FictionCore = {
@@ -94,11 +96,17 @@ const transformContent = (
       }))
     : [];
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     content: entry.fields.content,
     relationKeyword,
     writer,
     relationItemIds,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

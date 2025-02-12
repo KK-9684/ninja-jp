@@ -150,6 +150,7 @@ export const getTopCarousel = async () => {
     .map((item) => ({
       slug: item.sys.id || "",
       title: resolveModel(item.sys.contentType.sys.id).name,
+      contentType: resolveModel(item.sys.contentType.sys.id).id,
       content: item.fields.title || item.fields.name || "",
       image: item.fields.image
         ? item.fields.image
