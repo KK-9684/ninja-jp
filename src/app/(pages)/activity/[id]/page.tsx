@@ -16,26 +16,53 @@ import DetailItemList from "@/app/components/Common/detailItemList";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
-export const metadata: Metadata = {
-  title: "Ninja",
-  description: "",
+type Props = {
+  params: Promise<{ id: string }>;
 };
 
-type Params = Promise<{ id: string }>;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).id;
+  const activity = await getActivity(id);
 
-export default async function ActivityDetailPage({
-  params,
-}: {
-  params: Params;
-}) {
-  const { id } = await params;
+  if (!activity) {
+    return {};
+  }
+
+  return {
+    metadataBase: new URL(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/activity/${activity.slug}` ||
+        "http://localhost:3000"
+    ),
+    title: activity.title,
+    description: activity.metaDescription,
+    openGraph: {
+      title: activity.title,
+      description: activity.metaDescription,
+      url:
+        `${process.env.NEXT_PUBLIC_BASE_URL}/activity/${activity.slug}` ||
+        "http://localhost:3000",
+      siteName: "忍者ポータルサイト「Ninjack」",
+      images: [
+        {
+          url: process.env.NEXT_PUBLIC_BASE_URL + "/ogp.jpg",
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: "ja_JP",
+      type: "website",
+    },
+  };
+}
+
+export default async function ActivityDetailPage({ params }: Props) {
+  const id = (await params).id;
   const activity = await getActivity(id);
 
   if (!activity) {
     return <div>Not Found</div>;
   }
 
-  console.log(activity);
   return (
     <>
       <div className="flex md:max-w-[1240px] md:mx-auto">

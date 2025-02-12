@@ -8,6 +8,7 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { differenceInDays } from "date-fns";
 import { TagEntrySkeleton } from "../tag/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 export type Magazine = MagazineCore & {
   writer: {
@@ -18,6 +19,7 @@ export type Magazine = MagazineCore & {
     slug: string | undefined;
     title: string | undefined;
   }[];
+  metaDescription: string;
 };
 
 export type MagazineCore = {
@@ -93,10 +95,15 @@ const transformContent = (
       }))
     : [];
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     writer,
     relationKeyword,
-
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

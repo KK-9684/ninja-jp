@@ -8,6 +8,7 @@ import {
   WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { TagEntrySkeleton } from "../tag/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type SpotCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "spotCategory";
@@ -62,11 +63,17 @@ const transformContent = (
       }))
     : [];
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     content: entry.fields.content,
     writer,
     relationActivityIds,
     relationKeyword,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

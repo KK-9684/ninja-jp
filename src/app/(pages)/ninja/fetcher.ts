@@ -6,6 +6,7 @@ import {
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ActivitySkeleton } from "../activity/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type MemberCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "memberCategory";
@@ -49,9 +50,15 @@ const transformContent = (
     (activity) => activity?.sys.id || ""
   );
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     relationActivityIds,
     relationMemberIds,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

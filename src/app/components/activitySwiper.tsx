@@ -14,6 +14,7 @@ import Link from "next/link";
 type ActivitySwiperProps = {
   slides: {
     slug: string;
+    contentType: string;
     title: string;
     image: { url: string; alt: string } | null;
     content: string;

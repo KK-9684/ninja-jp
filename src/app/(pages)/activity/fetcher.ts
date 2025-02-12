@@ -8,6 +8,7 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { Document } from "@contentful/rich-text-types";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type AreaEntrySkeleton = {
   contentTypeId: "area";
@@ -96,12 +97,16 @@ const transformContent = (
 
   const plans = entry.fields.plans ? entry.fields.plans : [];
 
+  const content = entry.fields.content as Document;
+  const metaDescription = documentToPlainTextString(content).slice(0, 80);
+
   return {
     content: entry.fields.content,
     relationSpotIds,
     relationActivityIds,
     writer,
     plans,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

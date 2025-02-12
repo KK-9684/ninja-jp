@@ -7,6 +7,7 @@ import {
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
+import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type ItemCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "itemCategory";
@@ -55,10 +56,16 @@ const transformContent = (
       }))
     : [];
 
+  const metaDescription = documentToPlainTextString(entry.fields.content).slice(
+    0,
+    80
+  );
+
   return {
     content: entry.fields.content,
     writer,
     relationKeyword,
+    metaDescription,
     ...transformPartialContent(entry),
   };
 };

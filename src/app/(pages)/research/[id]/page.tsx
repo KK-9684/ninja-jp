@@ -14,18 +14,46 @@ import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
-export const metadata: Metadata = {
-  title: "Ninja",
-  description: "",
+
+type Props = {
+  params: Promise<{ id: string }>;
 };
 
-type Params = Promise<{ id: string }>;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = (await params).id;
+  const item = await getResearch(id);
 
-export default async function ResearchDetailPage({
-  params,
-}: {
-  params: Params;
-}) {
+  if (!item) {
+    return {};
+  }
+  return {
+    metadataBase: new URL(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/research/${item.slug}` ||
+        "http://localhost:3000"
+    ),
+    title: item.title,
+    description: item.metaDescription,
+    openGraph: {
+      title: item.title,
+      description: item.metaDescription,
+      url:
+        `${process.env.NEXT_PUBLIC_BASE_URL}/research/${item.slug}` ||
+        "http://localhost:3000",
+      siteName: "忍者ポータルサイト「Ninjack」",
+      images: [
+        {
+          url: process.env.NEXT_PUBLIC_BASE_URL + "/ogp.jpg",
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: "ja_JP",
+      type: "website",
+    },
+  };
+}
+
+export default async function ResearchDetailPage({ params }: Props) {
   const { id } = await params;
   const research = await getResearch(id);
 
