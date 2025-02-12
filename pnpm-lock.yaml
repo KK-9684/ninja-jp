@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@contentful/rich-text-plain-text-renderer':
+    specifier: ^17.0.0
+    version: 17.0.0
   '@contentful/rich-text-react-renderer':
     specifier: ^16.0.1
     version: 16.0.1(react-dom@18.2.0)(react@18.2.0)
@@ -102,6 +105,13 @@ packages:
     dependencies:
       '@vercel/stega': 0.1.2
       json-pointer: 0.6.2
+    dev: false
+
+  /@contentful/rich-text-plain-text-renderer@17.0.0:
+    resolution: {integrity: sha512-UFMx4hCewCr//7mNGqQlgMmItSsosY3DldM++bqYJ0F5aHoFFxPyUoFnQaBSYmWFvFulbGm5MyTxAFrjIZmwbA==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@contentful/rich-text-types': 17.0.0
     dev: false
 
   /@contentful/rich-text-react-renderer@16.0.1(react-dom@18.2.0)(react@18.2.0):
