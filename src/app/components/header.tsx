@@ -17,15 +17,14 @@ import AboutButtonGroup from "./aboutButtonGroup";
 import IconMessage from "@/assets/icon-message.svg";
 import Link from "next/link";
 import DigitalClock from "./DigitalClock";
-import { AllActiveCategories, getNinjutsu } from "@/lib/contentful/sharedModel";
-import { Suspense, useEffect, useState } from "react";
+import { AllActiveCategories } from "@/lib/contentful/sharedModel";
+import { useEffect, useState } from "react";
 import { allActiveCategories } from "@/lib/contentful/sharedModel";
 import HamburgerMenu from "./Common/humbergerMenu";
 import TodayNinjutsu from "./Common/todayNinjutsu";
 
 const Header = () => {
   const openMenu = () => setIsMenuOpen(true);
-  const [ninjutsu, setNinjutsu] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [categories, setCategories] = useState<AllActiveCategories | null>(
     null

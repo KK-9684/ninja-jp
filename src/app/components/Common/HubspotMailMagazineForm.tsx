@@ -9,15 +9,20 @@ export const HubSpotMailMagazineForm = ({ HSF_ID }: { HSF_ID: string }) => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
-      if ((window as any).hbspt) {
-        (window as any).hbspt.forms.create({
+      if (window.hbspt) {
+        window.hbspt.forms.create({
           portalId: "48915762",
           formId: HSF_ID,
           target: "#hubspotForm",
         });
       }
     });
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [HSF_ID]);
+
   return (
     <div className="p-5">
       <div id="hubspotForm"></div>

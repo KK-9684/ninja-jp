@@ -5,7 +5,6 @@ import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import AboutButtonGroup from "../aboutButtonGroup";
 import MenuItem from "./menuItem";
-import iconActivity from "@/assets/icon-activity.svg";
 import iconSpot from "@/assets/icon-spot.svg";
 import iconItem from "@/assets/icon-item.svg";
 import iconResearch from "@/assets/icon-research.svg";

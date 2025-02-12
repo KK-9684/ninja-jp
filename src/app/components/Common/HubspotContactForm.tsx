@@ -2,20 +2,6 @@
 
 import { useEffect } from "react";
 
-declare global {
-  interface Window {
-    hbspt: {
-      forms: {
-        create: (options: {
-          portalId: string;
-          formId: string;
-          target: string;
-        }) => void;
-      };
-    };
-  }
-}
-
 export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
   useEffect(() => {
     const script = document.createElement("script");
@@ -31,9 +17,14 @@ export const HubSpotContactForm = ({ HSF_ID }: { HSF_ID: string }) => {
         });
       }
     });
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [HSF_ID]);
+
   return (
-    <div className="p-6">
+    <div className="p-5">
       <div id="hubspotForm"></div>
     </div>
   );
