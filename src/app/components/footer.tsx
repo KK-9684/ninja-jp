@@ -375,12 +375,14 @@ const Footer = async () => {
               font="NotoSansJp"
               type={2}
               isArrow
+              link="/mail-magazine"
             />
             <CustomLargeButton
               icon={iconMail}
               text="お問い合わせ"
               type={1}
               font="NotoSansJp"
+              link="/contact"
             />
           </div>
         </div>
