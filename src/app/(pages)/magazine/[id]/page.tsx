@@ -112,7 +112,10 @@ export default async function MagazineDetailPage({ params }: Props) {
           </section>
 
           <section className="flex flex-col mt-[44px]">
-            <ShareButton />
+            <ShareButton
+              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/magazine/${magazine.slug}`}
+              title={magazine.title}
+            />
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>

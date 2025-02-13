@@ -21,7 +21,7 @@ export default async function RecommendMember() {
           position={item.position}
           summary={item.summary}
           category={item.category?.[0].name || ""}
-          href={`/member/${item.slug}`}
+          href={`/ninja/${item.slug}`}
         />
       ))}
     </>

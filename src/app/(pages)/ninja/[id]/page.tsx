@@ -16,32 +16,35 @@ import DetailPageSwiper from "@/app/components/detailPageSwiper";
 
 type Props = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = (await params).id;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
   const item = await getMember(id);
 
   if (!item) {
     return {};
   }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
   return {
-    metadataBase: new URL(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/ninja/${item.slug}` ||
-        "http://localhost:3000"
-    ),
+    metadataBase: new URL(baseUrl),
     title: item.name,
     description: item.metaDescription,
     openGraph: {
       title: item.name,
       description: item.metaDescription,
-      url:
-        `${process.env.NEXT_PUBLIC_BASE_URL}/ninja/${item.slug}` ||
-        "http://localhost:3000",
+      url: `${baseUrl}/ninja/${item.slug}`,
       siteName: "忍者ポータルサイト「Ninjack」",
       images: [
         {
-          url: process.env.NEXT_PUBLIC_BASE_URL + "/ogp.jpg",
+          url: `${baseUrl}/ogp.jpg`,
           width: 1200,
           height: 630,
         },
@@ -52,14 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function NinjaDetailPage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { id } = await params;
-  const item = await getMember(id);
+  // searchParams は使用しないので削除
 
+  const item = await getMember(id);
   if (!item) {
     return <div>Not Found</div>;
   }
-  console.log(item);
 
   return (
     <>
@@ -108,7 +111,10 @@ export default async function NinjaDetailPage({ params }: Props) {
               alt=""
               className="w-full md:px-[60px] object-contain"
             />
-            <ShareButton />
+            <ShareButton
+              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/ninja/${item.slug}`}
+              title={item.name}
+            />
           </section>
 
           <section className="mt-[120px] flex flex-col gap-7">

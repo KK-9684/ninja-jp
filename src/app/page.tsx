@@ -59,8 +59,9 @@ export default async function Home() {
     <div>
       <section className="pt-9 pb-14 flex">
         <div className=" hidden w-3/12 h-[740px] text-center text-2xl text-ninjack-white ms-8 md:flex flex-col justify-center bg-ninjack-bg-gray">
-          <div>動画を入れる</div>
-          <div>スペース</div>
+          <video autoPlay muted loop className="w-full h-full object-cover">
+            <source src="/video/kv_min.mp4" type="video/mp4" />
+          </video>
         </div>
         <div className="md:w-9/12 md:ms-[70px] w-full">
           <div className="flex gap-3 mb-10 pl-8">
@@ -284,7 +285,7 @@ export default async function Home() {
             <RecommendMember />
           </div>
           <div className="md:hidden mt-6">
-            <DetailButton href="/member" size={160} />
+            <DetailButton href="/ninja" size={160} />
           </div>
         </div>
       </section>

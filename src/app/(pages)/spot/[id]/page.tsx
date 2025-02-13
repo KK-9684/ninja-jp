@@ -122,7 +122,10 @@ export default async function SpotDetailPage({ params }: Props) {
               alt=""
               className="w-full md:px-[60px] object-contain"
             />
-            <ShareButton />
+            <ShareButton
+              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/spot/${spot.slug}`}
+              title={spot.title}
+            />
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>

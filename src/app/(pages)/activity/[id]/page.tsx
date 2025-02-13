@@ -146,7 +146,10 @@ export default async function ActivityDetailPage({ params }: Props) {
               <DetailItemList key={`${plan.title}-${index}`} plan={plan} />
             ))}
           <section className="flex flex-col mt-[44px]">
-            <ShareButton />
+            <ShareButton
+              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/activity/${activity.slug}`}
+              title={activity.title}
+            />
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>
