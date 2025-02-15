@@ -6,7 +6,10 @@ import RelationSpot from "@/app/components/Common/RelationSpot";
 import { shuffle } from "@/lib/util/shuffle";
 
 import IconTimer from "@/assets/icon-timer.svg";
-import ImageCeo from "@/assets/image-ceo.png";
+import IconX1 from "@/assets/icon-x1.svg";
+import IconInstagram from "@/assets/icon-instagram.svg";
+import IconYoutube from "@/assets/icon-youtube.svg";
+import IconFacebookFull from "@/assets/icon-facebook-full.svg";
 import iconSpot from "@/assets/icon-spot.svg";
 import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-activity.png";
@@ -15,7 +18,7 @@ import DetailSideContent from "@/app/components/Common/detailSideContent";
 import DetailItemList from "@/app/components/Common/detailItemList";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
-
+import Link from "next/link";
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -153,27 +156,70 @@ export default async function ActivityDetailPage({ params }: Props) {
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>
-            <div className="md:px-[128px] mt-4">
+            <div className=" mt-4 w-[100%]">
               {activity.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <Image
-                      src={ImageCeo}
-                      alt=""
-                      className="w-[88px] h-[88px] self-center"
-                    />
+                    <div className="rounded-full overflow-hidden flex items-center">
+                      <Image
+                        src={activity.writer.image[0]?.url}
+                        alt=""
+                        className="w-[88px] h-[88px] self-center"
+                        width={88}
+                        height={88}
+                      />
+                    </div>
                     <div className="flex flex-col gap-2">
                       <div className="text-[#ffffff] text-[14px]">
-                        {activity.writer.name}
+                        <Link href={`/ninja/${activity.writer.slug}`}>
+                          {activity.writer.name?.toString()}
+                        </Link>
                       </div>
-                      {/* <div className="text-[#7a7a7a] text-[12px]">
-                        <RichContent document={activity.writer.content} />
-                      </div> */}
-                      {/* <div className="flex flex-row gap-2">
-                        <Image src={IconX} alt="" />
-                        <Image src={IconInstagram} alt="" />
-                        <Image src={IconYoutube} alt="" />
-                      </div> */}
+                      <div className="text-[#7a7a7a] text-[12px]">
+                        {activity.writer.summary?.toString()}
+                      </div>
+                      <div className="flex gap-2">
+                        {activity.writer.xUrl && (
+                          <Link
+                            href={activity.writer.xUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconX1} alt="X" />
+                          </Link>
+                        )}
+                        {activity.writer.instagramUrl && (
+                          <Link
+                            href={activity.writer.instagramUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconInstagram} alt="X" />
+                          </Link>
+                        )}
+                        {activity.writer.youtubeUrl && (
+                          <Link
+                            href={activity.writer.youtubeUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconYoutube} alt="X" />
+                          </Link>
+                        )}
+                        {activity.writer.facebookUrl && (
+                          <Link
+                            href={activity.writer.facebookUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconFacebookFull} alt="X" />
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </>

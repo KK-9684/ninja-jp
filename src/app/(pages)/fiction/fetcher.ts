@@ -2,18 +2,32 @@ import { getEntries, getEntry } from "@/lib/contentful/client";
 import {
   CategoryEntrySkeleton,
   categoryPerItems,
-  WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
-import { transformAsset } from "@/lib/contentful/transformContent";
-import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ItemSkeleton } from "../item/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
+
+export const transformAsset = (
+  asset: Asset<"WITHOUT_UNRESOLVABLE_LINKS", string>
+) => ({
+  url: asset.fields.file?.url ?? "",
+  alt: typeof asset.fields.title === "string" ? asset.fields.title : "",
+});
 
 export type Fiction = FictionCore & {
   content: never;
   writer: {
     name: string;
-    content: never;
+    summary: string;
+    slug: string;
+    xUrl: string | null;
+    instagramUrl: string | null;
+    youtubeUrl: string | null;
+    facebookUrl: string | null;
+    image: {
+      url: string;
+      alt: string;
+    }[];
   } | null;
   relationKeyword: {
     slug: string | undefined;
@@ -48,6 +62,18 @@ type RelationKeywordSkeleton = EntrySkeletonType & {
   };
 };
 
+type Writer = EntrySkeletonType & {
+  name: EntryFieldTypes.Symbol;
+  content: EntryFieldTypes.Text;
+  image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink> | null;
+  slug: EntryFieldTypes.Symbol;
+  snsXUrl?: EntryFieldTypes.Symbol;
+  summary: EntryFieldTypes.Text;
+  snsInstagramUrl: EntryFieldTypes.Symbol;
+  snsYoutubeUrl: EntryFieldTypes.Symbol;
+  snsFacebookUrl: EntryFieldTypes.Symbol;
+};
+
 type Fields = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
@@ -59,7 +85,7 @@ type Fields = EntrySkeletonType & {
   relationKeyword?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<RelationKeywordSkeleton>
   >;
-  writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
+  writer?: EntryFieldTypes.EntryLink<Writer>;
   relationItem?: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<ItemSkeleton>>;
 };
 
@@ -80,11 +106,41 @@ const transformContent = (
 ): Fiction => {
   const writer = entry.fields.writer
     ? {
-        name: entry.fields.writer.fields.name,
-        content: entry.fields.writer.fields.content,
+        name:
+          typeof entry.fields.writer.fields.name === "string"
+            ? entry.fields.writer.fields.name
+            : "", // `string` 以外は空文字をセット
+        summary:
+          typeof entry.fields.writer.fields.summary === "string"
+            ? entry.fields.writer.fields.summary
+            : "",
+        slug: entry.fields.writer.sys.id,
+        xUrl:
+          typeof entry.fields.writer.fields.snsXUrl === "string"
+            ? entry.fields.writer.fields.snsXUrl
+            : null,
+        instagramUrl:
+          typeof entry.fields.writer.fields.snsInstagramUrl === "string"
+            ? entry.fields.writer.fields.snsInstagramUrl
+            : null,
+        youtubeUrl:
+          typeof entry.fields.writer.fields.snsYoutubeUrl === "string"
+            ? entry.fields.writer.fields.snsYoutubeUrl
+            : null,
+        facebookUrl:
+          typeof entry.fields.writer.fields.snsFacebookUrl === "string"
+            ? entry.fields.writer.fields.snsFacebookUrl
+            : null,
+        image: Array.isArray(entry.fields.writer.fields.image)
+          ? entry.fields.writer.fields.image
+              .filter(
+                (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+                  typeof img === "object" && img !== null && "fields" in img
+              )
+              .map(transformAsset)
+          : [],
       }
     : null;
-
   const relationItemIds = entry.fields.relationItem
     ? entry.fields.relationItem?.map((item) => item?.sys.id || "")
     : [];
@@ -114,14 +170,19 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<FictionSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ): FictionCore => {
-  const { title, image, category, createdAt } = entry.fields;
+  const { title, category, createdAt } = entry.fields;
 
-  const images = image
-    ? image
-        ?.filter((img) => img !== null && img !== undefined)
-        .map(transformAsset)
-    : [];
-
+  const images =
+    entry.fields.writer && Array.isArray(entry.fields.writer.fields.image) // ✅ `image` が配列かチェック
+      ? entry.fields.writer.fields.image
+          .filter(
+            (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+              typeof img === "object" && img !== null && "fields" in img
+          )
+          .map((img) =>
+            transformAsset(img as Asset<"WITHOUT_UNRESOLVABLE_LINKS", string>)
+          )
+      : [];
   const ct = category
     ? category?.map((ct) => ({
         slug: ct?.sys.id,

@@ -79,12 +79,17 @@ const DetailPageSwiper = ({ images }: DetailPageSwiperProps) => {
 
       <Swiper
         onSwiper={setThumbsSwiper}
-        slidesPerView={10}
+        slidesPerView={5}
         spaceBetween={8}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className="thumbs-swiper w-full max-w-[100%] h-24"
+        breakpoints={{
+          640: {
+            slidesPerView: 10,
+          },
+        }}
       >
         {images.map((image, index) => (
           <SwiperSlide key={index} className="cursor-pointer">

@@ -2,15 +2,26 @@ import { getEntries, getEntry } from "@/lib/contentful/client";
 import {
   CategoryEntrySkeleton,
   categoryPerItems,
-  WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
-import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type ItemCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "itemCategory";
+};
+
+type Writer = EntrySkeletonType & {
+  name: EntryFieldTypes.Symbol;
+  content: EntryFieldTypes.Text;
+  image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
+  slug: EntryFieldTypes.Symbol;
+  snxXUrl?: EntryFieldTypes.Symbol;
+  summary: EntryFieldTypes.Text;
+  snsInstagramUrl: EntryFieldTypes.Symbol;
+  snsYoutubeUrl: EntryFieldTypes.Symbol;
+  snsFacebookUrl: EntryFieldTypes.Symbol;
 };
 
 type Item = EntrySkeletonType & {
@@ -22,7 +33,7 @@ type Item = EntrySkeletonType & {
     EntryFieldTypes.EntryLink<ItemCategoryEntrySkeleton>
   >; // カテゴリだけどIDがitemになっている
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
-  writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
+  writer?: EntryFieldTypes.EntryLink<Writer>;
   relationKeyword?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<TagEntrySkeleton>
   >;
@@ -45,7 +56,20 @@ const transformContent = (
   const writer = entry.fields.writer
     ? {
         name: entry.fields.writer.fields.name,
-        summary: entry.fields.writer.fields.content,
+        summary: entry.fields.writer.fields.summary,
+        slug: entry.fields.writer.sys.id,
+        xUrl: entry.fields.writer.fields.snsXUrl || null,
+        instagramUrl: entry.fields.writer.fields.snsInstagramUrl || null,
+        youtubeUrl: entry.fields.writer.fields.snsYoutubeUrl || null,
+        facebookUrl: entry.fields.writer.fields.snsFacebookUrl || null,
+        image: Array.isArray(entry.fields.writer.fields.image)
+          ? entry.fields.writer.fields.image
+              .filter(
+                (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+                  img !== null && img !== undefined
+              ) // ✅ 型を限定
+              .map(transformAsset)
+          : [], // `image` が配列でない場合は空配列を返す
       }
     : null;
 

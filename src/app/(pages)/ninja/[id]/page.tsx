@@ -88,7 +88,7 @@ export default async function Page({ params }: Props) {
                 </div>
               </div>
             </div>
-            <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
+            <div>
               <DetailPageSwiper
                 images={
                   item.image?.map((img) => ({

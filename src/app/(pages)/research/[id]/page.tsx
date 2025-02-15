@@ -5,8 +5,6 @@ import { shuffle } from "@/lib/util/shuffle";
 import { getResearch } from "../fetcher";
 import RelationItem from "@/app/components/Common/RelationItem";
 
-import ImageMap from "@/assets/image-map.png";
-import ImageCeo from "@/assets/image-ceo.png";
 import iconItem from "@/assets/icon-item.svg";
 import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/icon-sub-research.png";
@@ -14,6 +12,11 @@ import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
+import Link from "next/link";
+import IconX1 from "@/assets/icon-x1.svg";
+import IconInstagram from "@/assets/icon-instagram.svg";
+import IconYoutube from "@/assets/icon-youtube.svg";
+import IconFacebookFull from "@/assets/icon-facebook-full.svg";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -113,11 +116,6 @@ export default async function ResearchDetailPage({ params }: Props) {
             <RichContent document={research.content} />
           </section>
           <section className="flex flex-col mt-[44px]">
-            <Image
-              src={ImageMap}
-              alt=""
-              className="w-full md:px-[60px] object-contain"
-            />
             <ShareButton
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/research/${research.slug}`}
               title={research.title}
@@ -125,27 +123,70 @@ export default async function ResearchDetailPage({ params }: Props) {
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>
-            <div className="md:px-[128px] mt-4">
+            <div className=" mt-4 w-[100%]">
               {research.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <Image
-                      src={ImageCeo}
-                      alt=""
-                      className="w-[88px] h-[88px] self-center"
-                    />
+                    <div className="rounded-full overflow-hidden flex items-center">
+                      <Image
+                        src={research.writer.image[0]?.url}
+                        alt=""
+                        className="w-[88px] h-[88px] self-center"
+                        width={88}
+                        height={88}
+                      />
+                    </div>
                     <div className="flex flex-col gap-2">
                       <div className="text-[#ffffff] text-[14px]">
-                        {research.writer.name}
+                        <Link href={`/ninja/${research.writer.slug}`}>
+                          {research.writer.name?.toString()}
+                        </Link>
                       </div>
                       <div className="text-[#7a7a7a] text-[12px]">
-                        <RichContent document={research.writer.content} />
+                        {research.writer.summary?.toString()}
                       </div>
-                      {/* <div className="flex flex-row gap-2">
-                        <Image src={IconX} alt="" />
-                        <Image src={IconInstagram} alt="" />
-                        <Image src={IconYoutube} alt="" />
-                      </div> */}
+                      <div className="flex gap-2">
+                        {research.writer.xUrl && (
+                          <Link
+                            href={research.writer.xUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconX1} alt="X" />
+                          </Link>
+                        )}
+                        {research.writer.instagramUrl && (
+                          <Link
+                            href={research.writer.instagramUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconInstagram} alt="X" />
+                          </Link>
+                        )}
+                        {research.writer.youtubeUrl && (
+                          <Link
+                            href={research.writer.youtubeUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconYoutube} alt="X" />
+                          </Link>
+                        )}
+                        {research.writer.facebookUrl && (
+                          <Link
+                            href={research.writer.facebookUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconFacebookFull} alt="X" />
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </>

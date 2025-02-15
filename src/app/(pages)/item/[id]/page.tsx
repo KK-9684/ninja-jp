@@ -2,14 +2,16 @@ import Image from "next/image";
 import RichContent from "@/app/components/Common/RichContent";
 import { getItem } from "../fetcher";
 
-import IconTimer from "@/assets/icon-timer.svg";
-import ImageMap from "@/assets/image-map.png";
-import ImageCeo from "@/assets/image-ceo.png";
 import ImageSub from "@/assets/image-sub-item.png";
+import IconX1 from "@/assets/icon-x1.svg";
+import IconInstagram from "@/assets/icon-instagram.svg";
+import IconYoutube from "@/assets/icon-youtube.svg";
+import IconFacebookFull from "@/assets/icon-facebook-full.svg";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -110,17 +112,6 @@ export default async function ItemDetailPage({ params }: Props) {
                 }
               />{" "}
             </div>
-            <div className="mt-[32px] flex flex-row gap-[20px] items-center">
-              <div className="text-[36px] text-[#ffffff]">￥1,000〜</div>
-              <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit">
-                <Image
-                  src={IconTimer}
-                  alt=""
-                  className="w-[17px] h-[17px] text-[#7a7a7a]"
-                />
-                <div>1時間30分</div>
-              </div>
-            </div>
           </section>
 
           <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
@@ -128,11 +119,6 @@ export default async function ItemDetailPage({ params }: Props) {
           </section>
 
           <section className="flex flex-col mt-[44px]">
-            <Image
-              src={ImageMap}
-              alt=""
-              className="w-full md:px-[60px] object-contain"
-            />
             <ShareButton
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/item/${item.slug}`}
               title={item.title}
@@ -140,22 +126,70 @@ export default async function ItemDetailPage({ params }: Props) {
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>
-            <div className="md:px-[128px] mt-4">
+            <div className=" mt-4 w-[100%]">
               {item.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <Image
-                      src={ImageCeo}
-                      alt=""
-                      className="w-[88px] h-[88px] self-center"
-                    />
+                    <div className="rounded-full overflow-hidden flex items-center">
+                      <Image
+                        src={item.writer.image[0]?.url}
+                        alt=""
+                        className="w-[88px] h-[88px] self-center"
+                        width={88}
+                        height={88}
+                      />
+                    </div>
                     <div className="flex flex-col gap-2">
                       <div className="text-[#ffffff] text-[14px]">
-                        {item.writer.name}
+                        <Link href={`/ninja/${item.writer.slug}`}>
+                          {item.writer.name?.toString()}
+                        </Link>
                       </div>
-                      {/* <div className="text-[#7a7a7a] text-[12px]">
-                        <RichContent document={item.writer.content} />
-                      </div> */}
+                      <div className="text-[#7a7a7a] text-[12px]">
+                        {item.writer.summary?.toString()}
+                      </div>
+                      <div className="flex gap-2">
+                        {item.writer.xUrl && (
+                          <Link
+                            href={item.writer.xUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconX1} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.instagramUrl && (
+                          <Link
+                            href={item.writer.instagramUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconInstagram} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.youtubeUrl && (
+                          <Link
+                            href={item.writer.youtubeUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconYoutube} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.facebookUrl && (
+                          <Link
+                            href={item.writer.facebookUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconFacebookFull} alt="X" />
+                          </Link>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </>

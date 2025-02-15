@@ -4,41 +4,42 @@ import { getFiction } from "../fetcher";
 import { shuffle } from "@/lib/util/shuffle";
 import RelationItem from "@/app/components/Common/RelationItem";
 
-import ImageMap from "@/assets/image-map.png";
-import ImageCeo from "@/assets/image-ceo.png";
-import IconYoutube from "@/assets/icon-youtube.svg";
-import IconX from "@/assets/icon-x1.svg";
+import IconX1 from "@/assets/icon-x1.svg";
 import IconInstagram from "@/assets/icon-instagram.svg";
-import iconItem from "@/assets/icon-item.svg";
+import IconYoutube from "@/assets/icon-youtube.svg";
+import IconFacebookFull from "@/assets/icon-facebook-full.svg";
+import iconItem from "@/assets/icon-fiction.svg";
 import ImageSub from "@/assets/image-sub-fiction.png";
 import ShareButton from "@/app/components/Common/sharebutton";
 import DetailSideContent from "@/app/components/Common/detailSideContent";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
-
+import Link from "next/link";
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = (await params).id;
-  const item = await getFiction(id);
+  const fiction = await getFiction(id);
 
-  if (!item) {
+  if (!fiction) {
     return {};
   }
+
+  console.log(fiction);
   return {
     metadataBase: new URL(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${item.slug}` ||
+      `${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${fiction.slug}` ||
         "http://localhost:3000"
     ),
-    title: item.title,
-    description: item.metaDescription,
+    title: fiction.title,
+    description: fiction.metaDescription,
     openGraph: {
-      title: item.title,
-      description: item.metaDescription,
+      title: fiction.title,
+      description: fiction.metaDescription,
       url:
-        `${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${item.slug}` ||
+        `${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${fiction.slug}` ||
         "http://localhost:3000",
       siteName: "忍者ポータルサイト「Ninjack」",
       images: [
@@ -56,9 +57,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FictionDetailPage({ params }: Props) {
   const { id } = await params;
-  const item = await getFiction(id);
+  const fiction = await getFiction(id);
 
-  if (!item) {
+  if (!fiction) {
     return <div>Not Found</div>;
   }
   return (
@@ -69,9 +70,9 @@ export default async function FictionDetailPage({ params }: Props) {
             <div className="flex flex-col md:space-y-6 gap-4">
               <div className="flex flex-col py-1">
                 <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
-                  {item.category && item.category.length > 0 && (
+                  {fiction.category && fiction.category.length > 0 && (
                     <div className="mb-[27px] flex items-center md:gap-[20px] gap-4">
-                      {item.category.map((ct) => (
+                      {fiction.category.map((ct) => (
                         <div
                           key={ct.slug}
                           className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none"
@@ -82,22 +83,22 @@ export default async function FictionDetailPage({ params }: Props) {
                     </div>
                   )}
                   {/* FIXME contentfulにareaの定義が必要 */}
-                  {/* {item.area && (
+                  {/* {fiction.area && (
                     <div className="flex items-center text-ninjack-text-gray">
                       <span className="text-2xl leading-none">・</span>
-                      <span className="text-sm leading-none">{item.area}</span>
+                      <span className="text-sm leading-none">{fiction.area}</span>
                     </div>
                   )} */}
                 </div>
                 <div>
                   <p className="font-bold text-ninjack-white mb-3 text-[28px]">
-                    {item.title}
+                    {fiction.title}
                   </p>
                 </div>
-                {item.relationKeyword && (
+                {fiction.relationKeyword && (
                   <div className="py-2">
                     <div className="flex md:flex-row flex-wrap gap-2 ">
-                      {item.relationKeyword.map((keyword) => (
+                      {fiction.relationKeyword.map((keyword) => (
                         <div
                           key={keyword.slug}
                           className="text-ninjack-white text-xs leading-none items-center p-2 border border-ninjack-line-gray w-fit rounded-[4px]"
@@ -113,7 +114,7 @@ export default async function FictionDetailPage({ params }: Props) {
             <div>
               <DetailPageSwiper
                 images={
-                  item.image?.map((img) => ({
+                  fiction.image?.map((img) => ({
                     ...img,
                     width: 1200,
                     height: 800,
@@ -129,46 +130,90 @@ export default async function FictionDetailPage({ params }: Props) {
           </section>
 
           <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
-            {item.content && (
+            {fiction.content && (
               <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
-                <RichContent document={item.content} />
+                <RichContent document={fiction.content} />
               </section>
             )}
           </section>
 
           <section className="flex flex-col mt-[44px]">
-            <Image
-              src={ImageMap}
-              alt=""
-              className="w-full md:px-[60px] object-contain"
-            />
             <ShareButton
-              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${item.slug}`}
-              title={item.title}
+              shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/fiction/${fiction.slug}`}
+              title={fiction.title}
             />
 
             <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
               執筆忍
             </div>
-            <div className="md:px-[128px] mt-4">
-              <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                <Image
-                  src={ImageCeo}
-                  alt=""
-                  className="w-[88px] h-[88px] self-center"
-                />
-                <div className="flex flex-col gap-2">
-                  <div className="text-[#ffffff] text-[14px]">田中太郎</div>
-                  <div className="text-[#7a7a7a] text-[12px]">
-                    この人の説明もしくはコメント）これはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅうもじですこれはじゅ
+            <div className=" mt-4 w-[100%]">
+              {fiction.writer && (
+                <>
+                  <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
+                    <div className="rounded-full overflow-hidden flex items-center">
+                      <Image
+                        src={fiction.writer.image[0].url || "/noimage.png"}
+                        alt=""
+                        className="w-[88px] h-[88px] self-center"
+                        width={88}
+                        height={88}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="text-[#ffffff] text-[14px]">
+                        <Link href={`/ninja/${fiction.writer.slug}`}>
+                          {fiction.writer.name?.toString()}
+                        </Link>
+                      </div>
+                      <div className="text-[#7a7a7a] text-[12px]">
+                        {fiction.writer.summary?.toString()}
+                      </div>
+                      <div className="flex gap-2">
+                        {fiction.writer.xUrl && (
+                          <Link
+                            href={fiction.writer.xUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconX1} alt="X" />
+                          </Link>
+                        )}
+                        {fiction.writer.instagramUrl && (
+                          <Link
+                            href={fiction.writer.instagramUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconInstagram} alt="X" />
+                          </Link>
+                        )}
+                        {fiction.writer.youtubeUrl && (
+                          <Link
+                            href={fiction.writer.youtubeUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconYoutube} alt="X" />
+                          </Link>
+                        )}
+                        {fiction.writer.facebookUrl && (
+                          <Link
+                            href={fiction.writer.facebookUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconFacebookFull} alt="X" />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-2">
-                    <Image src={IconX} alt="" />
-                    <Image src={IconInstagram} alt="" />
-                    <Image src={IconYoutube} alt="" />
-                  </div>
-                </div>
-              </div>
+                </>
+              )}
             </div>
           </section>
 
@@ -180,8 +225,8 @@ export default async function FictionDetailPage({ params }: Props) {
               </h2>
             </div>
             <div className="grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-8">
-              {item.relationItemIds && (
-                <RelationItem ids={shuffle(item.relationItemIds)} />
+              {fiction.relationItemIds && (
+                <RelationItem ids={shuffle(fiction.relationItemIds)} />
               )}
             </div>
           </section>

@@ -2,25 +2,12 @@ import { getEntries, getEntry } from "@/lib/contentful/client";
 import {
   CategoryEntrySkeleton,
   categoryPerItems,
-  WriterEntrySkeleton,
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
-import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { differenceInDays } from "date-fns";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
-
-export type Magazine = MagazineCore & {
-  writer: {
-    name: string;
-    content: never;
-  } | null;
-  relationKeyword: {
-    slug: string | undefined;
-    title: string | undefined;
-  }[];
-  metaDescription: string;
-};
 
 export type MagazineCore = {
   slug: string;
@@ -39,6 +26,40 @@ export type MagazineCore = {
   }[];
 };
 
+export type Magazine = MagazineCore & {
+  writer: {
+    name: string;
+    content: never;
+    summary: string;
+    slug: string;
+    xUrl: string | null;
+    instagramUrl: string | null;
+    youtubeUrl: string | null;
+    facebookUrl: string | null;
+    image: {
+      url: string;
+      alt: string;
+    }[];
+  } | null;
+  relationKeyword: {
+    slug: string | undefined;
+    title: string | undefined;
+  }[];
+  metaDescription: string;
+};
+
+type Writer = EntrySkeletonType & {
+  name: EntryFieldTypes.Symbol;
+  content: EntryFieldTypes.Text;
+  image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
+  slug: EntryFieldTypes.Symbol;
+  snxXUrl?: EntryFieldTypes.Symbol;
+  summary: EntryFieldTypes.Text;
+  snsInstagramUrl: EntryFieldTypes.Symbol;
+  snsYoutubeUrl: EntryFieldTypes.Symbol;
+  snsFacebookUrl: EntryFieldTypes.Symbol;
+};
+
 type MagazineCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "magazineCategory";
 };
@@ -55,7 +76,7 @@ type Fields = EntrySkeletonType & {
   category?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<MagazineCategoryEntrySkeleton>
   >;
-  writer?: EntryFieldTypes.EntryLink<WriterEntrySkeleton>;
+  writer?: EntryFieldTypes.EntryLink<Writer>;
 };
 
 type MagazineSkeleton = EntrySkeletonType<Fields> & {
@@ -84,10 +105,37 @@ const transformContent = (
 ): Magazine => {
   const writer = entry.fields.writer
     ? {
-        name: entry.fields.writer.fields.name,
-        content: entry.fields.writer.fields.content,
+        name: String(entry.fields.writer.fields.name || ""), // 文字列型に変換
+        content: entry.fields.writer.fields.content as never,
+        summary: String(entry.fields.writer.fields.summary || ""),
+        slug: entry.fields.writer.sys.id,
+        xUrl:
+          typeof entry.fields.writer.fields.snsXUrl === "string"
+            ? entry.fields.writer.fields.snsXUrl
+            : null,
+        instagramUrl:
+          typeof entry.fields.writer.fields.snsInstagramUrl === "string"
+            ? entry.fields.writer.fields.snsInstagramUrl
+            : null,
+        youtubeUrl:
+          typeof entry.fields.writer.fields.snsYoutubeUrl === "string"
+            ? entry.fields.writer.fields.snsYoutubeUrl
+            : null,
+        facebookUrl:
+          typeof entry.fields.writer.fields.snsFacebookUrl === "string"
+            ? entry.fields.writer.fields.snsFacebookUrl
+            : null,
+        image: Array.isArray(entry.fields.writer.fields.image)
+          ? entry.fields.writer.fields.image
+              .filter(
+                (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+                  img !== null && img !== undefined
+              )
+              .map(transformAsset)
+          : [],
       }
     : null;
+
   const relationKeyword = entry.fields.relationKeyword
     ? entry.fields.relationKeyword.map((keyword) => ({
         slug: keyword?.sys.id,

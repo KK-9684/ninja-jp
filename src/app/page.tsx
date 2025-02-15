@@ -58,8 +58,8 @@ export default async function Home() {
   return (
     <div>
       <section className="pt-9 pb-14 flex">
-        <div className=" hidden w-3/12 h-[740px] text-center text-2xl text-ninjack-white ms-8 md:flex flex-col justify-center bg-ninjack-bg-gray">
-          <video autoPlay muted loop className="w-full h-full object-cover">
+        <div className=" hidden w-3/12 h-[740px] text-center text-2xl text-ninjack-white ms-8 md:flex flex-col justify-center">
+          <video autoPlay muted loop className="w-[100%] h-full object-contain">
             <source src="/video/kv_min.mp4" type="video/mp4" />
           </video>
         </div>
@@ -193,7 +193,7 @@ export default async function Home() {
               title="商品・忍具"
               subTitle="おすすめの忍者アイテム"
             />
-            <DetailButton href="/fiction" size={160} />
+            <DetailButton href="/item" size={160} />
           </div>
           <div className="md:hidden">
             <SectionTitlePart
@@ -290,7 +290,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="" id="aboutNinjack">
+      <section className="">
         <div className="container mx-auto md:py-[100px] py-12 px-5">
           <div className="flex md:flex-row flex-col gap-4 justify-center space-x-5 md:text-[66px] text-[40px] leading-none mb-12">
             <span className="text-ninjack-purple text-center">Ninjack</span>
@@ -298,7 +298,7 @@ export default async function Home() {
           </div>
           <RecommendMagazine />
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center" id="aboutNinjack">
           <div className="trapezoid2"></div>
           <div className="flex items-center mt-[-15px] mb-[-20px]">
             <Image src={iconSearch} alt="検索アイコン" className="me-[5.5px]" />

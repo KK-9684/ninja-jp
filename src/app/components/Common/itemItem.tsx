@@ -6,7 +6,7 @@ export interface ItemItemProps {
   image: StaticImport | string;
   category: string;
   title: string;
-  price: string;
+  price?: string;
   href: string;
 }
 
@@ -21,7 +21,7 @@ const ItemItem = ({ href, image, title, price, category }: ItemItemProps) => {
         <Image
           src={image}
           alt={title}
-          className="rounded-lg w-full group-hover:scale-105 transition-all duration-300"
+          className="rounded-lg w-full group-hover:scale-105 aspect-square object-cover transition-all duration-300"
           width={500}
           height={500}
         />

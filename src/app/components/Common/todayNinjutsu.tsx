@@ -12,10 +12,7 @@ export default function TodayNinjutsu() {
       try {
         const allNinjutsus = await getNinjutsu();
         const shuffledNinjutsus = allNinjutsus.sort(() => Math.random() - 0.5);
-        setNinjutsus([
-          shuffledNinjutsus[0] || "データ読み込み中...",
-          shuffledNinjutsus[1] || "データ読み込み中...",
-        ]);
+        setNinjutsus([shuffledNinjutsus[0] || "データ読み込み中..."]);
       } catch (error) {
         console.error("Error fetching ninjutsu:", error);
         setNinjutsus(["データ読み込みエラー", "データ読み込みエラー"]);
@@ -31,7 +28,6 @@ export default function TodayNinjutsu() {
         <Suspense fallback={<p className="m-3 text-xs">今日の忍術：</p>}>
           <div className="flex gap-6">
             <p className="text-xs">{`今日の忍術：${ninjutsus[0]}`}</p>
-            <p className="text-xs">{`今日の忍術：${ninjutsus[1]}`}</p>
           </div>
         </Suspense>
       </Marquee>

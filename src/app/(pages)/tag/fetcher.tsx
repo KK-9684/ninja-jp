@@ -54,3 +54,30 @@ export const getTagList = async () => {
     })),
   };
 };
+
+export const getTagTitle = async (id: string) => {
+  const result = await getEntries<TagEntrySkeleton>({
+    content_type: "tag",
+    "fields.slug": id, // 修正前
+    select: ["fields.title"],
+  });
+
+  // もし `slug` で検索して見つからなかった場合、`sys.id` で再検索
+  if (result.items.length === 0) {
+    console.log(`Slug '${id}' では見つからなかったため、sys.id で検索します`);
+    const resultById = await getEntries<TagEntrySkeleton>({
+      content_type: "tag",
+      "sys.id": id, // `sys.id` で検索
+      select: ["fields.title"],
+    });
+
+    if (resultById.items.length === 0) {
+      console.log(`Tag not found for slug or sys.id: ${id}`);
+      return null;
+    }
+
+    return resultById.items[0].fields.title;
+  }
+
+  return result.items[0].fields.title;
+};

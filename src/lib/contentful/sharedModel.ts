@@ -22,6 +22,13 @@ export type WriterEntrySkeleton = {
   fields: {
     name: EntryFieldTypes.Symbol;
     content: Document;
+    image: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
+    slug: EntryFieldTypes.Symbol;
+    summary: EntryFieldTypes.Symbol;
+    xUrl?: EntryFieldTypes.Symbol;
+    instagramUrl?: EntryFieldTypes.Symbol;
+    youtubeUrl?: EntryFieldTypes.Symbol;
+    facebookUrl?: EntryFieldTypes.Symbol;
   };
 };
 
