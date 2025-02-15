@@ -9,10 +9,13 @@ import { documentToPlainTextString } from "@contentful/rich-text-plain-text-rend
 
 export const transformAsset = (
   asset: Asset<"WITHOUT_UNRESOLVABLE_LINKS", string>
-) => ({
-  url: asset.fields.file?.url ?? "",
-  alt: typeof asset.fields.title === "string" ? asset.fields.title : "",
-});
+) => {
+  const url = asset.fields.file?.url ?? "";
+  return {
+    url: url.startsWith("//") ? `https:${url}` : url,
+    alt: typeof asset.fields.title === "string" ? asset.fields.title : "",
+  };
+};
 
 export type Fiction = FictionCore & {
   content: never;
@@ -166,23 +169,22 @@ const transformContent = (
     ...transformPartialContent(entry),
   };
 };
-
 const transformPartialContent = (
   entry: Entry<FictionSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ): FictionCore => {
-  const { title, category, createdAt } = entry.fields;
+  const { title, category, createdAt, image } = entry.fields;
 
-  const images =
-    entry.fields.writer && Array.isArray(entry.fields.writer.fields.image) // ✅ `image` が配列かチェック
-      ? entry.fields.writer.fields.image
-          .filter(
-            (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
-              typeof img === "object" && img !== null && "fields" in img
-          )
-          .map((img) =>
-            transformAsset(img as Asset<"WITHOUT_UNRESOLVABLE_LINKS", string>)
-          )
-      : [];
+  const images = image
+    ? image
+        .filter(
+          (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+            typeof img === "object" && img !== null && "fields" in img
+        )
+        .map((img) =>
+          transformAsset(img as Asset<"WITHOUT_UNRESOLVABLE_LINKS", string>)
+        )
+    : [];
+
   const ct = category
     ? category?.map((ct) => ({
         slug: ct?.sys.id,
@@ -193,7 +195,7 @@ const transformPartialContent = (
   return {
     slug: entry.sys.id,
     title,
-    image: images,
+    image: images, // 正しい画像データを使用
     category: ct,
     createdAt,
   };

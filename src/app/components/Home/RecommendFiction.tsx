@@ -123,6 +123,8 @@ export default function RecommendFiction() {
 
       <div className="grid md:grid-cols-5 grid-cols-2 gap-4 md:gap-10 justify-between mt-10">
         {displayItems.map((item) => {
+          console.log(item);
+
           if (!item?.slug) return null;
 
           return (
