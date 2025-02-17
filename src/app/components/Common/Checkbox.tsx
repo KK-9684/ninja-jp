@@ -18,7 +18,10 @@ export default function Checkbox({
 }: Props) {
   return (
     <div className="md:flex md:flex-col  md:space-y-2 grid grid-cols-2">
-      <div className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px]">
+      <label
+        htmlFor={`${name}-all`}
+        className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px] cursor-pointer hover:brightness-200 checked:bg-ninjack-purple has-checked:border-ninjack-white"
+      >
         <div className="custom-checkbox">
           <input
             id={`${name}-all`}
@@ -27,17 +30,17 @@ export default function Checkbox({
             value="all"
             onChange={handleSearch}
             checked={params.getAll(name).length === 0}
+            className="peer"
           />
           <span className="checkmark"></span> {/* This span will be styled */}
         </div>
-        <label htmlFor={`${name}-all`} className="text-ninjack-white text-sm">
-          すべて
-        </label>
-      </div>
+        <div className="text-ninjack-white text-sm">すべて</div>
+      </label>
       {option.map((opt) => (
-        <div
+        <label
           key={opt.slug}
-          className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px]"
+          className="flex space-x-2 items-center p-2.5 bg-ninjack-bg-gray rounded-[4px] cursor-pointer hover:brightness-200 checked:bg-ninjack-purple has-checked:border-ninjack-white"
+          htmlFor={`${opt.slug}-check`}
         >
           <div className="custom-checkbox">
             <input
@@ -46,18 +49,15 @@ export default function Checkbox({
               value={opt.slug}
               onChange={handleSearch}
               checked={params.getAll(name).includes(opt.slug)}
-              className="hidden" // Hide the default checkbox
+              className="hidden peer" // Hide the default checkbox
               id={`${opt.slug}-check`}
             />
             <span className="checkmark"></span> {/* This span will be styled */}
           </div>
-          <label
-            htmlFor={`${opt.slug}-check`}
-            className="text-ninjack-white text-sm"
-          >
+          <div className="text-ninjack-white text-sm">
             <p className="text-ninjack-white text-sm">{opt.title}</p>
-          </label>
-        </div>
+          </div>
+        </label>
       ))}
     </div>
   );

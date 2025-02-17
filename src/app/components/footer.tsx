@@ -155,8 +155,8 @@ const Footer = async () => {
         <div className="w-[1208px] flex justify-between items-center mx-auto px-6 mb-20">
           <div className="flex space-x-8 text-sm">
             <Link href={"/commercial"}>特定商取引法の表示</Link>
-            <Link href={""}>利用規約</Link>
-            <Link href={""}>プライバシーポリシー</Link>
+            <Link href={"/terms"}>利用規約</Link>
+            <Link href={"/privacy-policy"}>プライバシーポリシー</Link>
           </div>
           <div className="flex space-x-4">
             <CustomLargeButton

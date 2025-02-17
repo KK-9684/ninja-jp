@@ -15,6 +15,7 @@ import iconClose from "@/assets/icon-close.svg";
 import iconPlus from "@/assets/icon-plus.svg";
 import CustomLargeButton from "./customLargeButton";
 import { AllActiveCategories } from "@/lib/contentful/sharedModel";
+import CustomButton from "./customButton";
 
 type HamburgerMenuProps = {
   isOpen: boolean;
@@ -45,7 +46,25 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
               忍者ポータルサイト
             </p>
           </div>
-          <AboutButtonGroup />
+          <div className="flex space-x-2.5">
+            <button onClick={onClose}>
+              <CustomButton
+                text="ABOUT"
+                link="/#aboutNinjack"
+                font="Geist"
+                color="ninjack-text-gray"
+              />
+            </button>
+            <button onClick={onClose}>
+              <CustomButton
+                text="Ninjack MAGAZINE"
+                link="/magazine"
+                font="Geist"
+                color="ninjack-white"
+                isArrow={true}
+              />
+            </button>
+          </div>
         </div>
         <div className="absolute top-4 right-4">
           <button onClick={onClose} className="p-2">
@@ -412,20 +431,24 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
             </Link>
           </div>
           <div className="flex flex-col-reverse md:flex-row gap-4">
-            <CustomLargeButton
-              icon={iconMail}
-              text="お問い合わせ"
-              type={1}
-              font="NotoSansJp"
-              link="/contact"
-            />
-            <CustomLargeButton
-              text="メールマガジン配信登録"
-              font="NotoSansJp"
-              type={2}
-              isArrow
-              link="/mail-magazine"
-            />
+            <button onClick={onClose}>
+              <CustomLargeButton
+                icon={iconMail}
+                text="お問い合わせ"
+                type={1}
+                font="NotoSansJp"
+                link="/contact"
+              />
+            </button>
+            <button onClick={onClose}>
+              <CustomLargeButton
+                text="メールマガジン配信登録"
+                font="NotoSansJp"
+                type={2}
+                isArrow
+                link="/mail-magazine"
+              />
+            </button>
           </div>
         </div>
       </div>
