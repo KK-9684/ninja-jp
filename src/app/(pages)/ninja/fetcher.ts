@@ -4,12 +4,24 @@ import {
   categoryPerItems,
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
-import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
+import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { ActivitySkeleton } from "../activity/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 
 type MemberCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "memberCategory";
+};
+
+type Writer = EntrySkeletonType & {
+  name: EntryFieldTypes.Symbol;
+  content: EntryFieldTypes.Text;
+  image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
+  slug: EntryFieldTypes.Symbol;
+  snxXUrl?: EntryFieldTypes.Symbol;
+  summary: EntryFieldTypes.Text;
+  snsInstagramUrl: EntryFieldTypes.Symbol;
+  snsYoutubeUrl: EntryFieldTypes.Symbol;
+  snsFacebookUrl: EntryFieldTypes.Symbol;
 };
 
 type Member = EntrySkeletonType & {
@@ -22,6 +34,7 @@ type Member = EntrySkeletonType & {
     EntryFieldTypes.EntryLink<MemberCategoryEntrySkeleton>
   >;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
+  writer?: EntryFieldTypes.EntryLink<Writer>;
   relationActivity?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivitySkeleton>
   >;
@@ -50,6 +63,26 @@ const transformContent = (
     (activity) => activity?.sys.id || ""
   );
 
+  const writer = entry.fields.writer
+    ? {
+        name: entry.fields.writer.fields.name,
+        summary: entry.fields.writer.fields.summary,
+        slug: entry.fields.writer.sys.id,
+        xUrl: entry.fields.writer.fields.snsXUrl || null,
+        instagramUrl: entry.fields.writer.fields.snsInstagramUrl || null,
+        youtubeUrl: entry.fields.writer.fields.snsYoutubeUrl || null,
+        facebookUrl: entry.fields.writer.fields.snsFacebookUrl || null,
+        image: Array.isArray(entry.fields.writer.fields.image)
+          ? entry.fields.writer.fields.image
+              .filter(
+                (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
+                  img !== null && img !== undefined
+              )
+              .map(transformAsset)
+          : [],
+      }
+    : null;
+
   const metaDescription = documentToPlainTextString(entry.fields.content).slice(
     0,
     80
@@ -58,6 +91,7 @@ const transformContent = (
   return {
     relationActivityIds,
     relationMemberIds,
+    writer,
     metaDescription,
     ...transformPartialContent(entry),
   };
@@ -115,6 +149,7 @@ export const getMemberList = async (query: Query) => {
       "fields.category",
       "fields.content",
       "fields.position",
+      "fields.writer",
     ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
@@ -139,6 +174,7 @@ export const getRelationMember = async (ids: string[], limit?: number) => {
       "fields.image",
       "fields.category",
       "fields.content",
+      "fields.writer",
     ],
     order: ["-fields.createdAt"],
     "sys.id[in]": ids,

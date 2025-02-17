@@ -23,11 +23,11 @@ const ItemItemSub = ({
 
   return (
     <Link href={href} className="flex flex-col gap-2 group">
-      <div className="overflow-hidden rounded-lg w-[144px] h-[144px] min-w-[144px] min-h-[144px]">
+      <div className="overflow-hidden rounded-lg aspect-square object-cover">
         <Image
           src={image}
           alt={title}
-          className="rounded-lg w-full group-hover:scale-105 transition-all duration-300"
+          className="rounded-lg group-hover:scale-105 transition-all duration-300 object-cover w-[100%] h-[100%]"
           width={144}
           height={144}
         />

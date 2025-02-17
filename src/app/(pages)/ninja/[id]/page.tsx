@@ -4,6 +4,10 @@ import { getMember } from "../fetcher";
 import RelationActivity from "@/app/components/Common/RelationActivity";
 import { shuffle } from "@/lib/util/shuffle";
 import RelationMember from "@/app/components/Common/RelationMember";
+import IconX1 from "@/assets/icon-x1.svg";
+import IconInstagram from "@/assets/icon-instagram.svg";
+import IconYoutube from "@/assets/icon-youtube.svg";
+import IconFacebookFull from "@/assets/icon-facebook-full.svg";
 
 import ImageMap from "@/assets/image-map.png";
 import iconActivity from "@/assets/icon-activity.svg";
@@ -13,6 +17,7 @@ import DetailSideContent from "@/app/components/Common/detailSideContent";
 import ShareButton from "@/app/components/Common/sharebutton";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -115,6 +120,78 @@ export default async function Page({ params }: Props) {
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/ninja/${item.slug}`}
               title={item.name}
             />
+            <div className="mt-12 text-[#7a7a7a] text-center text-[16px]">
+              執筆忍
+            </div>
+            <div className=" mt-4 w-[100%]">
+              {item.writer && (
+                <>
+                  <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
+                    <div className="rounded-full overflow-hidden flex items-center">
+                      <Image
+                        src={item.writer.image[0]?.url}
+                        alt=""
+                        className="w-[88px] h-[88px] self-center"
+                        width={88}
+                        height={88}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="text-[#ffffff] text-[14px]">
+                        <Link href={`/ninja/${item.writer.slug}`}>
+                          {item.writer.name?.toString()}
+                        </Link>
+                      </div>
+                      <div className="text-[#7a7a7a] text-[12px]">
+                        {item.writer.summary?.toString()}
+                      </div>
+                      <div className="flex gap-2">
+                        {item.writer.xUrl && (
+                          <Link
+                            href={item.writer.xUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconX1} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.instagramUrl && (
+                          <Link
+                            href={item.writer.instagramUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconInstagram} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.youtubeUrl && (
+                          <Link
+                            href={item.writer.youtubeUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconYoutube} alt="X" />
+                          </Link>
+                        )}
+                        {item.writer.facebookUrl && (
+                          <Link
+                            href={item.writer.facebookUrl.toString()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#7a7a7a] hover:text-white"
+                          >
+                            <Image src={IconFacebookFull} alt="X" />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
           </section>
 
           <section className="mt-[120px] flex flex-col gap-7">
