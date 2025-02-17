@@ -24,8 +24,10 @@ type Writer = EntrySkeletonType & {
   snsYoutubeUrl: EntryFieldTypes.Symbol;
   snsFacebookUrl: EntryFieldTypes.Symbol;
 };
+
 type Spot = EntrySkeletonType & {
   title: EntryFieldTypes.Symbol;
+  price: EntryFieldTypes.Symbol;
   createdAt: EntryFieldTypes.Date;
   content: Document;
   area?: EntryFieldTypes.AssetLink;
@@ -38,6 +40,7 @@ type Spot = EntrySkeletonType & {
   relationKeyword?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<TagEntrySkeleton>
   >;
+  map?: EntryFieldTypes.Location; // 追加: Location型のmapフィールド
 };
 
 type SpotSkeleton = EntrySkeletonType<Spot> & {
@@ -69,9 +72,9 @@ const transformContent = (
               .filter(
                 (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
                   img !== null && img !== undefined
-              ) // ✅ 型を限定
+              )
               .map(transformAsset)
-          : [], // `image` が配列でない場合は空配列を返す
+          : [],
       }
     : null;
 
@@ -104,7 +107,7 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<SpotSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ) => {
-  const { title, image, area, category } = entry.fields;
+  const { title, image, area, category, map } = entry.fields;
 
   const images = image
     ?.filter((img) => img !== null && img !== undefined)
@@ -112,12 +115,21 @@ const transformPartialContent = (
 
   const parsedArea = area ? area.fields.title : null;
 
+  // mapフィールドの変換処理を追加
+  const location = map
+    ? {
+        lat: map.lat,
+        lon: map.lon,
+      }
+    : null;
+
   return {
     slug: entry.sys.id,
     title,
+    price: entry.fields.price,
     image: images,
     area: parsedArea,
-
+    location, // 位置情報を追加
     category: {
       slug: category?.sys.id,
       title: category?.fields.title || "",
@@ -155,7 +167,14 @@ export const getSpotList = async (query: Query) => {
 
   const result = await getEntries<SpotSkeleton>({
     content_type: "spot",
-    select: ["fields.title", "fields.image", "fields.area", "fields.category"],
+    select: [
+      "fields.title",
+      "fields.price",
+      "fields.image",
+      "fields.area",
+      "fields.category",
+      "fields.map", // mapフィールドを追加
+    ],
     order: ["-fields.createdAt"],
     limit: query.perPage || fallbackPerPage,
     skip: skip,
@@ -174,7 +193,14 @@ export const getRelationSpot = async (ids: string[], limit?: number) => {
   const fallbackPerPage = 3;
   const result = await getEntries<SpotSkeleton>({
     content_type: "spot",
-    select: ["fields.title", "fields.image", "fields.area", "fields.category"],
+    select: [
+      "fields.title",
+      "fields.price",
+      "fields.image",
+      "fields.area",
+      "fields.category",
+      "fields.map", // mapフィールドを追加
+    ],
     order: ["-fields.createdAt"],
     "sys.id[in]": ids,
     limit: limit || fallbackPerPage,

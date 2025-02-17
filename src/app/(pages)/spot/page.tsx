@@ -92,6 +92,7 @@ export default async function SpotPage({
                     categroy={item.category.title || ""}
                     areaName={item.area || ""}
                     title={item.title || ""}
+                    price={item.price || ""}
                     href={`/spot/${item.slug}`}
                   />
                 </div>

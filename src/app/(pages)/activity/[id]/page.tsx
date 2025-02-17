@@ -31,6 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
+  console.log(activity);
+
   return {
     metadataBase: new URL(
       `${process.env.NEXT_PUBLIC_BASE_URL}/activity/${activity.slug}` ||
@@ -127,7 +129,11 @@ export default async function ActivityDetailPage({ params }: Props) {
               ))} */}
             </div>
             <div className="flex flex-row gap-[20px] items-center">
-              <div className="text-[36px] text-[#ffffff]">{activity.price}</div>
+              <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit">
+                {" "}
+                料金：{activity.price}
+              </div>
+
               <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit">
                 <Image
                   src={IconTimer}

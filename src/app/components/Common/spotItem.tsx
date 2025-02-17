@@ -47,9 +47,9 @@ const SpotItem = ({
           <p className="font-bold text-ninjack-white mb-3 group-hover:text-ninjack-purple">
             {title}
           </p>
-          <div className="text-ninjack-text-gray text-sm">
-            料金：￥{price}〜{" "}
-          </div>
+          {price && (
+            <div className="text-ninjack-text-gray text-sm">料金：{price}</div>
+          )}
         </div>
       </div>
     </Link>

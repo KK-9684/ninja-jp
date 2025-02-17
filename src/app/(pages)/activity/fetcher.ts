@@ -102,21 +102,39 @@ const transformContent = (
 
   const writer = entry.fields.writer
     ? {
-        name: entry.fields.writer.fields.name,
-        summary: entry.fields.writer.fields.summary,
+        name:
+          typeof entry.fields.writer.fields.name === "string"
+            ? entry.fields.writer.fields.name
+            : "", // `string` 以外は空文字をセット
+        summary:
+          typeof entry.fields.writer.fields.summary === "string"
+            ? entry.fields.writer.fields.summary
+            : "",
         slug: entry.fields.writer.sys.id,
-        xUrl: entry.fields.writer.fields.snsXUrl || null,
-        instagramUrl: entry.fields.writer.fields.snsInstagramUrl || null,
-        youtubeUrl: entry.fields.writer.fields.snsYoutubeUrl || null,
-        facebookUrl: entry.fields.writer.fields.snsFacebookUrl || null,
+        xUrl:
+          typeof entry.fields.writer.fields.snsXUrl === "string"
+            ? entry.fields.writer.fields.snsXUrl
+            : null,
+        instagramUrl:
+          typeof entry.fields.writer.fields.snsInstagramUrl === "string"
+            ? entry.fields.writer.fields.snsInstagramUrl
+            : null,
+        youtubeUrl:
+          typeof entry.fields.writer.fields.snsYoutubeUrl === "string"
+            ? entry.fields.writer.fields.snsYoutubeUrl
+            : null,
+        facebookUrl:
+          typeof entry.fields.writer.fields.snsFacebookUrl === "string"
+            ? entry.fields.writer.fields.snsFacebookUrl
+            : null,
         image: Array.isArray(entry.fields.writer.fields.image)
           ? entry.fields.writer.fields.image
               .filter(
                 (img): img is Asset<"WITHOUT_UNRESOLVABLE_LINKS", string> =>
-                  img !== null && img !== undefined
-              ) // ✅ 型を限定
+                  typeof img === "object" && img !== null && "fields" in img
+              )
               .map(transformAsset)
-          : [], // `image` が配列でない場合は空配列を返す
+          : [],
       }
     : null;
 

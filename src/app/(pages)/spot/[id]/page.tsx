@@ -114,12 +114,17 @@ export default async function SpotDetailPage({ params }: Props) {
               />
             </div>
           </section>
+          <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit w-fit">
+            {" "}
+            料金：{spot.price}
+          </div>
 
-          <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
+          <section className="richContent flex flex-col mt-[20px] text-[#ffffff] gap-11">
             <RichContent document={spot.content} />
           </section>
 
           <section className="flex flex-col mt-[44px]">
+            {spot.metaDescription}
             <ShareButton
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/spot/${spot.slug}`}
               title={spot.title}

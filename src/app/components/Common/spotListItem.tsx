@@ -9,6 +9,7 @@ export interface SpotListItemProps {
   areaName: string;
   title: string;
   href: string;
+  price?: string;
 }
 
 const SpotListItem = ({
@@ -17,6 +18,7 @@ const SpotListItem = ({
   categroy,
   areaName,
   title,
+  price,
 }: SpotListItemProps) => {
   return (
     <Link href={href} className="flex flex-col space-y-6">
@@ -39,6 +41,9 @@ const SpotListItem = ({
         </div>
         <div>
           <p className="font-bold text-ninjack-white mb-3">{title}</p>
+          {price && (
+            <div className="text-ninjack-text-gray text-sm">料金：{price}</div>
+          )}
         </div>
       </div>
     </Link>

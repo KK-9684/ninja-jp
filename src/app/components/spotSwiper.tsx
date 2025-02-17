@@ -19,6 +19,7 @@ interface SpotItem {
     slug: string | undefined;
     title: string;
   };
+  price: string;
 }
 
 interface SpotCategory {
@@ -84,7 +85,7 @@ const SpotSwiper = () => {
               categroy="ものづくり"
               areaName={item.area || ""}
               title={item.title}
-              price="XXXX"
+              price={item.price}
             />
           </SwiperSlide>
         ))
