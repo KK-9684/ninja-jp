@@ -21,6 +21,47 @@ export default function RichContent({ document }: RichContentProps) {
       [MARKS.CODE]: (text): ReactNode => <code>{text}</code>,
     },
     renderNode: {
+      // iframeのレンダリング設定を追加
+      [BLOCKS.EMBEDDED_ENTRY]: (node): ReactNode => {
+        // iframeコンテンツタイプの場合の処理
+        if (node.data.target.sys.contentType.sys.id === "iframe") {
+          const { url, name } = node.data.target.fields;
+          console.log(url);
+          // セキュリティのために許可されたドメインかチェック
+          const isAllowedDomain = (urlString: string) => {
+            const allowedDomains = [
+              "www.youtube.com",
+              "youtube.com",
+              "youtu.be",
+              "player.vimeo.com",
+            ];
+            try {
+              const domain = new URL(urlString).hostname;
+              return allowedDomains.includes(domain);
+            } catch {
+              return false;
+            }
+          };
+          console.log(isAllowedDomain(url));
+          if (!isAllowedDomain(url)) {
+            console.warn(`Blocked iframe from unauthorized domain: ${url}`);
+            return null;
+          }
+
+          return (
+            <div className="my-4 aspect-video">
+              <iframe
+                src={url}
+                title={name}
+                className="w-full h-full rounded-lg"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          );
+        }
+        return null;
+      },
       [BLOCKS.PARAGRAPH]: (node, children): ReactNode => (
         <p className="mb-4">{children}</p>
       ),
