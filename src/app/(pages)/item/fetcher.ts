@@ -7,7 +7,6 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
-import { link } from "fs";
 
 type ItemCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "itemCategory";
