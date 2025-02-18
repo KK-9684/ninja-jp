@@ -34,6 +34,7 @@ export default function RichContent({ document }: RichContentProps) {
               "youtube.com",
               "youtu.be",
               "player.vimeo.com",
+              "www.google.com",
             ];
             try {
               const domain = new URL(urlString).hostname;
