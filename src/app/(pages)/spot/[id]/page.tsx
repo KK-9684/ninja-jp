@@ -14,6 +14,7 @@ import IconX1 from "@/assets/icon-x1.svg";
 import IconInstagram from "@/assets/icon-instagram.svg";
 import IconYoutube from "@/assets/icon-youtube.svg";
 import IconFacebookFull from "@/assets/icon-facebook-full.svg";
+import SpotMap from "@/app/components/Common/SpotMap";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -121,6 +122,9 @@ export default async function SpotDetailPage({ params }: Props) {
 
           <section className="richContent flex flex-col mt-[20px] text-[#ffffff] gap-11">
             <RichContent document={spot.content} />
+            {spot.location && (
+              <SpotMap location={spot.location} title={spot.title} />
+            )}
           </section>
 
           <section className="flex flex-col mt-[44px]">
