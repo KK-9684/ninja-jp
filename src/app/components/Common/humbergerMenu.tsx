@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
-import AboutButtonGroup from "../aboutButtonGroup";
 import MenuItem from "./menuItem";
 import iconSpot from "@/assets/icon-spot.svg";
 import iconItem from "@/assets/icon-item.svg";
