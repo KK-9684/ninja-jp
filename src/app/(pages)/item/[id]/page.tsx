@@ -12,6 +12,8 @@ import DetailSideContent from "@/app/components/Common/detailSideContent";
 import { Metadata } from "next/types";
 import DetailPageSwiper from "@/app/components/detailPageSwiper";
 import Link from "next/link";
+import ItemLinkGroup from "@/app/components/Common/ItemLinkGroup";
+import { ItemLinkGroupSkeleton } from "@/lib/contentful/sharedModel";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -24,6 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!item) {
     return {};
   }
+
+  console.log(item);
   return {
     metadataBase: new URL(
       `${process.env.NEXT_PUBLIC_BASE_URL}/item/${item.slug}` ||
@@ -117,7 +121,21 @@ export default async function ItemDetailPage({ params }: Props) {
           <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
             <RichContent document={item.content} />
           </section>
-
+          <section className="my-5 flex justify-start gap-3">
+            {item.linkGroup &&
+              Array.isArray(item.linkGroup) &&
+              item.linkGroup.map(
+                (linkGroupItem: ItemLinkGroupSkeleton["fields"], index) => (
+                  <ItemLinkGroup
+                    key={`${linkGroupItem.url?.toString()}-${index}`}
+                    linkGroup={{
+                      title: linkGroupItem.title?.toString(),
+                      url: linkGroupItem.url?.toString(),
+                    }}
+                  />
+                )
+              )}
+          </section>
           <section className="flex flex-col mt-[44px]">
             <ShareButton
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/item/${item.slug}`}

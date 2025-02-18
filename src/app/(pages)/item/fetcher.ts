@@ -7,6 +7,7 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
+import { link } from "fs";
 
 type ItemCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "itemCategory";
@@ -37,6 +38,7 @@ type Item = EntrySkeletonType & {
   relationKeyword?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<TagEntrySkeleton>
   >;
+  linkGroup?: EntryFieldTypes.Object<LinkGroup>;
 };
 
 export type ItemSkeleton = EntrySkeletonType<Item> & {
@@ -48,6 +50,11 @@ export type Query = {
   tag?: string;
   page: number;
   perPage?: number;
+};
+
+export type LinkGroup = {
+  title: string;
+  url: string;
 };
 
 const transformContent = (
@@ -80,6 +87,8 @@ const transformContent = (
       }))
     : [];
 
+  const linkGroup = entry.fields.linkGroup ? entry.fields.linkGroup : [];
+
   const metaDescription = documentToPlainTextString(entry.fields.content).slice(
     0,
     80
@@ -88,6 +97,7 @@ const transformContent = (
   return {
     content: entry.fields.content,
     writer,
+    linkGroup,
     relationKeyword,
     metaDescription,
     ...transformPartialContent(entry),

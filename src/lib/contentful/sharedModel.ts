@@ -198,3 +198,11 @@ export const allActiveCategories = async (): Promise<AllActiveCategories> => {
     memberCategory,
   };
 };
+
+export type ItemLinkGroupSkeleton = {
+  contentTypeId: "itemLinkGroup";
+  fields: {
+    title: EntryFieldTypes.Symbol;
+    url: EntryFieldTypes.Symbol;
+  };
+};
