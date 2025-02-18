@@ -198,7 +198,7 @@ export default async function Page({ params }: Props) {
             <div className="flex space-x-4 items-center">
               <Image src={iconNinja} alt="施設・史跡" width={40} height={40} />
               <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                今を生きる忍者たち
+                関連する忍者たち
               </h2>
             </div>
             <div className="grid md:grid-cols-3 grid-cols-2 gap-[40px]">
