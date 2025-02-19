@@ -7,6 +7,7 @@ import { notoSansFont } from "./components/Common/font";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import clsx from "clsx";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 export const revalidate = 600; // invalidate every hour
 
@@ -42,6 +43,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <GoogleTagManager
+          gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID || ""}
+        />
+      </head>
       <body className={clsx("h-full bg-ninjack-black", notoSansFont)}>
         <Header />
         <main className="flex-grow">{children}</main>
