@@ -10,7 +10,6 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import iconContact from "@/assets/icon-contact.svg";
 import iconHamburger from "@/assets/icon-hamburger.svg";
 import logo from "@/assets/logo.svg";
-import imageEye from "@/assets/eye.svg";
 import MenuItem from "./Common/menuItem";
 import MenuButton from "./Common/menuButton";
 import AboutButtonGroup from "./aboutButtonGroup";
@@ -68,7 +67,6 @@ const Header = () => {
             </Link>
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
             <DigitalClock />
-            <Image src={imageEye} alt="猫の目" />
             <TodayNinjutsu />
           </h1>
           <div className="flex space-x-2.5">
@@ -142,9 +140,7 @@ const Header = () => {
               <Image src={logo} alt="忍者ポータルサイト" />
               <p className="text-[8px]">忍者ポータルサイト</p>
             </div>
-            <p className="ms-4 text-xs">11/26</p>
-            <p className="mx-1.5 text-xs">12:00</p>
-            <Image src={imageEye} alt="猫の目" className="w-[35px]" />
+            <DigitalClock />
           </h1>
           <div className="md:flex hidden space-x-2.5 ">
             <MenuButton icon={iconContact} label="" link="/contact" />

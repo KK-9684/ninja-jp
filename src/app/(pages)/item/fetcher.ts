@@ -7,7 +7,7 @@ import { transformAsset } from "@/lib/contentful/transformContent";
 import { Asset, Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
 import { TagEntrySkeleton } from "../tag/fetcher";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
-
+import { Document } from "@contentful/rich-text-types";
 type ItemCategoryEntrySkeleton = CategoryEntrySkeleton & {
   contentTypeId: "itemCategory";
 };
@@ -31,7 +31,7 @@ type Item = EntrySkeletonType & {
   content: Document;
   item?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ItemCategoryEntrySkeleton>
-  >; // カテゴリだけどIDがitemになっている
+  >;
   image?: EntryFieldTypes.Array<EntryFieldTypes.AssetLink>;
   writer?: EntryFieldTypes.EntryLink<Writer>;
   relationKeyword?: EntryFieldTypes.Array<
