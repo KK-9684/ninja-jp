@@ -65,7 +65,7 @@ export default async function ActivityPage({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-row gap-4">
             <Image src={iconActivity} alt="体験・修行" width={40} height={40} />
-            <h2 className="text-[28px] font-bold text-ninjack-white font-bold">
+            <h2 className="text-[28px] text-ninjack-white font-bold">
               体験・修行
             </h2>
           </div>

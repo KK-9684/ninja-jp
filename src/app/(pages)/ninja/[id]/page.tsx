@@ -9,7 +9,6 @@ import IconInstagram from "@/assets/icon-instagram.svg";
 import IconYoutube from "@/assets/icon-youtube.svg";
 import IconFacebookFull from "@/assets/icon-facebook-full.svg";
 
-import ImageMap from "@/assets/image-map.png";
 import iconActivity from "@/assets/icon-activity.svg";
 import ImageSub from "@/assets/image-sub-ninja.png";
 import iconNinja from "@/assets/icon-ninja.svg";
@@ -111,11 +110,6 @@ export default async function Page({ params }: Props) {
           </section>
 
           <section className="flex flex-col mt-[44px]">
-            <Image
-              src={ImageMap}
-              alt=""
-              className="w-full md:px-[60px] object-contain"
-            />
             <ShareButton
               shareUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/ninja/${item.slug}`}
               title={item.name}

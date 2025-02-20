@@ -390,13 +390,13 @@ body {
     @apply my-1;
   }
   .richContent table {
-    @apply border border-ninjack-line-gray my-5 text-ninjack-white;
+    @apply border border-ninjack-line-gray my-5 text-ninjack-white text-[14px] md:text-[14px];
   }
   .richContent table th {
     @apply bg-ninjack-bg-gray border-ninjack-line-gray border-b border-r;
   }
   .richContent table td {
-    @apply border-b border-r border-ninjack-line-gray p-2 leading-[1];
+    @apply border-b border-r border-ninjack-line-gray p-5 leading-[1];
   }
   .richContent table {
     @apply border border-ninjack-line-gray;

@@ -66,14 +66,14 @@ export default async function FictionPage({
 
           <div className="md:flex hidden space-x-[88px] items-center">
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者をテーマにした映画・漫画・アニメ・小説・ゲームなどの創作の世界をご案内します。フィクション作品に登場する多彩な忍者キャラクターやストーリーを見れば、あなたにぴったりの忍者作品があるかも？ぜひとも好きな忍者を見つけてくだされ！
+              忍者をテーマにした映画・漫画・アニメ・小説・ゲームなどの創作の世界をご案内します。フィクション作品に登場する多彩な忍者キャラクターやストーリーを見れば、あなたにぴったりの忍者作品があるかも？ぜひとも好きな忍者を見つけてくだされ！
             </p>
             <Image src={illus1} alt="忍者イラスト" width={274} height={150} />
           </div>
           <div className="md:hidden flex flex-col gap-8 items-center mt-10">
             <Image src={illus1} alt="忍者イラスト" width={265} height={150} />
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者をテーマにした映画・漫画・アニメ・小説・ゲームなどの創作の世界をご案内します。フィクション作品に登場する多彩な忍者キャラクターやストーリーを見れば、あなたにぴったりの忍者作品があるかも？ぜひとも好きな忍者を見つけてくだされ！
+              忍者をテーマにした映画・漫画・アニメ・小説・ゲームなどの創作の世界をご案内します。フィクション作品に登場する多彩な忍者キャラクターやストーリーを見れば、あなたにぴったりの忍者作品があるかも？ぜひとも好きな忍者を見つけてくだされ！
             </p>
           </div>
         </section>

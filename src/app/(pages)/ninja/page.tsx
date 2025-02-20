@@ -47,7 +47,7 @@ export default async function NinjaPage({
           <div className="flex flex-row md:hidden items-center justify-between">
             <div className="flex flex-row gap-4">
               <Image src={iconActivity} alt="創作作品" width={40} height={40} />
-              <h2 className="text-[28px] font-bold text-ninjack-white">
+              <h2 className="text-[28px] font-bold text-ninjack-white font-bold">
                 現代忍者
               </h2>
             </div>
@@ -56,14 +56,14 @@ export default async function NinjaPage({
 
           <div className="md:flex hidden space-x-[88px] items-center">
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者ショーで人を魅了する忍者や、自ら修行を重ねて伝統的な忍術を後世へと残そうとする忍者、忍者を学問的に研究する専門家など、さまざまな形で活躍する現代の忍者たちを取り上げます。気になる忍者への任務の依頼も承りまする！
+              忍者ショーで人を魅了する忍者や、自ら修行を重ねて伝統的な忍術を後世へと残そうとする忍者、忍者を学問的に研究する専門家など、さまざまな形で活躍する現代の忍者たちを取り上げます。気になる忍者への任務の依頼も承りまする！
             </p>
             <Image src={illus6} alt="忍者イラスト" width={274} height={150} />
           </div>
           <div className="md:hidden flex flex-col gap-8 items-center mt-10">
             <Image src={illus6} alt="忍者イラスト" width={265} height={150} />
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者ショーで人を魅了する忍者や、自ら修行を重ねて伝統的な忍術を後世へと残そうとする忍者、忍者を学問的に研究する専門家など、さまざまな形で活躍する現代の忍者たちを取り上げます。気になる忍者への任務の依頼も承りまする！
+              忍者ショーで人を魅了する忍者や、自ら修行を重ねて伝統的な忍術を後世へと残そうとする忍者、忍者を学問的に研究する専門家など、さまざまな形で活躍する現代の忍者たちを取り上げます。気になる忍者への任務の依頼も承りまする！
             </p>
           </div>
         </section>

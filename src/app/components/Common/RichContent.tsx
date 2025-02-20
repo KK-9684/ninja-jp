@@ -1,13 +1,33 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
-import { BLOCKS, MARKS, Document } from "@contentful/rich-text-types";
+import {
+  BLOCKS,
+  MARKS,
+  Document,
+  Block,
+  Inline,
+  Text,
+} from "@contentful/rich-text-types";
 import {
   documentToReactComponents,
   Options,
 } from "@contentful/rich-text-react-renderer";
-
+import { NodeRenderer } from "@contentful/rich-text-react-renderer";
+import convertEmbedUrl from "./convertEmbedUrl";
 interface RichContentProps {
   document: Document;
+}
+
+interface TableCell {
+  content: (Block | Inline | Text)[];
+  nodeType: BLOCKS.TABLE_CELL;
+  data: Record<string, unknown>;
+}
+
+interface TableRow {
+  content: TableCell[];
+  nodeType: BLOCKS.TABLE_ROW;
+  data: Record<string, unknown>;
 }
 
 export default function RichContent({ document }: RichContentProps) {
@@ -21,12 +41,10 @@ export default function RichContent({ document }: RichContentProps) {
       [MARKS.CODE]: (text): ReactNode => <code>{text}</code>,
     },
     renderNode: {
-      // iframeのレンダリング設定を追加
       [BLOCKS.EMBEDDED_ENTRY]: (node): ReactNode => {
-        // iframeコンテンツタイプの場合の処理
         if (node.data.target.sys.contentType.sys.id === "iframe") {
           const { url, name } = node.data.target.fields;
-          console.log(url);
+
           // セキュリティのために許可されたドメインかチェック
           const isAllowedDomain = (urlString: string) => {
             const allowedDomains = [
@@ -35,28 +53,34 @@ export default function RichContent({ document }: RichContentProps) {
               "youtu.be",
               "player.vimeo.com",
               "www.google.com",
+              "google.com",
+              "maps.google.com",
             ];
             try {
               const domain = new URL(urlString).hostname;
-              return allowedDomains.includes(domain);
+              return allowedDomains.some((allowed) => domain.includes(allowed));
             } catch {
               return false;
             }
           };
-          console.log(isAllowedDomain(url));
+
           if (!isAllowedDomain(url)) {
             console.warn(`Blocked iframe from unauthorized domain: ${url}`);
             return null;
           }
 
+          const embedUrl = convertEmbedUrl(url);
+
           return (
             <div className="my-4 aspect-video">
               <iframe
-                src={url}
+                src={embedUrl}
                 title={name}
                 className="w-full h-full rounded-lg"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
           );
@@ -112,13 +136,81 @@ export default function RichContent({ document }: RichContentProps) {
         </blockquote>
       ),
       [BLOCKS.HR]: (): ReactNode => <hr className="my-8 border-gray-300" />,
-      [BLOCKS.TABLE]: (node, children): ReactNode => (
-        <table className="w-full my-4 border-collapse">{children}</table>
-      ),
-      [BLOCKS.TABLE_ROW]: (node, children): ReactNode => <tr>{children}</tr>,
-      [BLOCKS.TABLE_CELL]: (node, children): ReactNode => (
-        <td className="border border-gray-300 p-2">{children}</td>
-      ),
+      [BLOCKS.TABLE]: ((node: Block | Inline) => {
+        // 型ガードを追加
+        if (node.nodeType !== BLOCKS.TABLE) return null;
+
+        const rows = node.content as TableRow[];
+
+        const hasHeader =
+          rows.length > 0 &&
+          rows[0].content.some((cell: TableCell) =>
+            cell.content.some(
+              (item) =>
+                "nodeType" in item &&
+                (item.nodeType === "heading-1" ||
+                  item.nodeType === "heading-2" ||
+                  item.nodeType === "heading-3" ||
+                  item.nodeType === "heading-4" ||
+                  item.nodeType === "heading-5" ||
+                  item.nodeType === "heading-6")
+            )
+          );
+
+        return (
+          <table className="w-full my-4 border-collapse">
+            {hasHeader && (
+              <thead>
+                <tr>
+                  {rows[0].content.map((cell, j) => (
+                    <th
+                      key={j}
+                      className="border border-gray-300 p-2 bg-gray-50"
+                    >
+                      {documentToReactComponents({
+                        nodeType: BLOCKS.DOCUMENT,
+                        data: {},
+                        content: cell.content,
+                      } as Document)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {(hasHeader ? rows.slice(1) : rows).map((row, i) => (
+                <tr key={i}>
+                  {row.content.map((cell, j) => {
+                    const cellContent = cell.content.map((node) =>
+                      documentToReactComponents(
+                        {
+                          nodeType: BLOCKS.DOCUMENT,
+                          data: {},
+                          content: [node],
+                        } as Document,
+                        {
+                          ...options,
+                          renderNode: {
+                            ...options.renderNode,
+                            [BLOCKS.PARAGRAPH]: (_node, children) => children,
+                            [BLOCKS.TABLE_CELL]: (_node, children) => children,
+                          },
+                        }
+                      )
+                    );
+
+                    return (
+                      <td key={j} className="border border-gray-300 p-2">
+                        {cellContent}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        );
+      }) as NodeRenderer,
     },
   };
 

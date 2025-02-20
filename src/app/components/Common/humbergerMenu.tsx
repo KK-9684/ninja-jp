@@ -9,7 +9,7 @@ import iconItem from "@/assets/icon-item.svg";
 import iconResearch from "@/assets/icon-research.svg";
 import iconFiction from "@/assets/icon-fiction.svg";
 import iconNinja from "@/assets/icon-ninja.svg";
-import iconMail from "@/assets/icon-mail.svg";
+import iconContact from "@/assets/icon-contact.svg";
 import iconClose from "@/assets/icon-close.svg";
 import iconPlus from "@/assets/icon-plus.svg";
 import CustomLargeButton from "./customLargeButton";
@@ -432,7 +432,7 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
           <div className="flex flex-col-reverse md:flex-row gap-4">
             <button onClick={onClose}>
               <CustomLargeButton
-                icon={iconMail}
+                icon={iconContact}
                 text="お問い合わせ"
                 type={1}
                 font="NotoSansJp"

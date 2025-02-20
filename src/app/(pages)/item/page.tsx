@@ -59,14 +59,14 @@ export default async function ItemPage({
 
           <div className="md:flex hidden space-x-[88px] items-center">
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者が使用した衣装や道具、現代風にアレンジされた忍者グッズなどを取り揃えております。忍者を感じさせるユニークな忍具・忍器から、実用的なグッズまで、幅広く紹介しています。ここでおぬしのお気に入りの忍者アイテムを見つけるがよい！
+              忍者が使用した衣装や道具、現代風にアレンジされた忍者グッズなどを取り揃えております。忍者を感じさせるユニークな忍具・忍器から、実用的なグッズまで、幅広く紹介しています。ここでおぬしのお気に入りの忍者アイテムを見つけるがよい！
             </p>
             <Image src={illus3} alt="忍者イラスト" width={274} height={150} />
           </div>
           <div className="md:hidden flex flex-col gap-8 items-center mt-10">
             <Image src={illus3} alt="忍者イラスト" width={265} height={150} />
             <p className="text-ninjack-text-gray text-[18px] leading-loose">
-              　忍者が使用した衣装や道具、現代風にアレンジされた忍者グッズなどを取り揃えております。忍者を感じさせるユニークな忍具・忍器から、実用的なグッズまで、幅広く紹介しています。ここでおぬしのお気に入りの忍者アイテムを見つけるがよい！
+              忍者が使用した衣装や道具、現代風にアレンジされた忍者グッズなどを取り揃えております。忍者を感じさせるユニークな忍具・忍器から、実用的なグッズまで、幅広く紹介しています。ここでおぬしのお気に入りの忍者アイテムを見つけるがよい！
             </p>
           </div>
         </section>

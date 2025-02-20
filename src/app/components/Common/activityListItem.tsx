@@ -50,7 +50,7 @@ const ActivityListItem = ({
             </div>
           </div>
           <div>
-            <p className="text-[14px] md:text-[16px] font-bold text-ninjack-white md:mb-3 group-hover:text-ninjack-purple">
+            <p className="text-[14px] md:text-[20px] font-bold text-ninjack-white md:mb-3 group-hover:text-ninjack-purple">
               {title}
             </p>
             <div className="text-ninjack-text-gray text-[12px] md:text-[14px]">

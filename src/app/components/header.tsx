@@ -13,7 +13,6 @@ import logo from "@/assets/logo.svg";
 import MenuItem from "./Common/menuItem";
 import MenuButton from "./Common/menuButton";
 import AboutButtonGroup from "./aboutButtonGroup";
-import IconMessage from "@/assets/icon-message.svg";
 import Link from "next/link";
 import DigitalClock from "./DigitalClock";
 import { AllActiveCategories } from "@/lib/contentful/sharedModel";
@@ -147,7 +146,7 @@ const Header = () => {
             <MenuButton icon={iconHamburger} label="" handleClick={openMenu} />
           </div>
           <div className="flex md:hidden space-x-2.5 ">
-            <MenuButton icon={IconMessage} label="" link="/contact" />
+            <MenuButton icon={iconContact} label="" link="/contact" />
             <MenuButton icon={iconHamburger} label="" handleClick={openMenu} />
           </div>
         </div>

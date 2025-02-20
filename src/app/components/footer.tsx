@@ -10,6 +10,7 @@ import iconResearch from "@/assets/icon-research.svg";
 import iconFiction from "@/assets/icon-fiction.svg";
 import iconNinja from "@/assets/icon-ninja.svg";
 import iconMail from "@/assets/icon-mail.svg";
+import iconContact from "@/assets/icon-contact.svg";
 import CustomLargeButton from "./Common/customLargeButton";
 import FooterSpItem from "./footerSpItem";
 import { allActiveCategories } from "@/lib/contentful/sharedModel";
@@ -378,7 +379,7 @@ const Footer = async () => {
               link="/mail-magazine"
             />
             <CustomLargeButton
-              icon={iconMail}
+              icon={iconContact}
               text="お問い合わせ"
               type={1}
               font="NotoSansJp"

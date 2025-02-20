@@ -48,7 +48,9 @@ export default async function SpotPage({
         <section className="container pt-[80px] pb-[52px] mx-auto px-5">
           <div className="md:flex hidden space-x-4 items-center">
             <Image src={iconSpot} alt="施設・史跡" width={40} height={40} />
-            <h2 className="text-[36px] text-ninjack-white">施設・史跡</h2>
+            <h2 className="text-[36px] text-ninjack-white font-bold">
+              施設・史跡
+            </h2>
           </div>
           <div className="flex flex-row md:hidden items-center justify-between">
             <div className="flex flex-row gap-4">
