@@ -67,7 +67,7 @@ export default function DigitalClock() {
   }
 
   return (
-    <div className="flex gap-2 px-2">
+    <div className="flex gap-2 px-2 md:flex-row flex-col items-center">
       <div className="flex gap-1">
         <p className={clsx("text-[16px] md:text-[24px]", BarlowFont.className)}>
           {dateString}
@@ -76,7 +76,7 @@ export default function DigitalClock() {
           {timeString}
         </p>
       </div>
-      <Image src={eyeImage} alt="猫の目" className="w-[35px]" />
+      <Image src={eyeImage} alt="猫の目" className="w-[40px] md:w-[35px]" />
     </div>
   );
 }

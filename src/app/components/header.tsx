@@ -134,9 +134,13 @@ const Header = () => {
       <div className="flex flex-col md:hidden gap-2">
         <TodayNinjutsu />
         <div className="flex justify-between items-center p-[12px]">
-          <h1 className="flex items-center">
+          <h1 className="flex items-center gap-2">
             <div className="flex flex-col gap-1 items-center">
-              <Image src={logo} alt="忍者ポータルサイト" />
+              <Image
+                src={logo}
+                alt="忍者ポータルサイト"
+                className="w-[140px]"
+              />
               <p className="text-[8px]">忍者ポータルサイト</p>
             </div>
             <DigitalClock />

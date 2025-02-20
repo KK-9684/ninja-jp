@@ -10,6 +10,7 @@ const WP_API_URL = "https://ninjack.jp/wp-json/wp/v2/posts"; // ←WordPressのU
 
 // HTMLをリッチテキストに変換
 
+// convertHtmlToRichTextを修正
 const convertHtmlToRichText = (html) => {
   const text = convert(html, { wordwrap: false });
 
@@ -23,21 +24,25 @@ const convertHtmlToRichText = (html) => {
   while ((match = imageRegex.exec(text)) !== null) {
     // 画像の前の通常テキスト
     if (match.index > lastIndex) {
-      content.push({
-        nodeType: BLOCKS.PARAGRAPH,
-        data: {},
-        content: [
-          {
-            nodeType: "text",
-            value: text.slice(lastIndex, match.index),
-            marks: [],
-            data: {},
-          },
-        ],
-      });
+      const paragraphText = text.slice(lastIndex, match.index).trim();
+      if (paragraphText) {
+        content.push({
+          nodeType: BLOCKS.PARAGRAPH,
+          data: {},
+          content: [
+            {
+              nodeType: "text",
+              value: paragraphText,
+              marks: [],
+              data: {},
+            },
+          ],
+        });
+      }
     }
 
     // 画像をRich Textノードとして追加
+    // 埋め込みアセットの構造を修正
     content.push({
       nodeType: BLOCKS.EMBEDDED_ASSET,
       data: {
@@ -49,6 +54,7 @@ const convertHtmlToRichText = (html) => {
           },
         },
       },
+      content: [], // 空の配列を追加（必須）
     });
 
     lastIndex = match.index + match[0].length;
@@ -56,33 +62,53 @@ const convertHtmlToRichText = (html) => {
 
   // 最後の部分のテキストもパラグラフとして追加
   if (lastIndex < text.length) {
+    const paragraphText = text.slice(lastIndex).trim();
+    if (paragraphText) {
+      content.push({
+        nodeType: BLOCKS.PARAGRAPH,
+        data: {},
+        content: [
+          {
+            nodeType: "text",
+            value: paragraphText,
+            marks: [],
+            data: {},
+          },
+        ],
+      });
+    }
+  }
+
+  // 空のコンテンツの場合は、空のパラグラフを追加
+  if (content.length === 0) {
     content.push({
       nodeType: BLOCKS.PARAGRAPH,
       data: {},
-      content: [
-        {
-          nodeType: "text",
-          value: text.slice(lastIndex),
-          marks: [],
-          data: {},
-        },
-      ],
+      content: [{ nodeType: "text", value: text || "", marks: [], data: {} }],
     });
   }
+
+  // すべてのノードに必要なプロパティがあることを確認
+  const validateNode = (node) => {
+    if (!node.content && node.nodeType !== "text") {
+      node.content = [];
+    }
+    if (node.content && Array.isArray(node.content)) {
+      node.content.forEach(validateNode);
+    }
+    if (!node.data) {
+      node.data = {};
+    }
+    return node;
+  };
+
+  // 構造を検証
+  content.forEach(validateNode);
 
   return {
     nodeType: BLOCKS.DOCUMENT,
     data: {},
-    content:
-      content.length > 0
-        ? content
-        : [
-            {
-              nodeType: BLOCKS.PARAGRAPH,
-              data: {},
-              content: [{ nodeType: "text", value: text, marks: [], data: {} }],
-            },
-          ],
+    content: content,
   };
 };
 
@@ -164,8 +190,15 @@ const importToContentful = async (posts) => {
         if (!response.ok) {
           console.error(
             `Error uploading (Retries left: ${retries - 1}):`,
-            data
+            JSON.stringify(data, null, 2)
           );
+          // エラー詳細がオブジェクト内に埋まっている場合も表示
+          if (data.details && data.details.errors) {
+            console.error(
+              "Detailed errors:",
+              JSON.stringify(data.details.errors, null, 2)
+            );
+          }
           retries--;
           await new Promise((resolve) => setTimeout(resolve, 3000)); // 3秒待機してリトライ
           continue;
