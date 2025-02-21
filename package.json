@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "find-deadcode": "ts-prune"
+    "find-deadcode": "ts-prune",
+    "sitemap": "NODE_PATH=. next-sitemap --config next-sitemap.config.js"
   },
   "dependencies": {
     "@contentful/rich-text-plain-text-renderer": "^17.0.0",
@@ -26,6 +27,7 @@
     "html-to-text": "^9.0.5",
     "jsdom": "^26.0.0",
     "next": "15.1.4",
+    "next-sitemap": "^4.2.3",
     "node-fetch": "^2.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

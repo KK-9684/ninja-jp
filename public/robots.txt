@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ninjack.jp/
+
+# Sitemaps
+Sitemap: https://ninjack.jp/sitemap.xml
