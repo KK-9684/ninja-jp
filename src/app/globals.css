@@ -18,6 +18,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+details summary {
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
 .custom-checkbox {
   display: inline-block;
   cursor: pointer;

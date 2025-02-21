@@ -136,11 +136,13 @@ const Header = () => {
         <div className="flex justify-between items-center p-[12px]">
           <h1 className="flex items-center gap-2">
             <div className="flex flex-col gap-1 items-center">
-              <Image
-                src={logo}
-                alt="忍者ポータルサイト"
-                className="w-[140px]"
-              />
+              <Link href="/">
+                <Image
+                  src={logo}
+                  alt="忍者ポータルサイト"
+                  className="w-[140px]"
+                />
+              </Link>
               <p className="text-[8px]">忍者ポータルサイト</p>
             </div>
             <DigitalClock />

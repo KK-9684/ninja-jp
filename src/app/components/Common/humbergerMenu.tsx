@@ -39,12 +39,12 @@ const HamburgerMenu = ({ isOpen, onClose, categories }: HamburgerMenuProps) => {
     >
       <div className="container mx-auto px-6 md:py-4 py-10 flex flex-col h-full md:justify-center justify-start max-h-[100vh] overflow-y-scroll md:overflow-hidden">
         <div className="flex flex-col md:flex-row gap-6 justify-between md:justify-between w-[100%] items-center mb-8">
-          <div>
+          <Link href="/" onClick={onClose}>
             <Image src={logo} alt="忍者ポータルサイト" className="w-[240px]" />
             <p className="text-xs text-center md:text-left text-ninjack-white mt-3">
               忍者ポータルサイト
             </p>
-          </div>
+          </Link>
           <div className="flex space-x-2.5">
             <button onClick={onClose}>
               <CustomButton

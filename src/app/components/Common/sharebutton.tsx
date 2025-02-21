@@ -28,7 +28,7 @@ export default function ShareButton({ shareUrl, title }: Props) {
           height={20}
           className="self-center"
         />
-        LINEで送る
+        共有
       </Link>
       <Link
         href={xUrl}
