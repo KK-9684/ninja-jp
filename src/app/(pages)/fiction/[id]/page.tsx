@@ -150,11 +150,11 @@ export default async function FictionDetailPage({ params }: Props) {
               {fiction.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <div className="rounded-full overflow-hidden flex items-center">
+                    <div className="rounded-full overflow-hidden flex items-center w-[60px] h-[60px] min-w-[60px] md:w-[88px] md:h-[88px]  md:min-w-[88px] ">
                       <Image
                         src={fiction.writer.image[0].url || "/noimage.png"}
                         alt=""
-                        className="w-[88px] h-[88px] self-center"
+                        className="self-center object-cover w-[100%] h-[100%]"
                         width={88}
                         height={88}
                       />
@@ -217,19 +217,19 @@ export default async function FictionDetailPage({ params }: Props) {
             </div>
           </section>
 
-          <section className="mt-[120px] flex flex-col gap-7">
-            <div className="flex space-x-4 items-center">
-              <Image src={iconItem} alt="施設・史跡" width={40} height={40} />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                関連する商品・忍具
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-8">
-              {fiction.relationItemIds && (
+          {fiction.relationItemIds && (
+            <section className="mt-[120px] flex flex-col gap-7">
+              <div className="flex space-x-4 items-center">
+                <Image src={iconItem} alt="施設・史跡" width={40} height={40} />
+                <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
+                  関連する商品・忍具
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-8">
                 <RelationItem ids={shuffle(fiction.relationItemIds)} />
-              )}
-            </div>
-          </section>
+              </div>
+            </section>
+          )}
           <section className="mt-[52px]">
             <Image src={ImageSub} alt="" className="md:hidden" />
           </section>

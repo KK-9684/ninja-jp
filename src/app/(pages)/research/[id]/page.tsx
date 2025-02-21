@@ -127,11 +127,11 @@ export default async function ResearchDetailPage({ params }: Props) {
               {research.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <div className="rounded-full overflow-hidden flex items-center">
+                    <div className="rounded-full overflow-hidden flex items-center w-[60px] h-[60px] min-w-[60px] md:w-[88px] md:h-[88px]  md:min-w-[88px] ">
                       <Image
-                        src={research.writer.image[0]?.url}
+                        src={research.writer.image[0].url || "/noimage.png"}
                         alt=""
-                        className="w-[88px] h-[88px] self-center"
+                        className="self-center object-cover w-[100%] h-[100%]"
                         width={88}
                         height={88}
                       />
@@ -193,37 +193,37 @@ export default async function ResearchDetailPage({ params }: Props) {
               )}
             </div>
           </section>
-          <section className="mt-[120px] flex flex-col gap-7">
-            <div className="flex space-x-4 items-center">
-              <Image src={iconItem} alt="施設・史跡" width={40} height={40} />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                関連する商品・忍具
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-8">
-              {research.relationItemIds && (
+          {research.relationItemIds && (
+            <section className="mt-[120px] flex flex-col gap-7">
+              <div className="flex space-x-4 items-center">
+                <Image src={iconItem} alt="施設・史跡" width={40} height={40} />
+                <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
+                  関連する商品・忍具
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-4 grid-cols-2 md:gap-[40px] gap-8">
                 <RelationItem ids={shuffle(research.relationItemIds)} />
-              )}
-            </div>
-          </section>
-          <section className="mt-[90px] flex flex-col gap-7">
-            <div className="flex space-x-4 items-center">
-              <Image
-                src={iconActivity}
-                alt="体験・修行"
-                width={40}
-                height={40}
-              />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                関連する体験・修行
-              </h2>
-            </div>
-            <div className="border-b -[1px] border-[#2e2e2e] md:block hidden">
-              {research.relationActivityIds && (
+              </div>
+            </section>
+          )}
+          {research.relationActivityIds && (
+            <section className="mt-[90px] flex flex-col gap-7">
+              <div className="flex space-x-4 items-center">
+                <Image
+                  src={iconActivity}
+                  alt="体験・修行"
+                  width={40}
+                  height={40}
+                />
+                <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
+                  関連する体験・修行
+                </h2>
+              </div>
+              <div className="border-b -[1px] border-[#2e2e2e] md:block hidden">
                 <RelationActivity ids={shuffle(research.relationActivityIds)} />
-              )}
-            </div>
-          </section>
+              </div>
+            </section>
+          )}
         </div>
         <div className="md:max-w-[320px] md:w-[30%] border-l-[1px] border-[#2E2E2E] pl-5 pt-[60px] hidden md:block">
           <DetailSideContent />

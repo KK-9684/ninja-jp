@@ -44,7 +44,7 @@ const DetailPageSwiper = ({ images }: DetailPageSwiperProps) => {
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
           modules={[FreeMode, Navigation, Thumbs]}
-          className="w-full max-w-[100%] h-96"
+          className="w-full max-w-[100%]"
         >
           {images.map((image, index) => (
             <SwiperSlide
@@ -56,7 +56,7 @@ const DetailPageSwiper = ({ images }: DetailPageSwiperProps) => {
                 alt="Activity image"
                 width={image.width || 800}
                 height={image.height || 600}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover aspect-[800/600]"
               />
             </SwiperSlide>
           ))}
@@ -84,7 +84,7 @@ const DetailPageSwiper = ({ images }: DetailPageSwiperProps) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="thumbs-swiper w-full max-w-[100%] h-24"
+        className="thumbs-swiper w-full max-w-[100%]  h-fit"
         breakpoints={{
           640: {
             slidesPerView: 10,
@@ -92,13 +92,16 @@ const DetailPageSwiper = ({ images }: DetailPageSwiperProps) => {
         }}
       >
         {images.map((image, index) => (
-          <SwiperSlide key={index} className="cursor-pointer">
+          <SwiperSlide
+            key={index}
+            className="cursor-pointer aspect-square h-fit"
+          >
             <Image
               src={image.url}
               alt="Activity thumbnail"
               width={60}
               height={60}
-              className="w-[60px] h-[60px] object-cover rounded-[6px] overflow-hidden"
+              className="w-[60px] h-[60px] object-cover aspect-[60/60] rounded-[6px] overflow-hidden"
             />
           </SwiperSlide>
         ))}

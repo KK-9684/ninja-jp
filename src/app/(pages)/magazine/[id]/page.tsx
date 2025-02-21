@@ -125,7 +125,7 @@ export default async function MagazineDetailPage({ params }: Props) {
             />
           </section>
 
-          <section className="richContent flex flex-col mt-[80px] text-[#ffffff] gap-11">
+          <section className="richContent flex flex-col mt-[40px] md:mt-[80px] text-[#ffffff] gap-11">
             <RichContent document={magazine.content} />
           </section>
 
@@ -141,11 +141,11 @@ export default async function MagazineDetailPage({ params }: Props) {
               {magazine.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <div className="rounded-full overflow-hidden flex items-center">
+                    <div className="rounded-full overflow-hidden flex items-center w-[60px] h-[60px] min-w-[60px] md:w-[88px] md:h-[88px]  md:min-w-[88px] ">
                       <Image
-                        src={magazine.writer.image[0]?.url}
+                        src={magazine.writer.image[0]?.url || "/noimage.png"}
                         alt=""
-                        className="w-[88px] h-[88px] self-center"
+                        className="w-[100%] h-[100%] self-center  object-cover"
                         width={88}
                         height={88}
                       />

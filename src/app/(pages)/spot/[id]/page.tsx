@@ -115,12 +115,13 @@ export default async function SpotDetailPage({ params }: Props) {
               />
             </div>
           </section>
-          <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit w-fit">
-            {" "}
-            料金：{spot.price}
-          </div>
 
           <section className="richContent flex flex-col mt-[20px] text-[#ffffff] gap-11">
+            {spot.price && (
+              <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit w-fit">
+                料金：{spot.price}
+              </div>
+            )}
             <RichContent document={spot.content} />
             {spot.location && (
               <MapWrapper>
@@ -142,11 +143,11 @@ export default async function SpotDetailPage({ params }: Props) {
               {spot.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <div className="rounded-full overflow-hidden flex items-center">
+                    <div className="rounded-full overflow-hidden flex items-center w-[60px] h-[60px] min-w-[60px] md:w-[88px] md:h-[88px]  md:min-w-[88px] ">
                       <Image
-                        src={spot.writer.image[0]?.url}
+                        src={spot.writer.image[0]?.url || "/noimage.png"}
                         alt=""
-                        className="w-[88px] h-[88px] self-center"
+                        className="w-[100%] h-[100%] self-center  object-cover"
                         width={88}
                         height={88}
                       />
@@ -217,7 +218,7 @@ export default async function SpotDetailPage({ params }: Props) {
                 width={40}
                 height={40}
               />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white">
+              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
                 おすすめの体験・修行
               </h2>
             </div>

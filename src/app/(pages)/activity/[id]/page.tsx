@@ -166,11 +166,11 @@ export default async function ActivityDetailPage({ params }: Props) {
               {activity.writer && (
                 <>
                   <div className="flex flex-row rounded-[10px] bg-[#171717] p-5 gap-5">
-                    <div className="rounded-full overflow-hidden flex items-center">
+                    <div className="rounded-full overflow-hidden flex items-center w-[60px] h-[60px] min-w-[60px] md:w-[88px] md:h-[88px]  md:min-w-[88px] ">
                       <Image
-                        src={activity.writer.image[0]?.url}
+                        src={activity.writer.image[0]?.url || "/noimage.png"}
                         alt=""
-                        className="w-[88px] h-[88px] self-center"
+                        className="w-[100%] h-[100%] self-center  object-cover"
                         width={88}
                         height={88}
                       />
@@ -233,39 +233,39 @@ export default async function ActivityDetailPage({ params }: Props) {
             </div>
           </section>
 
-          <section className="mt-[120px] flex flex-col gap-7">
-            <div className="flex space-x-4 items-center">
-              <Image src={iconSpot} alt="施設・史跡" width={40} height={40} />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                関連する施設・史跡
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-3 grid-cols-2  gap-[40px]">
-              {activity.relationSpotIds && (
+          {activity.relationSpotIds && (
+            <section className="mt-[120px] flex flex-col gap-7">
+              <div className="flex space-x-4 items-center">
+                <Image src={iconSpot} alt="施設・史跡" width={40} height={40} />
+                <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
+                  関連する施設・史跡
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-3 grid-cols-2  gap-[40px]">
                 <RelationSpot ids={shuffle(activity.relationSpotIds)} />
-              )}
-            </div>
-          </section>
-
-          <section className="mt-[90px] flex flex-col gap-7">
-            <div className="flex space-x-4 items-center">
-              <Image
-                src={iconActivity}
-                alt="体験・修行"
-                width={40}
-                height={40}
-              />
-              <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
-                おすすめの体験・修行
-              </h2>
-            </div>
-
-            <section className="flex flex-col gap-4 ">
-              {activity.relationActivityIds && (
-                <RelationActivity ids={shuffle(activity.relationActivityIds)} />
-              )}
+              </div>
             </section>
-          </section>
+          )}
+
+          {activity.relationActivityIds && (
+            <section className="mt-[90px] flex flex-col gap-7">
+              <div className="flex space-x-4 items-center">
+                <Image
+                  src={iconActivity}
+                  alt="体験・修行"
+                  width={40}
+                  height={40}
+                />
+                <h2 className="md:text-[36px] text-[28px] text-ninjack-white font-bold">
+                  おすすめの体験・修行
+                </h2>
+              </div>
+
+              <section className="flex flex-col gap-4 ">
+                <RelationActivity ids={shuffle(activity.relationActivityIds)} />
+              </section>
+            </section>
+          )}
 
           <section className="mt-[52px]">
             <Image src={ImageSub} alt="" className="md:hidden" />

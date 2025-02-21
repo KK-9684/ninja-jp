@@ -22,8 +22,8 @@ const DetailItemList = ({ plan }: DetailItemListProps) => {
       <div className="flex flex-col gap-[20px] self-center">
         <div className="text-[#ffffff] text-[28px]">{plan.price}</div>
         {plan.url && (
-          <Link href={plan.url}>
-            <button className="border-[1px] border-[#2e2e2e] text-[#ffffff] p-3 flex flex-row rounded-[6px] gap-4 text-[14px]">
+          <Link href={plan.url} className="group">
+            <button className="border-[1px] border-[#2e2e2e] text-[#ffffff] p-3 flex flex-row rounded-[6px] gap-4 text-[14px] group-hover:text-ninjack-purple group-hover:border-ninjack-purple transition-all duration-300">
               予約サイトへ
               <Image src={IconNext} alt="" className="self-center" />
             </button>

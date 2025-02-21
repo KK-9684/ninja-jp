@@ -15,7 +15,7 @@ export default function ShareButton({ shareUrl, title }: Props) {
   const lineUrl = `https://line.me/R/msg/text/?${shareUrl}`;
 
   return (
-    <div className="flex flex-row md:gap-3 gap-2 mt-[80px] lg:px-[128px] ">
+    <div className="flex flex-row md:gap-3 gap-2 mt-[80px] lg:px-[100px] ">
       <Link
         href={lineUrl}
         target="_blank"
