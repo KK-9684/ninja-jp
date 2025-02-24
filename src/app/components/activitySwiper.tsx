@@ -61,7 +61,10 @@ const ActivitySwiper = ({ slides }: ActivitySwiperProps) => {
         {slides.map((slide) => (
           <SwiperSlide key={`recommend-contents-${slide.slug}`}>
             {/* // FIXME:きよしさん->記事のURLを取得 */}
-            <Link href={`/FIXME/${slide.slug}`} className="group">
+            <Link
+              href={`/${slide.contentType}/${slide.slug}`}
+              className="group"
+            >
               {slide.image && (
                 <div className="overflow-hidden rounded-[80px_10px_10px_10px] w-[100%] h-[auto] aspect-[300/420] md:w-[400px] md:h-[560px]">
                   <Image

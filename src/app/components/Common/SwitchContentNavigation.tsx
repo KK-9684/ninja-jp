@@ -104,7 +104,7 @@ const SwitchContentNavigation = () => {
                 hidden: activeIcon !== "",
               })}
             >
-              &nbsp;
+              忍者コンテンツ
             </span>
             <span
               className={clsx({

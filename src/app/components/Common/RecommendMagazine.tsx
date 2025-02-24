@@ -22,7 +22,7 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
           href={`/magazine/${item.slug}`}
           className="flex md:flex-col flex-row gap-6 group"
         >
-          {item.image?.[0].url && item.image?.[0].alt && (
+          {item.image && item.image[0] && item.image[0].url && (
             <div className="overflow-hidden rounded-md w-[240px] h-[240px] min-w-[240px] min-h-[240px]">
               <Image
                 src={item.image?.[0].url}

@@ -61,8 +61,12 @@ const Header = () => {
       <div className="hidden md:block">
         <div className="h-[76px] flex justify-between items-center px-8">
           <h1 className="flex items-center">
-            <Link href="/">
-              <Image src={logo} alt="忍者ポータルサイト" />
+            <Link href="/" className="group">
+              <Image
+                src={logo}
+                className="group-hover:opacity-60"
+                alt="忍者ポータルサイト"
+              />
             </Link>
             <p className="ms-3 text-xs">忍者ポータルサイト</p>
             <DigitalClock />

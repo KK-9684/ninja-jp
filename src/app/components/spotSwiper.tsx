@@ -82,7 +82,7 @@ const SpotSwiper = () => {
             <SpotItem
               href={`/spot/${item.slug}`}
               image={item.image?.[0]?.url || "/noimage.png"}
-              categroy="ものづくり"
+              categroy={item.category.title}
               areaName={item.area || ""}
               title={item.title}
               price={item.price}
