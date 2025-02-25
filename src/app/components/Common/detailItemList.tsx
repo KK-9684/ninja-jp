@@ -8,9 +8,9 @@ type DetailItemListProps = { plan: Plan };
 
 const DetailItemList = ({ plan }: DetailItemListProps) => {
   return (
-    <div className="bg-[#171717] border-[#2e2e2e] border-[1px] p-[20px] md:flex hidden flex-row justify-between rounded-[10px] w-full mb-5">
-      <div className="flex flex-row gap-6">
-        <div className="flex flex-col gap-[20px] self-center">
+    <div className="bg-[#171717] border-[#2e2e2e] border-[1px] p-[20px] md:flex flex-row justify-between rounded-[10px] w-full mb-5">
+      <div className="flex flex-row md:gap-4 gap-3">
+        <div className="flex flex-col md:gap-[12px] gap-2 self-center">
           <div className="text-[#ffffff] text-[16px] text-left">
             {plan.name}
           </div>
@@ -19,7 +19,7 @@ const DetailItemList = ({ plan }: DetailItemListProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-[20px] self-center">
+      <div className="flex flex-col md:gap-[12px] gap-2 self-center">
         <div className="text-[#ffffff] text-[28px]">{plan.price}</div>
         {plan.url && (
           <Link href={plan.url} className="group">

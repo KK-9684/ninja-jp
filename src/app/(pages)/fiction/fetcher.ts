@@ -172,6 +172,9 @@ const transformContent = (
 const transformPartialContent = (
   entry: Entry<FictionSkeleton, "WITHOUT_UNRESOLVABLE_LINKS", string>
 ): FictionCore => {
+  if (!entry || !entry.fields) {
+    throw new Error("Invalid entry data");
+  }
   const { title, category, createdAt, image } = entry.fields;
 
   const images = image
@@ -185,10 +188,10 @@ const transformPartialContent = (
         )
     : [];
 
-  const ct = category
-    ? category?.map((ct) => ({
-        slug: ct?.sys.id,
-        title: ct?.fields.title || "",
+  const ct = Array.isArray(category)
+    ? category.map((ct) => ({
+        slug: ct?.sys?.id || "",
+        title: ct?.fields?.title || "不明",
       }))
     : [];
 
@@ -212,40 +215,75 @@ export const getFiction = async (id: string) => {
 };
 
 export const getFictionList = async (query: Query) => {
-  const fallbackPerPage = 100;
-  const skip = query.perPage ? (query.page - 1) * query.perPage : 0;
+  try {
+    const fallbackPerPage = 12;
+    const perPage = query.perPage || fallbackPerPage;
+    const currentPage = Math.max(1, query.page || 1);
+    const skip = (currentPage - 1) * perPage;
 
-  const categoryParams =
-    query.categories && query.categories.length > 0
-      ? { "fields.category.sys.id[in]": query.categories.join(",") }
-      : {};
+    // フィルターパラメータの整理と検証
+    const validCategories = Array.isArray(query.categories)
+      ? query.categories.filter(Boolean)
+      : [];
 
-  const relationKeywordParams =
-    query.relationKeyword && query.relationKeyword.length > 0
-      ? {
-          "fields.relationKeyword.sys.id[in]": query.relationKeyword.join(","),
-        }
-      : {};
+    const validRelationKeyword = Array.isArray(query.relationKeyword)
+      ? query.relationKeyword.filter(Boolean)
+      : [];
 
-  const result = await getEntries<FictionSkeleton>({
-    content_type: "culture",
-    select: [
-      "fields.title",
-      "fields.image",
-      "fields.category",
-      "fields.relationKeyword",
-    ],
-    order: ["-fields.createdAt"],
-    limit: query.perPage || fallbackPerPage,
-    skip: skip,
-    ...categoryParams,
-    ...relationKeywordParams,
-  });
+    console.log("Processed query parameters:", {
+      page: currentPage,
+      perPage,
+      skip,
+      categories: validCategories,
+      relationKeyword: validRelationKeyword,
+    });
 
-  return {
-    total: result.total,
-    items: result.items.map((item) => transformPartialContent(item)),
-  };
+    // 基本クエリパラメータ
+    const queryParams: Record<string, string | number | string[]> = {
+      content_type: "culture",
+      select: [
+        "fields.title",
+        "fields.image",
+        "fields.category",
+        "fields.relationKeyword",
+      ],
+      order: ["-fields.createdAt"],
+      limit: perPage,
+      skip: skip,
+    };
+
+    // フィルター条件を追加
+    if (validCategories.length > 0) {
+      queryParams["fields.category.sys.id[in]"] = validCategories.join(",");
+    }
+
+    if (validRelationKeyword.length > 0) {
+      queryParams["fields.relationKeyword.sys.id[in]"] =
+        validRelationKeyword.join(",");
+    }
+
+    // クエリパラメータをログ出力
+    console.log("Contentful query parameters:", JSON.stringify(queryParams));
+
+    const result = await getEntries<FictionSkeleton>(queryParams);
+
+    const transformedItems: FictionCore[] = result.items.map((item) =>
+      transformPartialContent(item)
+    );
+
+    return {
+      total: result.total,
+      items: transformedItems as FictionCore[],
+    };
+  } catch (error) {
+    console.error("Error fetching fiction list:", error);
+
+    // エラー発生時はデフォルト値を返す
+    return {
+      total: 0,
+      items: [],
+    };
+  }
 };
 
 export const fictionCategoryPerItems = async (limit: number) => {

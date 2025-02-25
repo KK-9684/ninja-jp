@@ -11,111 +11,140 @@ import { getCategoryList } from "@/lib/contentful/sharedModel";
 
 const PER_PAGE = 12;
 
-type SearchParams = Promise<{
-  page: string;
-  categories: string | string[];
-  tag: string | null;
-}>;
-
-export default async function MagazinePage({
+export default async function ActivityPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const params = await searchParams;
-  const currentPage = Number(params.page) || 1;
-  const list = await getMagazineList({
-    categories: params.categories ? toArrayOfStrings(params.categories) : [],
-    tag: params.tag || "",
-    page: currentPage,
-    perPage: PER_PAGE,
-  });
+  try {
+    const params = await searchParams;
+    const currentPage = Number(params.page) || 1;
+    const categoryFilters = params.categories
+      ? toArrayOfStrings(params.categories)
+      : [];
+    const tagFilter = typeof params.tag === "string" ? params.tag : "";
 
-  const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
+    console.log("Magazine Page Filters:", {
+      categoryFilters,
+      tagFilter,
+      currentPage,
+    });
 
-  const categories = await getCategoryList("magazineCategory");
+    // データ取得（並列処理で最適化）
+    const [list, categories] = await Promise.all([
+      getMagazineList({
+        categories: categoryFilters,
+        tag: tagFilter,
+        page: currentPage,
+        perPage: PER_PAGE,
+      }),
+      getCategoryList("magazineCategory"),
+    ]);
 
-  return (
-    <>
-      <div className="container w-full mx-auto">
-        <section className="flex flex-col gap-8 md:mt-[100px] mt-[64px]">
-          <div className="flex md:flex-row flex-col justify-center md:space-x-5 gap-4 text-center md:text-[66px] text-[48px] leading-none">
-            <span className="text-ninjack-purple">Ninjack</span>
-            <span className="text-ninjack-white">MAGAZINE</span>
-          </div>
-          <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
-            <Link href={"/magazine"}>
-              <div
-                key="all"
-                role="button"
-                tabIndex={0}
-                className="cursor-pointer"
-              >
+    const totalPages = Math.ceil(Number(list.total) / PER_PAGE);
+
+    return (
+      <>
+        <div className="container w-full mx-auto">
+          <section className="flex flex-col gap-8 md:mt-[100px] mt-[64px]">
+            <div className="flex md:flex-row flex-col justify-center md:space-x-5 gap-4 text-center md:text-[66px] text-[48px] leading-none">
+              <span className="text-ninjack-purple">Ninjack</span>
+              <span className="text-ninjack-white">MAGAZINE</span>
+            </div>
+            <div className="border border-ninjack-line-gray rounded-[30px] flex min-w-[400px] md:overflow-hidden md:w-fit self-center mx-auto overflow-x-scroll">
+              <Link href={"/magazine"}>
                 <div
-                  className={clsx(
-                    "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
-                    params.categories?.length > 0
-                      ? "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]"
-                      : "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white",
-                    "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
-                  )}
+                  key="all"
+                  role="button"
+                  tabIndex={0}
+                  className="cursor-pointer"
                 >
-                  すべて
-                </div>
-              </div>
-            </Link>
-            {categories.items.map((category) => (
-              <Link
-                href={`/magazine?categories=${category.slug}`}
-                key={category.slug}
-              >
-                <div role="button" tabIndex={0} className="cursor-pointer">
                   <div
                     className={clsx(
                       "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
-                      params.categories?.includes(category.slug)
-                        ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
-                        : "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]",
+                      params.categories?.length
+                        ? "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]"
+                        : "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white",
                       "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
                     )}
                   >
-                    {category.title}
+                    すべて
                   </div>
                 </div>
               </Link>
-            ))}
-            {/* <SectionLinkGroup links={sectionNinjackMagazineLinks} /> */}
-          </div>
-          <div className="md:px-[139px] px-8">
-            <div className="flex flex-col gap-[20px] px-[23px] py-[20px] bg-ninjack-bg-gray rounded-[10px]">
-              <div className="self-center flex flex-row gap-3">
-                <Image src={IconSearch} alt="" />
-                <span className="text-[14px] text-ninjack-white">
-                  キーワードから探す
-                </span>
+              {categories?.items?.map((category) => (
+                <Link
+                  href={`/magazine?categories=${category.slug}`}
+                  key={category.slug}
+                >
+                  <div role="button" tabIndex={0} className="cursor-pointer">
+                    <div
+                      className={clsx(
+                        "md:py-4 py-3 md:px-5 px-4 textsm leading-none",
+                        params.categories?.includes(category.slug)
+                          ? "border border-ninjack-line-gray rounded-[30px] bg-ninjack-bg-gray text-ninjack-white"
+                          : "border border-transparent text-ninjack-text-gray md:text-[16px] text-[12px]",
+                        "hover:border hover:border-ninjack-line-gray hover:rounded-[30px] hover:bg-ninjack-bg-gray hover:text-ninjack-white"
+                      )}
+                    >
+                      {category.title}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="md:px-[139px] px-8">
+              <div className="flex flex-col gap-[20px] px-[23px] py-[20px] bg-ninjack-bg-gray rounded-[10px]">
+                <div className="self-center flex flex-row gap-3">
+                  <Image src={IconSearch} alt="" />
+                  <span className="text-[14px] text-ninjack-white">
+                    キーワードから探す
+                  </span>
+                </div>
+                <TagList limit={10} />
               </div>
-              <TagList limit={10} />
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="grid md:grid-cols-3 grid-cols-1 gap-[50px] mt-[80px] px-8 mb-10">
-          {list.items.map((item, index) => (
-            <div key={`magazine-${item.slug}-${index}`}>
-              <MagazineList
-                image={item.image?.[0].url || "/noimage.png"}
-                newone={item.isNew}
-                category={item.category?.[0].title || ""}
-                date={item.createdAt}
-                title={item.title}
-                content={item.summary}
-                href={`/magazine/${item.slug}`}
-              />
-            </div>
-          ))}
-        </section>
-        <Pagination totalPages={totalPages} />
+          <section className="grid md:grid-cols-3 grid-cols-1 gap-[50px] mt-[80px] px-8 mb-10">
+            {list.items.map((item, index) => (
+              <div key={`magazine-${item.slug}-${index}`}>
+                <MagazineList
+                  image={item.image?.[0]?.url || "/noimage.png"}
+                  newone={item.isNew}
+                  category={item.category?.[0]?.title || ""}
+                  date={item.createdAt}
+                  title={item.title}
+                  content={item.summary}
+                  href={`/magazine/${item.slug}`}
+                />
+              </div>
+            ))}
+          </section>
+          <Pagination totalPages={totalPages} />
+        </div>
+      </>
+    );
+  } catch (error) {
+    console.error("MagazinePage rendering error:", error);
+
+    return (
+      <div className="container mx-auto px-5 py-20 text-center">
+        <h2 className="text-2xl text-ninjack-white mb-4">
+          データの読み込みに問題が発生しました
+        </h2>
+        <p className="text-ninjack-text-gray mb-8">
+          申し訳ありませんが、ページの表示中にエラーが発生しました。
+          <br />
+          しばらく経ってから再度お試しください。
+        </p>
+        <Link
+          href="/magazine"
+          className="bg-ninjack-purple text-white px-6 py-2 rounded-lg"
+        >
+          Magazineページに戻る
+        </Link>
       </div>
-    </>
-  );
+    );
+  }
 }

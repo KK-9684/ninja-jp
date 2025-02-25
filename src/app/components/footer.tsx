@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import logo from "@/assets/logo.svg";
 import Image from "next/image";
@@ -12,18 +14,45 @@ import iconNinja from "@/assets/icon-ninja.svg";
 import iconMail from "@/assets/icon-mail.svg";
 import iconContact from "@/assets/icon-contact.svg";
 import CustomLargeButton from "./Common/customLargeButton";
-import FooterSpItem from "./footerSpItem";
 import { allActiveCategories } from "@/lib/contentful/sharedModel";
+import { AllActiveCategories } from "@/lib/contentful/sharedModel";
 
-const Footer = async () => {
-  const {
-    activityCategory,
-    spotCategory,
-    itemCategory,
-    researchCategory,
-    fictionCategory,
-    memberCategory,
-  } = await allActiveCategories();
+import FooterExpandMenu from "./Common/FooterExpandMenu";
+
+// デフォルトのカテゴリー構造を作成
+const defaultCategories: AllActiveCategories = {
+  activityCategory: [],
+  spotCategory: [],
+  itemCategory: [],
+  researchCategory: [],
+  fictionCategory: [],
+  memberCategory: [],
+};
+
+const Footer = () => {
+  const [categories, setCategories] =
+    useState<AllActiveCategories>(defaultCategories);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching categories data...");
+        const categoriesData = await allActiveCategories();
+        console.log("Categories data received:", categoriesData);
+        setCategories(categoriesData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log("Current loading state:", loading);
+  console.log("Current categories:", categories);
 
   return (
     <footer className="text-ninjack-text-gray text-center p-4">
@@ -47,14 +76,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {activityCategory.map((category) => (
-                <Link
-                  href={`/activity?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.activityCategory.map((category) => (
+                  <Link
+                    href={`/activity?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -66,14 +96,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {spotCategory.map((category) => (
-                <Link
-                  href={`/spot?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.spotCategory.map((category) => (
+                  <Link
+                    href={`/spot?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -85,14 +116,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {itemCategory.map((category) => (
-                <Link
-                  href={`/item?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.itemCategory.map((category) => (
+                  <Link
+                    href={`/item?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -104,14 +136,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {researchCategory.map((category) => (
-                <Link
-                  href={`/research?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.researchCategory.map((category) => (
+                  <Link
+                    href={`/research?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -123,14 +156,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {fictionCategory.map((category) => (
-                <Link
-                  href={`/fiction?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.fictionCategory.map((category) => (
+                  <Link
+                    href={`/fiction?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex flex-col space-y-6 items-start">
@@ -142,14 +176,15 @@ const Footer = async () => {
               isSmall
             />
             <div className="flex flex-col items-start space-y-4 text-xs">
-              {memberCategory.map((category) => (
-                <Link
-                  href={`/ninja?categories=${category.slug}`}
-                  key={category.slug}
-                >
-                  {`ー ${category.title}`}
-                </Link>
-              ))}
+              {!loading &&
+                categories.memberCategory.map((category) => (
+                  <Link
+                    href={`/ninja?categories=${category.slug}`}
+                    key={category.slug}
+                  >
+                    {`ー ${category.title}`}
+                  </Link>
+                ))}
             </div>
           </div>
         </div>
@@ -189,188 +224,14 @@ const Footer = async () => {
           </div>
           <AboutButtonGroup />
         </div>
-
-        <div className="flex flex-col justify-between px-6 mb-10">
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconActivity}
-              title="体験・修行"
-              items={[
-                {
-                  link: "/activity",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "体験",
-                },
-                {
-                  link: "/",
-                  title: "ものづくり",
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconSpot}
-              title="施設・史跡"
-              items={[
-                {
-                  link: "/spot",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "史跡",
-                },
-                {
-                  link: "/",
-                  title: "テーマパーク",
-                },
-                {
-                  link: "/",
-                  title: "道場",
-                },
-                {
-                  link: "/",
-                  title: "販売店",
-                },
-                {
-                  link: "/",
-                  title: "飲食店",
-                },
-                {
-                  link: "/",
-                  title: "その他",
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconItem}
-              title="商品・忍具"
-              items={[
-                {
-                  link: "/item",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "忍具",
-                },
-                {
-                  link: "/",
-                  title: "衣装",
-                },
-                {
-                  link: "/",
-                  title: "書籍",
-                },
-                {
-                  link: "/",
-                  title: "アクセサリー",
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconResearch}
-              title="研究情報"
-              items={[
-                {
-                  link: "/research",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "書籍・論文",
-                },
-                {
-                  link: "/",
-                  title: "歴史・人物",
-                },
-                {
-                  link: "/",
-                  title: "忍術",
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconFiction}
-              title="創作作品"
-              items={[
-                {
-                  link: "/fiction",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "漫画",
-                },
-                {
-                  link: "/",
-                  title: "アニメ",
-                },
-                {
-                  link: "/",
-                  title: "映画",
-                },
-                {
-                  link: "/",
-                  title: "ドラマ",
-                },
-                {
-                  link: "/",
-                  title: "舞台",
-                },
-                {
-                  link: "/",
-                  title: "ゲーム",
-                },
-                {
-                  link: "/",
-                  title: "音楽",
-                },
-                {
-                  link: "/",
-                  title: "その他",
-                },
-              ]}
-            />
-          </div>
-          <div className="flex flex-col space-y-6 items-start">
-            <FooterSpItem
-              image={iconNinja}
-              title="創作作品"
-              items={[
-                {
-                  link: "/ninja",
-                  title: "すべて見る",
-                },
-                {
-                  link: "/",
-                  title: "チーム・団体",
-                },
-                {
-                  link: "/",
-                  title: "個人",
-                },
-              ]}
-            />
-          </div>
-        </div>
+        {!loading && <FooterExpandMenu categories={categories} />}
         <div className="flex flex-col justify-between items-center mx-auto px-6 mb-10 gap-8">
           <div className="flex space-x-4 text-[12px]">
             <Link href={"/commercial"}>特定商取引法の表示</Link>
             <Link href={"/terms"}>利用規約</Link>
             <Link href={"/privacy-policy"}>プライバシーポリシー</Link>
           </div>
-          <div className="flex flex-col  gap-4">
+          <div className="flex flex-col gap-4">
             <CustomLargeButton
               text="メールマガジン配信登録"
               font="NotoSansJp"

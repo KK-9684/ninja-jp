@@ -5,7 +5,6 @@ import {
 } from "@/lib/contentful/sharedModel";
 import { transformAsset } from "@/lib/contentful/transformContent";
 import { Entry, EntryFieldTypes, EntrySkeletonType } from "contentful";
-import { TagEntrySkeleton } from "../tag/fetcher";
 import { Document } from "@contentful/rich-text-types";
 import { documentToPlainTextString } from "@contentful/rich-text-plain-text-renderer";
 import { Asset } from "contentful";
@@ -68,7 +67,6 @@ type Activity = EntrySkeletonType & {
   category?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivityCategoryEntrySkeleton>
   >;
-  relationKeyword?: EntryFieldTypes.EntryLink<TagEntrySkeleton>;
   relationSpot?: EntryFieldTypes.Array<
     EntryFieldTypes.EntryLink<ActivityRelationSpotEntrySkeleton>
   >;
@@ -223,46 +221,89 @@ export const getActivity = async (id: string) => {
 };
 
 export const getActivityList = async (query: ActivityListQuery) => {
-  const fallbackPerPage = 100;
-  const skip = query.perPage ? (query.page - 1) * query.perPage : 0;
-  const categoryParams =
-    query.categories && query.categories.length > 0
-      ? { "fields.category.sys.id[in]": query.categories.join(",") }
-      : {};
+  try {
+    // デフォルト値と値の整理
+    const fallbackPerPage = 12;
+    const currentPage = Math.max(1, query.page || 1);
+    const perPage = query.perPage || fallbackPerPage;
+    const skip = (currentPage - 1) * perPage;
 
-  const areaParams =
-    query.area && query.area.length > 0
-      ? { "fields.relationArea.sys.id[in]": query.area.join(",") }
-      : {};
-  const tagParams = query.tag
-    ? { "fields.relationKeyword.sys.id": query.tag }
-    : {};
-  const result = await getEntries<ActivitySkeleton>({
-    content_type: "activity",
-    select: [
-      "fields.title",
-      "fields.createdAt",
-      "fields.time",
-      "fields.price",
-      "fields.category",
-      "fields.relationArea",
-      "fields.image",
-      "fields.tag",
-    ],
-    order: ["-fields.createdAt"],
-    limit: query.perPage || fallbackPerPage,
-    skip: skip,
-    ...categoryParams,
-    ...areaParams,
-    ...tagParams,
-  });
+    // フィルターパラメータの整理と検証
+    const validCategories = Array.isArray(query.categories)
+      ? query.categories.filter(Boolean)
+      : [];
 
-  return {
-    total: result.total,
-    items: result.items.map((activity) => transformPartialContent(activity)),
-  };
+    const validAreas = Array.isArray(query.area)
+      ? query.area.filter(Boolean)
+      : [];
+
+    const validTag =
+      typeof query.tag === "string" && query.tag.trim() !== ""
+        ? query.tag.trim()
+        : "";
+
+    console.log("Processed query parameters:", {
+      page: currentPage,
+      perPage,
+      skip,
+      categories: validCategories,
+      areas: validAreas,
+      tag: validTag,
+    });
+
+    // 基本クエリパラメータ
+    const queryParams: Record<string, string | number | string[]> = {
+      content_type: "activity",
+      select: [
+        "fields.title",
+        "fields.createdAt",
+        "fields.time",
+        "fields.price",
+        "fields.category",
+        "fields.relationArea",
+        "fields.image",
+        "fields.tag",
+      ],
+      order: ["-fields.createdAt"],
+      limit: perPage,
+      skip: skip,
+    };
+
+    // フィルター条件を追加
+    if (validCategories.length > 0) {
+      queryParams["fields.category.sys.id[in]"] = validCategories.join(",");
+    }
+
+    if (validAreas.length > 0) {
+      queryParams["fields.relationArea.sys.id[in]"] = validAreas.join(",");
+    }
+
+    if (validTag) {
+      queryParams["fields.tag.sys.id"] = validTag;
+    }
+
+    // クエリパラメータをログ出力
+    console.log("Contentful query parameters:", JSON.stringify(queryParams));
+
+    // データ取得
+    const result = await getEntries<ActivitySkeleton>(queryParams);
+
+    // 結果の変換
+    return {
+      total: result.total,
+      items: result.items.map((activity) => transformPartialContent(activity)),
+    };
+  } catch (error) {
+    // エラーハンドリング
+    console.error("Error fetching activity list:", error);
+
+    // エラー発生時はデフォルト値を返す
+    return {
+      total: 0,
+      items: [],
+    };
+  }
 };
-
 export const getRelationActivity = async (ids: string[], limit?: number) => {
   const fallbackPerPage = 3;
   const result = await getEntries<ActivitySkeleton>({

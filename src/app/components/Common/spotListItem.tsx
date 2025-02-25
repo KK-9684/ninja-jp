@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export interface SpotListItemProps {
   image: StaticImport | string;
-  categroy: string;
+  category: string;
   areaName: string;
   title: string;
   href: string;
@@ -15,7 +15,7 @@ export interface SpotListItemProps {
 const SpotListItem = ({
   href,
   image,
-  categroy,
+  category,
   areaName,
   title,
   price,
@@ -34,7 +34,7 @@ const SpotListItem = ({
       <div className="flex flex-col justify-between py-1">
         <div className="mb-[27px] flex justify-between items-center">
           <div className="rounded-tl-[10px] py-2 px-2.5 text-ninjack-white bg-ninjack-purple text-xs leading-none">
-            {categroy}
+            {category}
           </div>
           <div className="flex items-center text-ninjack-text-gray">
             <span className="text-2xl leading-none">・</span>

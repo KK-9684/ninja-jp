@@ -13,7 +13,7 @@ export default async function RelationSpot({ ids }: Props) {
         <SpotListItem
           key={item.slug}
           image={item.image?.[0]?.url || "/noimage.png"}
-          categroy={item.category.title || ""}
+          category={item.category.title || ""}
           areaName={item.area || ""}
           title={item.title || ""}
           href={`/spot/${item.slug}`}

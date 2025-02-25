@@ -128,7 +128,7 @@ export default async function ActivityDetailPage({ params }: Props) {
                 </div>
               ))} */}
             </div>
-            <div className="flex flex-row gap-[20px] items-center">
+            <div className="flex flex-row gap-[20px] items-center mb-5">
               <div className="bg-[#171717] rounded-[4px] border-[1px] border-[#2e2e2e] p-1 text-[#7a7a7a] flex flex-row gap-1 items-center h-fit">
                 {" "}
                 料金：{activity.price}
@@ -144,7 +144,11 @@ export default async function ActivityDetailPage({ params }: Props) {
               </div>
             </div>
           </section>
-
+          {activity.plans &&
+            Array.isArray(activity.plans) &&
+            activity.plans.map((plan, index) => (
+              <DetailItemList key={`${plan.title}-${index}`} plan={plan} />
+            ))}
           <section className="richContent flex flex-col mt-[40px] text-[#ffffff] gap-11">
             <RichContent document={activity.content} />
           </section>
