@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!item) {
     return {};
   }
+
   return {
     metadataBase: new URL(
       `${process.env.NEXT_PUBLIC_BASE_URL}/magazine/${item.slug}` ||
@@ -73,10 +74,13 @@ export default async function MagazineDetailPage({ params }: Props) {
       <div className="flex md:max-w-[1240px] md:mx-auto">
         <div className="w-full md:w-[880px] flex flex-col md:p-[60px] p-8 md:pl-[100px] md:max-w-[calc(100%-320px)]">
           <section className="flex flex-col ">
-            <div className="flex justify-between">
+            <div className="flex justify-between w-full">
               <div className="flex gap-6 items-center text-[14px] mb-6">
-                {magazine.isNew &&
-                  `<div className="leading-none bg-ninjack-white px-[7px] py-[5px]">NEW</div>`}
+                {magazine.isNew && (
+                  <div className="leading-none bg-ninjack-white px-[7px] py-[5px]">
+                    NEW
+                  </div>
+                )}
                 <div className="flex space-x-0 items-center">
                   <span className="text-xl" style={{ color: "#63B8A7" }}>
                     ・
@@ -125,7 +129,7 @@ export default async function MagazineDetailPage({ params }: Props) {
             />
           </section>
 
-          <section className="richContent flex flex-col mt-[40px] md:mt-[80px] text-[#ffffff] gap-11">
+          <section className="richContent flex flex-col mt-[20px] md:mt-[40px] text-[#ffffff] gap-11">
             <RichContent document={magazine.content} />
           </section>
 

@@ -20,16 +20,27 @@ export default async function RecommendMagazine({ limit }: { limit: number }) {
         <Link
           key={`recommend-magazine-${item.slug}`}
           href={`/magazine/${item.slug}`}
-          className="flex md:flex-col flex-row gap-6 group"
+          className="flex md:flex-col flex-row md:gap-6 gap-3 group w-full"
         >
           {item.image && item.image[0] && item.image[0].url && (
-            <div className="overflow-hidden rounded-md w-[240px] h-[240px] min-w-[240px] min-h-[240px]">
+            <div className="overflow-hidden rounded-md md:w-[240px] md:h-[240px] w-[120px] h-[120px] md:min-w-[240px] md:min-h-[240px]">
               <Image
                 src={item.image?.[0].url}
                 alt={item.image?.[0].alt}
                 width={380}
                 height={240}
-                className="rounded-md w-[240px] h-[240px]  object-cover group-hover:scale-105 transition-all duration-300"
+                className="rounded-md md:w-[240px] md:h-[240px] w-[120px] h-[120px]  object-cover group-hover:scale-105 transition-all duration-300"
+              />
+            </div>
+          )}
+          {item.image! && (
+            <div className="overflow-hidden rounded-md md:w-[240px] md:h-[240px] w-[120px] h-[120px] md:min-w-[240px] md:min-h-[240px]">
+              <Image
+                src={"/noimage.png"}
+                alt={item.title}
+                width={380}
+                height={240}
+                className="rounded-md md:w-[240px] md:h-[240px] w-[120px] h-[120px]  object-cover group-hover:scale-105 transition-all duration-300"
               />
             </div>
           )}
