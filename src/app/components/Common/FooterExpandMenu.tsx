@@ -8,7 +8,7 @@ import iconFiction from "@/assets/icon-fiction.svg";
 import iconNinja from "@/assets/icon-ninja.svg";
 import iconPlus from "@/assets/icon-plus.svg";
 import { AllActiveCategories } from "@/lib/contentful/sharedModel";
-
+import iconActivity from "@/assets/icon-activity.svg";
 type FooterExpandMenuProps = {
   categories: AllActiveCategories;
 };
@@ -17,6 +17,65 @@ const FooterExpandMenu = ({ categories }: FooterExpandMenuProps) => {
   // console.log(categories);
   return (
     <div className="flex flex-col md:grid md:grid-cols-6 md:gap-8 md:my-12 my-2 mx-4 mb-6">
+      {/* 体験・修行のセクション */}
+      <div className="flex flex-col">
+        <details className="md:hidden flex flex-col pt-4 group  border-t border-ninjack-line-gray">
+          <summary className="flex items-center justify-between border-b border-ninjack-line-gray pb-4">
+            <MenuItem
+              icon={iconSpot}
+              label="体験・修行"
+              link="/activity"
+              color="ninjack-white"
+              isSmall
+              isFlex
+            />
+            <Image
+              src={iconPlus}
+              alt="開く"
+              className="group-open:rotate-45 transition-transform duration-300 w-[24px] h-[24px]"
+            />
+          </summary>
+          <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+            <Link href="/spot" className="hover:text-ninjack-purple">
+              ー すべて見る
+            </Link>
+            {categories.activityCategory.map((category) => (
+              <Link
+                href={`/activity?categories=${category.slug}`}
+                key={category.slug}
+                className="hover:text-ninjack-purple"
+              >
+                {`ー ${category.title}`}
+              </Link>
+            ))}
+          </div>
+        </details>
+        <div className="hidden md:flex md:flex-col gap-6">
+          <MenuItem
+            icon={iconActivity}
+            label="体験・修行"
+            link="/activity"
+            color="ninjack-white"
+            isSmall
+            isFlex
+          />
+          <div className="flex flex-col items-start gap-4 px-6 text-[14px] md:text-[14px] text-ninjack-text-gray md:py-0 py-6">
+            <Link href="/activity" className="hover:text-ninjack-purple">
+              ー すべて見る
+            </Link>
+            {categories.activityCategory.map((category) => (
+              <Link
+                href={`/activity?categories=${category.slug}`}
+                key={category.slug}
+                className="hover:text-ninjack-purple"
+              >
+                {`ー ${category.title}`}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* 施設・史跡のセクション */}
       <div className="flex flex-col">
         <details className="md:hidden flex flex-col pt-4 group">
