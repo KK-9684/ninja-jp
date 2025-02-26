@@ -200,12 +200,14 @@ const Footer = () => {
               text="お問い合わせ"
               type={1}
               font="NotoSansJp"
+              link="/contact"
             />
             <CustomLargeButton
               text="メールマガジン配信登録"
               font="NotoSansJp"
               type={2}
               isArrow
+              link="/mail-magazine"
             />
           </div>
         </div>
